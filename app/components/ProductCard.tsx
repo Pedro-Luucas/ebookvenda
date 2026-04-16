@@ -1,0 +1,50 @@
+"use client";
+
+import Link from "next/link";
+import type { Product } from "@/app/data/products";
+import { formatPrice } from "@/app/data/products";
+import { useCart } from "@/app/context/CartContext";
+
+export default function ProductCard({ product }: { product: Product }) {
+  const { addItem } = useCart();
+
+  return (
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white transition-shadow hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
+      <Link href={`/produto/${product.slug}`} className="block">
+        <div className="flex h-52 items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100 p-6 dark:from-emerald-950 dark:to-teal-900">
+          <div className="text-center">
+            <span className="text-5xl">📖</span>
+            <p className="mt-2 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+              {product.category}
+            </p>
+          </div>
+        </div>
+      </Link>
+
+      <div className="flex flex-1 flex-col p-5">
+        <Link href={`/produto/${product.slug}`}>
+          <h3 className="font-semibold text-zinc-900 transition-colors group-hover:text-emerald-600 dark:text-zinc-50 dark:group-hover:text-emerald-400">
+            {product.title}
+          </h3>
+        </Link>
+        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          por {product.author}
+        </p>
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
+          {product.description}
+        </p>
+        <div className="mt-4 flex items-center justify-between">
+          <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+            {formatPrice(product.price)}
+          </span>
+          <button
+            onClick={() => addItem(product)}
+            className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
+          >
+            Comprar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
