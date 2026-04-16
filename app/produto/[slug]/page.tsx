@@ -17,7 +17,7 @@ export async function generateMetadata({
   const product = getProductBySlug(slug);
   if (!product) return { title: "Produto não encontrado" };
   return {
-    title: `${product.title} - EbookVenda`,
+    title: `${product.title} - Vendas que funcionam.`,
     description: product.description,
   };
 }

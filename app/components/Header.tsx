@@ -12,7 +12,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2">
           <span className="text-2xl">📚</span>
           <span className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
-            EbookVenda
+            Vendas que funcionam.
           </span>
         </Link>
 

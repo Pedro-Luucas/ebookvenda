@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Product } from "@/app/data/products";
 import { formatPrice } from "@/app/data/products";
 import { useCart } from "@/app/context/CartContext";
+import ProductCoverArt from "@/app/components/ProductCoverArt";
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
@@ -11,13 +12,8 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white transition-shadow hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
       <Link href={`/produto/${product.slug}`} className="block">
-        <div className="flex h-52 items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100 p-6 dark:from-emerald-950 dark:to-teal-900">
-          <div className="text-center">
-            <span className="text-5xl">📖</span>
-            <p className="mt-2 text-xs font-medium text-emerald-700 dark:text-emerald-300">
-              {product.category}
-            </p>
-          </div>
+        <div className="bg-gradient-to-br from-emerald-50 to-teal-100 p-4 dark:from-emerald-950 dark:to-teal-900">
+          <ProductCoverArt product={product} size="lg" className="mx-auto h-56 w-40" />
         </div>
       </Link>
 

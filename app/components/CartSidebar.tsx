@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCart } from "@/app/context/CartContext";
 import { formatPrice } from "@/app/data/products";
+import ProductCoverArt from "@/app/components/ProductCoverArt";
 
 export default function CartSidebar() {
   const {
@@ -70,9 +71,11 @@ export default function CartSidebar() {
                   key={item.product.id}
                   className="flex gap-4 rounded-xl border border-zinc-100 p-3 dark:border-zinc-800"
                 >
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950">
-                    <span className="text-2xl">📖</span>
-                  </div>
+                  <ProductCoverArt
+                    product={item.product}
+                    size="sm"
+                    className="h-20 w-14 shrink-0"
+                  />
                   <div className="flex-1">
                     <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
                       {item.product.title}

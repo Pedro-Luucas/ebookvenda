@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCart } from "@/app/context/CartContext";
 import { formatPrice } from "@/app/data/products";
+import ProductCoverArt from "@/app/components/ProductCoverArt";
 
 export default function CarrinhoPage() {
   const { items, removeItem, updateQuantity, totalPrice } = useCart();
@@ -39,9 +40,11 @@ export default function CarrinhoPage() {
             key={item.product.id}
             className="flex items-center gap-4 rounded-xl border border-zinc-200 p-4 dark:border-zinc-800"
           >
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950">
-              <span className="text-3xl">📖</span>
-            </div>
+            <ProductCoverArt
+              product={item.product}
+              size="md"
+              className="h-28 w-20 shrink-0"
+            />
             <div className="flex-1">
               <h3 className="font-semibold text-zinc-900 dark:text-zinc-50">
                 {item.product.title}

@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EbookVenda - Ebooks sobre Vendas",
+  title: "Vendas que funcionam. - Ebooks sobre Vendas",
   description:
     "A melhor loja de ebooks sobre vendas, persuasão e negociação. Aprenda com os melhores e transforme seus resultados.",
 };

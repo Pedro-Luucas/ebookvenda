@@ -6,11 +6,11 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <span className="text-xl">📚</span>
             <span className="font-semibold text-zinc-900 dark:text-zinc-50">
-              EbookVenda
+              Vendas que funcionam.
             </span>
           </div>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            &copy; {new Date().getFullYear()} EbookVenda. Todos os direitos
+            &copy; {new Date().getFullYear()} Vendas que funcionam. Todos os direitos
             reservados.
           </p>
         </div>

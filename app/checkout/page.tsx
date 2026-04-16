@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/app/context/CartContext";
 import { formatPrice } from "@/app/data/products";
+import ProductCoverArt from "@/app/components/ProductCoverArt";
 
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
@@ -200,12 +201,19 @@ export default function CheckoutPage() {
             {items.map((item) => (
               <li
                 key={item.product.id}
-                className="flex items-center justify-between text-sm"
+                className="flex items-center justify-between gap-3 text-sm"
               >
-                <span className="text-zinc-600 dark:text-zinc-300">
-                  {item.product.title}{" "}
-                  {item.quantity > 1 && `(x${item.quantity})`}
-                </span>
+                <div className="flex min-w-0 items-center gap-3">
+                  <ProductCoverArt
+                    product={item.product}
+                    size="sm"
+                    className="h-16 w-12 shrink-0"
+                  />
+                  <span className="text-zinc-600 dark:text-zinc-300">
+                    {item.product.title}{" "}
+                    {item.quantity > 1 && `(x${item.quantity})`}
+                  </span>
+                </div>
                 <span className="font-medium text-zinc-900 dark:text-zinc-50">
                   {formatPrice(item.product.price * item.quantity)}
                 </span>
