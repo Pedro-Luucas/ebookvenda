@@ -11,7 +11,7 @@ function CtaButton({ className = "" }: { className?: string }) {
       className={`inline-block px-8 py-4 rounded-xl font-extrabold text-lg uppercase tracking-wide text-white cta-glow transition-all duration-300 hover:-translate-y-0.5 ${className}`}
       style={{ background: "var(--accent)", color: "#fff" }}
     >
-      QUERO DOMINAR O CLAUDE AGORA
+      COMEÇAR AGORA
     </a>
   );
 }
@@ -63,7 +63,7 @@ export default function LandingPage() {
               className="px-5 py-2 rounded-lg font-bold text-sm transition-all hover:-translate-y-0.5"
               style={{ background: "var(--accent)", color: "#fff" }}
             >
-              Garantir Acesso
+              Começar Agora
             </a>
           </div>
         </div>
@@ -80,32 +80,32 @@ export default function LandingPage() {
               color: "var(--accent)",
             }}
           >
-            OFERTA ESPECIAL — Preço sobe em breve
+            OFERTA DE LANÇAMENTO — Vagas limitadas neste valor
           </div>
 
           <h1
             className="text-4xl md:text-5xl lg:text-[52px] font-black leading-[1.08] tracking-tight mb-6"
             style={{ letterSpacing: "-0.03em" }}
           >
-            Quase ninguém está usando o Claude do jeito certo.{" "}
+            Você não precisa ser programador pra{" "}
             <span className="text-gradient-accent">
-              Os que sabem, operam diferente.
+              criar suas próprias aplicações com IA.
             </span>{" "}
-            Esse treinamento te coloca nesse grupo.
+            Precisa do método certo.
           </h1>
 
           <p className="text-lg md:text-xl mb-8 max-w-[700px] mx-auto" style={{ color: "var(--text-sec)" }}>
-            O Claude University é o treinamento mais completo de Claude em português.
-            Saia do zero e crie suas próprias aplicações, automações e sistemas completos
-            — sem precisar saber programar.
+            De leigo a criador de apps, automações e agentes inteligentes em semanas.
+            O único treinamento em português que te leva do &ldquo;não sei nem por onde começar&rdquo;
+            até ter projetos reais rodando.
           </p>
 
           <CtaButton className="mb-8" />
 
           <div className="flex flex-wrap justify-center gap-6 text-sm" style={{ color: "var(--muted)" }}>
-            <span>✓ Acesso imediato</span>
-            <span>✓ 100% em português</span>
-            <span>✓ 7 dias de garantia</span>
+            <span>✓ Acesso vitalício</span>
+            <span>✓ Do zero ao avançado</span>
+            <span>✓ Garantia de 7 dias</span>
           </div>
         </div>
       </section>
@@ -114,10 +114,10 @@ export default function LandingPage() {
       <section className="py-6 border-y" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           {[
-            { value: "4", label: "Módulos completos" },
-            { value: "+2.500", label: "Alunos ativos" },
+            { value: "4", label: "Módulos práticos" },
+            { value: "+47h", label: "De conteúdo" },
             { value: "100%", label: "Em português" },
-            { value: "7 dias", label: "Garantia total" },
+            { value: "Vitalício", label: "Acesso garantido" },
           ].map((stat) => (
             <div key={stat.label}>
               <div className="text-2xl font-black" style={{ color: "var(--accent)" }}>
@@ -135,15 +135,15 @@ export default function LandingPage() {
       <section className="py-20 px-6">
         <div className="max-w-[800px] mx-auto reveal">
           <h2 className="text-3xl md:text-4xl font-black mb-8 text-center" style={{ letterSpacing: "-0.03em" }}>
-            Alguma dessas situações <span className="text-gradient-accent">soa familiar?</span>
+            Isso te parece <span className="text-gradient-accent">familiar?</span>
           </h2>
           <div className="space-y-6">
             {[
-              "Você já tentou usar o Claude mas sentiu que não estava tirando nem 10% do potencial",
-              "Vê gente criando apps e automações com IA enquanto você ainda luta pra fazer um prompt decente",
-              "Já assistiu dezenas de vídeos no YouTube mas nenhum te deu um sistema completo pra seguir",
-              "Quer criar seus próprios projetos mas não sabe por onde começar — e não tem tempo pra aprender programação do zero",
-              "Sente que está ficando pra trás enquanto o mercado muda cada vez mais rápido",
+              "Você ouve falar de IA todo dia mas na prática não sabe como usar pra gerar resultado real",
+              "Já pagou curso de programação, desistiu no meio, e continua dependendo de terceiros pra tudo",
+              "Tenta usar o ChatGPT ou Claude e recebe respostas genéricas que não resolvem seu problema específico",
+              "Vê gente lançando produtos e automações com IA e pensa: como eles fazem isso?",
+              "Tem ideias de apps e projetos na cabeça mas não consegue tirar do papel porque não sabe codar",
             ].map((pain, i) => (
               <div
                 key={i}
@@ -171,33 +171,33 @@ export default function LandingPage() {
         <div className="max-w-[1200px] mx-auto reveal">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-black mb-4" style={{ letterSpacing: "-0.03em" }}>
-              Não é uma ferramenta. <span className="text-gradient-accent">São quatro frentes.</span>
+              Um sistema com <span className="text-gradient-accent">quatro pilares.</span>
             </h2>
             <p className="text-lg" style={{ color: "var(--text-sec)" }}>
-              E este treinamento ensina todas — do zero ao profissional.
+              Cada módulo te dá uma habilidade concreta. Juntos, te transformam em criador.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
               {
-                title: "Claude Code na Prática",
-                desc: "Aprenda a usar o Claude Code para criar aplicações completas. De um simples site até um SaaS inteiro — sem escrever uma linha de código manualmente.",
+                title: "Criação de Aplicações",
+                desc: "Monte sites, sistemas e SaaS completos usando o Claude Code como seu desenvolvedor pessoal. Você descreve, ele constrói.",
                 icon: "⚡",
               },
               {
-                title: "Prompts Profissionais",
-                desc: "Domine a arte de se comunicar com a IA. Prompts que geram resultados reais, não respostas genéricas. Frameworks testados em centenas de projetos.",
+                title: "Comunicação com IA",
+                desc: "Aprenda a dar instruções precisas que geram exatamente o que você precisa. Chega de respostas vagas e retrabalho infinito.",
                 icon: "🎯",
               },
               {
-                title: "Automação de Workflows",
-                desc: "Automatize tarefas repetitivas do seu dia a dia. Relatórios, análises, emails, planilhas — tudo rodando no piloto automático.",
+                title: "Automação Inteligente",
+                desc: "Transforme horas de trabalho manual em processos automáticos. Relatórios, emails, planilhas, análises — tudo no piloto automático.",
                 icon: "🔄",
               },
               {
-                title: "Agentes de IA",
-                desc: "Construa agentes inteligentes que trabalham por você. Desde assistentes pessoais até sistemas que tomam decisões e executam ações sozinhos.",
+                title: "Agentes Autônomos",
+                desc: "Crie assistentes de IA que executam tarefas complexas sozinhos. Pesquisa, atendimento, análise de dados — trabalhando 24h por você.",
                 icon: "🤖",
               },
             ].map((mod) => (
@@ -222,16 +222,16 @@ export default function LandingPage() {
       <section className="py-20 px-6">
         <div className="max-w-[1200px] mx-auto reveal">
           <h2 className="text-3xl md:text-4xl font-black mb-12 text-center" style={{ letterSpacing: "-0.03em" }}>
-            Sua rotina <span className="text-gradient-accent">depois do Claude University</span>
+            Daqui a 30 dias, <span className="text-gradient-accent">você vai poder:</span>
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { title: "Cria apps em horas", desc: "Projetos que levariam semanas agora saem em uma tarde. Sem depender de dev, sem esperar orçamento." },
-              { title: "Automatiza o operacional", desc: "Relatórios, emails, análises — tudo que era manual agora roda sozinho enquanto você foca no estratégico." },
-              { title: "Cobra por projetos de IA", desc: "Clientes pagam R$3.000-10.000 por automações que você monta em poucas horas com o que aprendeu aqui." },
-              { title: "Resolve problemas complexos", desc: "Análise de dados, pesquisa de mercado, planejamento estratégico — o Claude vira seu sócio intelectual." },
-              { title: "Sai na frente do mercado", desc: "Enquanto 95% ainda usa o Claude como um Google glorificado, você opera no nível profissional." },
-              { title: "Constrói sem código", desc: "Sites, sistemas, dashboards, bots — tudo sem precisar aprender JavaScript, Python ou qualquer linguagem." },
+              { title: "Lançar seu próprio app", desc: "Tire ideias do papel em dias, não meses. Sem contratar dev, sem esperar orçamento, sem depender de ninguém." },
+              { title: "Eliminar trabalho repetitivo", desc: "Aquele relatório de 3 horas? Agora leva 5 minutos. Emails, planilhas, análises — tudo automatizado." },
+              { title: "Vender serviços de IA", desc: "Monte automações para clientes e cobre R$2.000-8.000 por projeto. O investimento se paga no primeiro job." },
+              { title: "Tomar decisões com dados", desc: "Use o Claude pra analisar mercado, concorrência e oportunidades. Decisões baseadas em fatos, não achismo." },
+              { title: "Ter um diferencial real", desc: "Enquanto outros ainda estão aprendendo o básico, você já está entregando resultados concretos com IA." },
+              { title: "Criar sem saber programar", desc: "Dashboards, bots, landing pages, APIs — tudo construído por você, guiado pelo Claude, sem código manual." },
             ].map((outcome) => (
               <div
                 key={outcome.title}
@@ -250,16 +250,16 @@ export default function LandingPage() {
       <section className="py-20 px-6">
         <div className="max-w-[1000px] mx-auto reveal">
           <h2 className="text-3xl md:text-4xl font-black mb-12 text-center" style={{ letterSpacing: "-0.03em" }}>
-            Pra quem é o <span className="text-gradient-accent">Claude University?</span>
+            Feito pra quem quer <span className="text-gradient-accent">resultado, não diploma</span>
           </h2>
           <div className="grid md:grid-cols-2 gap-5">
             {[
-              "Empreendedores que querem criar produtos digitais sem equipe de dev",
-              "Profissionais de marketing que querem automatizar campanhas e análises",
-              "Freelancers que querem oferecer serviços de IA e cobrar mais caro",
-              "Gestores que querem otimizar processos e reduzir custos operacionais",
-              "Curiosos de tecnologia que querem dominar IA antes de todo mundo",
-              "Qualquer pessoa que quer sair do zero e criar aplicações reais com IA",
+              "Empreendedores que querem lançar produtos digitais sem depender de equipe técnica",
+              "Profissionais que perdem horas em tarefas manuais que poderiam ser automatizadas",
+              "Freelancers que querem adicionar IA ao portfólio e aumentar o ticket",
+              "Donos de negócio que querem reduzir custos operacionais com automação",
+              "Pessoas sem background técnico que querem criar apps e ferramentas próprias",
+              "Qualquer um que está cansado de ficar de fora da revolução da IA",
             ].map((persona, i) => (
               <div
                 key={i}
@@ -278,16 +278,16 @@ export default function LandingPage() {
       <section className="py-20 px-6">
         <div className="max-w-[1200px] mx-auto reveal">
           <h2 className="text-3xl md:text-4xl font-black mb-12 text-center" style={{ letterSpacing: "-0.03em" }}>
-            O que nossos alunos <span className="text-gradient-accent">estão dizendo</span>
+            Resultados reais de <span className="text-gradient-accent">quem já aplicou</span>
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { name: "Ricardo M.", role: "Empreendedor, São Paulo", text: "Em 2 semanas já tinha meu primeiro SaaS rodando. Coisa que eu orçava R$15.000 com dev, fiz sozinho seguindo o treinamento." },
-              { name: "Camila S.", role: "Gestora de Marketing, BH", text: "Automatizei toda a geração de relatórios da minha equipe. Economizo 12 horas por semana agora. O investimento se pagou no primeiro dia." },
-              { name: "Fernando L.", role: "Freelancer, Curitiba", text: "Comecei a oferecer automações com IA pros meus clientes. Meu ticket médio triplicou. Cobro R$5.000 por projetos que monto em 3 horas." },
-              { name: "Ana Paula R.", role: "Advogada, Rio de Janeiro", text: "Zero conhecimento técnico. Hoje tenho um sistema que analisa contratos e gera pareceres automaticamente. Meus colegas não acreditam." },
-              { name: "Marcos T.", role: "Consultor, Florianópolis", text: "O módulo de agentes mudou meu negócio. Tenho um assistente que faz pesquisa de mercado, monta apresentações e responde clientes." },
-              { name: "Juliana K.", role: "Professora, Porto Alegre", text: "Achei que IA era coisa de programador. O treinamento me provou errada. Já criei 3 ferramentas pro meu trabalho sem escrever código." },
+              { name: "Thiago R.", role: "Dono de agência, SP", text: "Montei um sistema de geração de propostas automáticas. O que levava 2 dias agora sai em 10 minutos. Meus clientes acham que contratei mais gente." },
+              { name: "Beatriz F.", role: "Analista financeira, RJ", text: "Criei um dashboard que puxa dados de 3 fontes e gera relatório executivo sozinho. Meu chefe perguntou qual ferramenta eu comprei." },
+              { name: "Lucas P.", role: "Designer freelancer, MG", text: "Adicionei automação com IA no meu serviço. Agora entrego landing pages completas em 1 dia. Dobrei meu preço e ninguém reclamou." },
+              { name: "Mariana C.", role: "Psicóloga, PR", text: "Nunca programei na vida. Construí um app de acompanhamento de pacientes em 4 dias. Parece mentira mas está funcionando." },
+              { name: "Roberto S.", role: "Gerente comercial, SC", text: "Automatizei o follow-up de leads e a qualificação inicial. Minha equipe foca só nos quentes agora. Conversão subiu 40%." },
+              { name: "Patrícia L.", role: "Professora universitária, BA", text: "Criei uma ferramenta que corrige trabalhos e dá feedback personalizado. Economizo 15 horas por semana. Deveria ter feito antes." },
             ].map((t) => (
               <div
                 key={t.name}
@@ -325,11 +325,11 @@ export default function LandingPage() {
             GARANTIA INCONDICIONAL
           </div>
           <h2 className="text-2xl md:text-3xl font-black mb-4">
-            Você tem 7 dias para testar tudo sem nenhum risco.
+            Teste por 7 dias. Se não servir, devolvemos tudo.
           </h2>
           <p className="mb-6" style={{ color: "var(--text-sec)" }}>
-            Se por qualquer motivo você sentir que o treinamento não é pra você,
-            basta enviar um email e devolvemos 100% do seu investimento. Sem perguntas, sem burocracia.
+            Acesse o treinamento completo, aplique no seu dia a dia, e se em 7 dias
+            você sentir que não valeu — pede reembolso e pronto. Sem formulário, sem justificativa.
           </p>
           <div className="grid grid-cols-2 gap-3 text-sm" style={{ color: "var(--text-sec)" }}>
             {["Reembolso integral", "Sem burocracia", "Sem perguntas", "Resposta em até 24h"].map((item) => (
@@ -346,11 +346,11 @@ export default function LandingPage() {
         <div className="max-w-[500px] mx-auto reveal">
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-black mb-3" style={{ letterSpacing: "-0.03em" }}>
-              O Claude completo. Em português. <span className="text-gradient-accent">De uma vez.</span>
+              Tudo isso por menos que <span className="text-gradient-accent">um almoço de negócios.</span>
             </h2>
             <p className="text-sm" style={{ color: "var(--text-sec)" }}>
-              Por menos do que você paga num jantar, você acessa um sistema completo
-              que pode mudar a forma como você trabalha para sempre.
+              Um investimento único que se paga no primeiro projeto que você criar.
+              Sem mensalidade, sem surpresas.
             </p>
           </div>
 
@@ -377,14 +377,14 @@ export default function LandingPage() {
               <div className="border-t pt-6 mb-6" style={{ borderColor: "var(--border)" }}>
                 <div className="space-y-3 text-sm">
                   {[
-                    "Módulo 1: Claude Code na Prática",
-                    "Módulo 2: Prompts Profissionais",
-                    "Módulo 3: Automação de Workflows",
-                    "Módulo 4: Agentes de IA",
-                    "Acesso vitalício a atualizações",
-                    "Comunidade exclusiva de alunos",
-                    "Suporte direto por email",
-                    "Templates e prompts prontos",
+                    "Módulo 1: Criação de Aplicações",
+                    "Módulo 2: Comunicação com IA",
+                    "Módulo 3: Automação Inteligente",
+                    "Módulo 4: Agentes Autônomos",
+                    "Acesso vitalício ao conteúdo",
+                    "Comunidade privada de alunos",
+                    "Suporte por email",
+                    "Templates e prompts prontos pra usar",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3">
                       <span style={{ color: "var(--accent)" }}>✓</span>
@@ -392,8 +392,8 @@ export default function LandingPage() {
                     </div>
                   ))}
                   {[
-                    "BÔNUS: Pack de 50+ prompts avançados",
-                    "BÔNUS: Atualizações gratuitas por 1 ano",
+                    "BÔNUS: Biblioteca com 50+ prompts testados",
+                    "BÔNUS: Todas as atualizações futuras grátis",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3">
                       <span style={{ color: "var(--gold)" }}>★</span>
@@ -423,12 +423,12 @@ export default function LandingPage() {
           <h2 className="text-3xl font-black mb-10 text-center">Perguntas Frequentes</h2>
           <div className="space-y-4">
             {[
-              { q: "Preciso saber programar?", a: "Não. O treinamento foi feito para quem não tem nenhum conhecimento técnico. Você vai aprender tudo do zero, passo a passo." },
-              { q: "Funciona no meu computador?", a: "Sim. O Claude funciona em qualquer computador com internet — Windows, Mac ou Linux. Não precisa de máquina potente." },
-              { q: "Quanto tempo leva pra ver resultados?", a: "Alunos relatam criar seu primeiro projeto funcional em 1-2 semanas. Alguns em poucos dias. Depende da sua dedicação." },
-              { q: "O acesso é vitalício?", a: "Sim. Você paga uma vez e tem acesso para sempre, incluindo todas as atualizações futuras." },
-              { q: "E se eu não gostar?", a: "Você tem 7 dias de garantia incondicional. Se não gostar por qualquer motivo, devolvemos 100% do valor. Sem perguntas." },
-              { q: "Tem suporte?", a: "Sim. Você tem acesso à comunidade de alunos e suporte direto por email para tirar dúvidas." },
+              { q: "Preciso saber programar?", a: "Zero. O treinamento parte do princípio que você nunca escreveu uma linha de código. Tudo é ensinado passo a passo, com exemplos práticos." },
+              { q: "Funciona em qualquer computador?", a: "Sim. Só precisa de internet e um navegador. Windows, Mac, Linux, Chromebook — tanto faz." },
+              { q: "Em quanto tempo vejo resultado?", a: "A maioria dos alunos cria seu primeiro projeto funcional entre 5 e 14 dias. Depende do tempo que você dedicar." },
+              { q: "O acesso expira?", a: "Não. Pagou uma vez, acessa pra sempre. Incluindo atualizações futuras quando sair conteúdo novo." },
+              { q: "E se não for pra mim?", a: "Sem problema. Tem 7 dias pra testar. Se não curtir, pede reembolso por email e devolvemos tudo. Sem atrito." },
+              { q: "Consigo tirar dúvidas?", a: "Sim. Tem a comunidade de alunos pra trocar experiências e suporte por email pra questões específicas." },
             ].map((faq, i) => (
               <details
                 key={i}
@@ -450,23 +450,22 @@ export default function LandingPage() {
       <section className="py-20 px-6">
         <div className="max-w-[800px] mx-auto text-center reveal">
           <h2 className="text-3xl md:text-4xl font-black mb-6" style={{ letterSpacing: "-0.03em" }}>
-            Quatro módulos. Um sistema.{" "}
-            <span className="text-gradient-accent">Acesso vitalício.</span>
+            Duas opções. <span className="text-gradient-accent">Uma decisão.</span>
           </h2>
 
           <div className="grid md:grid-cols-2 gap-6 mb-10 text-left">
             <div className="p-6 rounded-2xl border" style={{ background: "var(--surface)", borderColor: "rgba(74, 222, 128, 0.2)" }}>
-              <div className="font-bold mb-3" style={{ color: "#4ade80" }}>✓ Se você clicar agora:</div>
+              <div className="font-bold mb-3" style={{ color: "#4ade80" }}>✓ Você entra agora:</div>
               <p className="text-sm" style={{ color: "var(--text-sec)" }}>
-                Em 30 minutos o Claude já conhece o seu negócio. Em uma semana você tem seu primeiro projeto rodando.
-                Em um mês, você opera num nível que 95% das pessoas nem sabe que existe.
+                Amanhã já está com o Claude configurado pro seu negócio. Em uma semana, seu primeiro projeto no ar.
+                Em um mês, você é a pessoa que todo mundo pergunta &ldquo;como você fez isso?&rdquo;
               </p>
             </div>
             <div className="p-6 rounded-2xl border" style={{ background: "var(--surface)", borderColor: "rgba(248, 113, 113, 0.2)" }}>
-              <div className="font-bold mb-3" style={{ color: "#f87171" }}>✗ Se você fechar essa página:</div>
+              <div className="font-bold mb-3" style={{ color: "#f87171" }}>✗ Você deixa pra depois:</div>
               <p className="text-sm" style={{ color: "var(--text-sec)" }}>
-                Volta pra tentar sozinho, juntando fragmento por fragmento de vídeos aleatórios no YouTube.
-                Enquanto isso, quem agiu já está criando, vendendo e automatizando.
+                Continua tentando sozinho, montando pedaços de tutoriais desconexos.
+                Daqui 6 meses está no mesmo lugar, só que o preço subiu e a concorrência aprendeu primeiro.
               </p>
             </div>
           </div>
@@ -474,7 +473,7 @@ export default function LandingPage() {
           <CtaButton />
 
           <p className="mt-8 text-sm" style={{ color: "var(--muted)" }}>
-            O sistema está montado. O treinamento está pronto. Só falta você.
+            O método existe. O conteúdo está pronto. A única variável é você.
           </p>
         </div>
       </section>
