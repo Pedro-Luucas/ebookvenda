@@ -1,121 +1,122 @@
-export interface Product {
+import { createStaticClient } from "@/app/lib/supabase/static";
+import type { Product } from "@/app/types/product";
+import {
+  getStaticCatalog,
+  getStaticProductBySlug,
+  STATIC_CATALOG,
+} from "@/app/data/catalog";
+
+export type { Product };
+export { formatPrice } from "@/app/lib/format";
+
+const PRODUCT_COLUMNS =
+  "id, slug, title, description, long_description, price_cents, cover_image, author, pages, format, category, ebook_file";
+
+interface ProductRow {
   id: string;
-  title: string;
   slug: string;
+  title: string;
   description: string;
-  longDescription: string;
-  price: number; // em centavos
-  coverImage: string;
+  long_description: string;
+  price_cents: number;
+  cover_image: string;
   author: string;
   pages: number;
   format: string;
   category: string;
+  ebook_file: string;
 }
 
-export const products: Product[] = [
-  {
-    id: "1",
-    title: "Dominando Vendas: O Guia Completo",
-    slug: "dominando-vendas",
-    description:
-      "Aprenda as técnicas mais eficazes para fechar negócios e aumentar suas vendas exponencialmente.",
-    longDescription:
-      "Este ebook é o guia definitivo para quem deseja dominar a arte das vendas. Com mais de 200 páginas de conteúdo prático, você aprenderá desde técnicas de prospecção até estratégias avançadas de fechamento. Inclui estudos de caso reais, scripts de vendas testados e exercícios práticos para aplicar no seu dia a dia.",
-    price: 4990,
-    coverImage: "/covers/dominando-vendas.svg",
-    author: "Carlos Mendes",
-    pages: 220,
-    format: "PDF + EPUB",
-    category: "Vendas",
-  },
-  {
-    id: "2",
-    title: "Persuasão e Influência em Vendas",
-    slug: "persuasao-influencia",
-    description:
-      "Descubra os gatilhos mentais e técnicas de persuasão que os melhores vendedores utilizam.",
-    longDescription:
-      "Baseado em anos de pesquisa em psicologia comportamental, este ebook revela os segredos da persuasão aplicada às vendas. Aprenda a usar gatilhos mentais como escassez, autoridade e prova social para influenciar decisões de compra de forma ética e eficaz.",
-    price: 3990,
-    coverImage: "/covers/persuasao-influencia.svg",
-    author: "Ana Beatriz Silva",
-    pages: 180,
-    format: "PDF + EPUB",
-    category: "Persuasão",
-  },
-  {
-    id: "3",
-    title: "Vendas B2B: Estratégias para Grandes Negócios",
-    slug: "vendas-b2b",
-    description:
-      "Estratégias comprovadas para vendas corporativas e negociações de alto valor.",
-    longDescription:
-      "Se você trabalha com vendas B2B, este ebook é indispensável. Aprenda a navegar ciclos de venda longos, lidar com múltiplos decisores e construir propostas de valor irresistíveis para empresas. Inclui templates de apresentação e modelos de proposta comercial.",
-    price: 5990,
-    coverImage: "/covers/vendas-b2b.svg",
-    author: "Roberto Almeida",
-    pages: 250,
-    format: "PDF + EPUB",
-    category: "B2B",
-  },
-  {
-    id: "4",
-    title: "Cold Calling que Funciona",
-    slug: "cold-calling",
-    description:
-      "Transforme ligações frias em oportunidades quentes com scripts e técnicas testadas.",
-    longDescription:
-      "Pare de ter medo do telefone! Este ebook traz um método passo a passo para fazer cold calls eficazes. Com scripts prontos para usar, técnicas para passar pela secretária, e estratégias para agendar reuniões com decisores. Acompanha áudios de exemplo de ligações reais.",
-    price: 2990,
-    coverImage: "/covers/cold-calling.svg",
-    author: "Marcos Oliveira",
-    pages: 150,
-    format: "PDF + EPUB",
-    category: "Prospecção",
-  },
-  {
-    id: "5",
-    title: "Funil de Vendas Digital",
-    slug: "funil-vendas-digital",
-    description:
-      "Construa funis de vendas automatizados que convertem visitantes em clientes 24/7.",
-    longDescription:
-      "Aprenda a criar funis de vendas digitais completos, desde a captura de leads até o pós-venda. Este ebook cobre landing pages, email marketing, automação, remarketing e métricas essenciais. Ideal para quem quer escalar vendas usando o poder do marketing digital.",
-    price: 4490,
-    coverImage: "/covers/funil-vendas.svg",
-    author: "Juliana Costa",
-    pages: 200,
-    format: "PDF + EPUB",
-    category: "Marketing Digital",
-  },
-  {
-    id: "6",
-    title: "Negociação de Alto Impacto",
-    slug: "negociacao-alto-impacto",
-    description:
-      "Domine a arte da negociação e nunca mais perca um negócio por preço.",
-    longDescription:
-      "A negociação é uma habilidade fundamental para qualquer vendedor. Neste ebook, você aprenderá técnicas avançadas de negociação usadas em Harvard, adaptadas para o mercado brasileiro. Descubra como criar valor, lidar com objeções e chegar ao sim sem sacrificar sua margem.",
-    price: 3490,
-    coverImage: "/covers/negociacao.svg",
-    author: "Fernando Santos",
-    pages: 170,
-    format: "PDF + EPUB",
-    category: "Negociação",
-  },
-];
-
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find((p) => p.slug === slug);
+function toProduct(row: ProductRow): Product {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    description: row.description,
+    longDescription: row.long_description,
+    price: row.price_cents,
+    coverImage: row.cover_image,
+    author: row.author,
+    pages: row.pages,
+    format: row.format,
+    category: row.category,
+    ebookFile: row.ebook_file,
+  };
 }
 
-export function getProductById(id: string): Product | undefined {
-  return products.find((p) => p.id === id);
+/**
+ * Tenta ler do Supabase e retorna o fallback estático ao menor problema
+ * (rede offline, DNS, RLS inesperada, etc.). Garantimos que landing pages
+ * sempre renderizam, mesmo sem banco.
+ */
+export async function getAllProducts(): Promise<Product[]> {
+  try {
+    const supabase = createStaticClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select(PRODUCT_COLUMNS)
+      .eq("active", true)
+      .order("created_at", { ascending: true });
+
+    if (error || !data || data.length === 0) {
+      if (error) console.warn("[products] fallback estático:", error.message);
+      return getStaticCatalog();
+    }
+    return data.map(toProduct);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn("[products] fallback estático (exception):", message);
+    return getStaticCatalog();
+  }
 }
 
-export function formatPrice(priceInCents: number): string {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(priceInCents / 100);
+export async function getProductBySlug(
+  slug: string
+): Promise<Product | undefined> {
+  try {
+    const supabase = createStaticClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select(PRODUCT_COLUMNS)
+      .eq("slug", slug)
+      .eq("active", true)
+      .maybeSingle();
+
+    if (error || !data) {
+      if (error) console.warn("[products:slug] fallback estático:", error.message);
+      return getStaticProductBySlug(slug);
+    }
+    return toProduct(data);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn("[products:slug] fallback estático (exception):", message);
+    return getStaticProductBySlug(slug);
+  }
+}
+
+export async function getProductById(
+  id: string
+): Promise<Product | undefined> {
+  try {
+    const supabase = createStaticClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select(PRODUCT_COLUMNS)
+      .eq("id", id)
+      .eq("active", true)
+      .maybeSingle();
+
+    if (error || !data) {
+      if (error) console.warn("[products:id] fallback estático:", error.message);
+      return STATIC_CATALOG.find((p) => p.id === id)
+        ? { ...STATIC_CATALOG.find((p) => p.id === id)! }
+        : undefined;
+    }
+    return toProduct(data);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn("[products:id] fallback estático (exception):", message);
+    const match = STATIC_CATALOG.find((p) => p.id === id);
+    return match ? { ...match } : undefined;
+  }
 }

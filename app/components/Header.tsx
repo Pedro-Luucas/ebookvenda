@@ -1,62 +1,99 @@
-"use client";
-
 import Link from "next/link";
-import { useCart } from "@/app/context/CartContext";
+import { createClient } from "@/app/lib/supabase/server";
+import CartButton from "./CartButton";
+import UserMenu from "./UserMenu";
+import ThemeToggle from "./ThemeToggle";
 
-export default function Header() {
-  const { totalItems, setIsCartOpen } = useCart();
+export default async function Header() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let fullName = "";
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name")
+      .eq("id", user.id)
+      .maybeSingle();
+    fullName = profile?.full_name ?? "";
+  }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/80 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/80">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl">📚</span>
-          <span className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
-            Vendas que funcionam.
+    <header
+      className="sticky top-0 z-40 backdrop-blur-md"
+      style={{
+        background: "color-mix(in srgb, var(--background) 85%, transparent)",
+        borderBottom: "1px solid var(--border)",
+      }}
+    >
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2.5">
+          <div
+            className="flex h-7 w-7 items-center justify-center rounded-lg"
+            style={{ background: "var(--accent)" }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 3h4v10L3 11V3z" fill="white" opacity="0.95" />
+              <path d="M9 3h4v9l-4 1V3z" fill="white" opacity="0.6" />
+              <circle cx="13" cy="3.5" r="1.5" fill="white" opacity="0.9" />
+            </svg>
+          </div>
+          <span className="text-sm font-semibold tracking-tight" style={{ color: "var(--foreground)" }}>
+            CodeFlow<span style={{ color: "var(--accent)" }}> Ebooks</span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 sm:flex">
-          <Link
-            href="/"
-            className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
-          >
-            Ebooks
-          </Link>
-          <Link
-            href="/carrinho"
-            className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
-          >
-            Carrinho
-          </Link>
+        {/* Nav */}
+        <nav className="hidden items-center gap-5 sm:flex">
+          {[
+            { href: "/", label: "Catálogo" },
+            { href: "/#assinatura", label: "Planos" },
+            ...(user
+              ? [
+                  { href: "/conta/ebooks", label: "Meus Ebooks" },
+                  { href: "/conta/pedidos", label: "Pedidos" },
+                ]
+              : []),
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="text-sm transition-colors hover:opacity-100"
+              style={{ color: "var(--muted)" }}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
 
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className="relative rounded-full bg-zinc-100 p-2.5 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
-          aria-label="Abrir carrinho"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="8" cy="21" r="1" />
-            <circle cx="19" cy="21" r="1" />
-            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-          </svg>
-          {totalItems > 0 && (
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white">
-              {totalItems}
-            </span>
+        {/* Actions */}
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <CartButton />
+          {user ? (
+            <UserMenu email={user.email ?? ""} fullName={fullName} />
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/login"
+                className="hidden text-sm transition-colors sm:inline"
+                style={{ color: "var(--muted)" }}
+              >
+                Entrar
+              </Link>
+              <Link
+                href="/cadastro"
+                className="rounded-lg px-3.5 py-1.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+                style={{ background: "var(--accent)" }}
+              >
+                Começar
+              </Link>
+            </div>
           )}
-        </button>
+        </div>
       </div>
     </header>
   );

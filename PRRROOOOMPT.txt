@@ -1,0 +1,234 @@
+ Você é um escritor técnico especializado em tecnologia acessível. Sua tarefa é criar um ebook completo em português
+  brasileiro sobre como usar o Claude Code para criar automações pessoais de produtividade, integrando ferramentas do 
+  dia a dia via MCP. O leitor sabe usar o Claude Code e instalar MCPs, mas não sabe programar e é leigo em automação.
+
+  REGRA ABSOLUTA: Nunca use o caractere "—" (travessão) em nenhuma parte do texto. Use vírgula, ponto e vírgula, dois 
+  pontos ou reescreva a frase.
+
+  Pesquisa obrigatória antes de escrever
+
+  Pesquise ativamente as seguintes fontes:
+
+  - docs.anthropic.com/claude-code
+  - modelcontextprotocol.io (documentação oficial do MCP)
+  - Perfis no Twitter/X: @bcherny, @0xCVYH, @jeffecom, @karpathy, @elder_plinius, @alexalbert__, @AnthropicAI
+  - Busque por "Claude Code MCP automation", "MCP Google Calendar", "MCP Telegram bot", "MCP Gmail", "MCP Notion",    
+  "MCP Google Sheets", "personal automation AI"
+  - Comunidades: r/ClaudeAI, r/productivity, r/selfhosted, IndieHackers
+  - Repositórios GitHub com servidores MCP para as ferramentas cobertas
+
+  Filtro obrigatório: Ignore ferramentas pagas, anúncios e afiliados. Extraia apenas insights genuínos e práticos.    
+  Integre o conhecimento no texto de forma natural, sem citar fontes explicitamente.
+
+  Sobre o ebook
+
+  Título: Claude Code no Piloto Automático: Automatize Sua Vida com IA e MCP
+
+  Objetivo declarado no ebook: Este ebook ensina como usar o Claude Code, junto com servidores MCP, para criar        
+  automações pessoais de produtividade que integram as ferramentas do dia a dia: Telegram, Google Calendar, Gmail,    
+  Google Sheets e Notion. O leitor não precisa saber programar. Toda automação é criada pelo Claude Code via MCP, sem 
+  scripts manuais sempre que possível. O ebook cobre automações que rodam no computador local e automações que rodam  
+  na nuvem de forma gratuita. O foco é produtividade pessoal, não automação de negócios.
+
+  Sobre WhatsApp: O ebook menciona no início que a integração com WhatsApp exige a API oficial do WhatsApp Business,  
+  que tem custo. Por isso, o Telegram é usado como canal de mensagens principal neste ebook, por ser gratuito, ter API
+   aberta e ser ideal para bots pessoais.
+
+  Público-alvo: Pessoas que sabem usar o Claude Code e instalar MCPs, não sabem programar, e querem automatizar       
+  tarefas repetitivas do dia a dia sem depender de ferramentas pagas como Zapier ou Make.
+
+  Tom: Direto, acessível, prático. Sem jargão técnico desnecessário. Quando um termo técnico for inevitável, explique 
+  imediatamente em linguagem simples. Sem ser motivacional. Apenas claro e útil.
+
+  Extensão: Entre 40 e 55 páginas, proporcional à complexidade de cada capítulo.
+
+  Formato: Ebook completo com texto corrido, capítulos bem desenvolvidos, subtítulos, listas onde couber e blocos de  
+  código para instruções exatas ao Claude Code.
+
+  Ferramentas cobertas e seus MCPs
+
+  - Telegram: bot pessoal para acionar automações e receber notificações
+  - Google Calendar: ler eventos, criar eventos, gerar resumos de agenda
+  - Gmail: ler emails, classificar, rascunhar respostas, gerar resumos
+  - Google Sheets: ler e escrever dados, gerar relatórios pessoais
+  - Notion: criar páginas, atualizar bases de dados, registrar informações
+
+  Para cada ferramenta, o ebook deve indicar o servidor MCP recomendado, como configurá-lo no Claude Code e como      
+  usá-lo na prática.
+
+  Formas de acionar automações cobertas no ebook
+
+  1. Via terminal: rodar o Claude Code manualmente com uma instrução
+  2. Via bot do Telegram: enviar uma mensagem ao bot pessoal que aciona o Claude Code
+  3. Via agendamento: automação que roda sozinha em horário fixo, sem intervenção
+
+  Estrutura obrigatória
+
+  ---
+  Introdução (300 a 400 palavras)
+
+  - O que são automações pessoais e por que elas importam
+  - Por que o Claude Code com MCP é diferente de Zapier ou Make: o agente entende contexto, não só conecta campos     
+  - O que o leitor vai ser capaz de fazer ao final do ebook
+  - Nota sobre WhatsApp: por que o ebook usa Telegram no lugar
+  - Pré-requisitos: Claude Code instalado, saber instalar MCPs
+
+  ---
+  Capítulo 1: Como pensar em automações antes de criar (500 a 600 palavras)
+
+  - O que é uma automação em linguagem simples: uma tarefa que acontece sozinha
+  - Os três tipos de automação cobertos: manual via terminal, acionada pelo Telegram, agendada
+  - Como identificar o que vale a pena automatizar na própria rotina
+  - O conceito de gatilho e ação: o que dispara a automação e o que ela faz
+  - Como descrever uma automação ao Claude Code de forma que ele entenda
+  - Os erros mais comuns de quem automatiza sem planejar: o que acontece quando a automação não está bem definida     
+
+  ---
+  Capítulo 2: Configurando o ambiente de automações (500 a 600 palavras)
+
+  - Como organizar os MCPs no arquivo .mcp.json para este projeto
+  - Como verificar se cada MCP está funcionando antes de criar automações
+  - O conceito de credenciais: o que são tokens e chaves de API, explicado sem jargão
+  - Como cada ferramenta exige autenticação e onde encontrar as credenciais de cada uma
+  - Como estruturar o CLAUDE.md para um projeto de automações pessoais
+  - Exemplo completo de CLAUDE.md para este projeto, em bloco de código
+
+  ---
+  Capítulo 3: Telegram, seu painel de controle pessoal (600 a 700 palavras)
+
+  - O que é o bot do Telegram e por que ele é o centro das automações deste ebook
+  - Como criar um bot no Telegram do zero: passo a passo com BotFather
+  - Como instalar e configurar o MCP do Telegram no Claude Code
+  - Como usar o Claude Code para enviar mensagens via Telegram
+  - Como configurar o bot para receber mensagens e acionar o Claude Code
+  - Exemplo concreto: bot que recebe o comando "resumo do dia" e responde com os eventos do Google Calendar do dia    
+  atual
+  - Como testar se o bot está funcionando corretamente
+
+  ---
+  Capítulo 4: Google Calendar, sua agenda inteligente (600 a 700 palavras)
+
+  - Como instalar e configurar o MCP do Google Calendar
+  - O que o Claude Code consegue fazer com o Google Calendar: ler, criar, editar e resumir eventos
+  - Como dar permissão ao MCP para acessar sua conta Google
+  - Exemplo concreto: automação agendada que toda manhã às 7h lê os eventos do dia e manda um resumo formatado no     
+  Telegram
+  - Como pedir ao Claude Code para criar eventos com linguagem natural
+  - Como combinar Google Calendar com outras ferramentas: criar um evento a partir de um email recebido no Gmail      
+
+  ---
+  Capítulo 5: Gmail, sua caixa de entrada sob controle (700 a 800 palavras)
+
+  - Como instalar e configurar o MCP do Gmail
+  - O que o Claude Code consegue fazer com o Gmail: ler, classificar, resumir e rascunhar respostas
+  - Como dar permissão ao MCP para acessar sua conta Gmail
+  - Exemplo concreto: automação que lê os emails não lidos, classifica por prioridade e manda um resumo no Telegram   
+  - Exemplo concreto: pedir ao Claude Code para rascunhar uma resposta para um email específico
+  - Como criar filtros inteligentes com linguagem natural via Claude Code
+  - Cuidados ao dar acesso ao Gmail: o que o MCP pode e não pode fazer
+
+  ---
+  Capítulo 6: Google Sheets, seu banco de dados pessoal (600 a 700 palavras)
+
+  - Como instalar e configurar o MCP do Google Sheets
+  - O que o Claude Code consegue fazer com o Google Sheets: ler, escrever, calcular e gerar relatórios
+  - Exemplo concreto: automação que registra automaticamente os gastos do dia em uma planilha a partir de uma mensagem
+   enviada no Telegram
+  - Exemplo concreto: automação semanal que lê a planilha de gastos e manda um resumo financeiro pessoal no Telegram  
+  - Como usar o Google Sheets como banco de dados simples para outras automações
+  - Como combinar Google Sheets com Google Calendar: registrar eventos concluídos na planilha automaticamente
+
+  ---
+  Capítulo 7: Notion, seu segundo cérebro (600 a 700 palavras)
+
+  - Como instalar e configurar o MCP do Notion
+  - O que o Claude Code consegue fazer com o Notion: criar páginas, atualizar bases de dados, registrar informações   
+  - Como dar permissão ao MCP para acessar seu workspace do Notion
+  - Exemplo concreto: automação que recebe uma ideia enviada pelo Telegram e cria automaticamente uma página no Notion
+   com título, data e conteúdo formatado
+  - Exemplo concreto: automação que lê os itens de uma base de dados do Notion e manda um resumo das tarefas pendentes
+   no Telegram
+  - Como usar o Notion como central de registro de todas as automações
+
+  ---
+  Capítulo 8: Combinando ferramentas em automações completas (700 a 800 palavras)
+
+  - Como o Claude Code orquestra múltiplos MCPs em uma única automação
+  - Exemplo concreto completo: rotina matinal automática que roda todo dia às 7h, lê os eventos do Google Calendar,   
+  verifica os emails não lidos no Gmail, consulta as tarefas pendentes no Notion e manda tudo formatado em uma única  
+  mensagem no Telegram
+  - Exemplo concreto completo: automação acionada pelo Telegram que recebe uma nota de voz ou texto, extrai as        
+  informações, cria um evento no Google Calendar, registra no Notion e confirma no Telegram
+  - Como construir essas automações passo a passo com o Claude Code
+  - Como testar automações complexas antes de deixar rodando sozinhas
+
+  ---
+  Capítulo 9: Rodando automações na nuvem (600 a 700 palavras)
+
+  - Por que algumas automações precisam rodar na nuvem: o computador nem sempre está ligado
+  - A plataforma recomendada: Railway, por ser gratuita, simples e não exigir cartão de crédito no plano básico       
+  - Como criar uma conta no Railway
+  - Como pedir ao Claude Code para preparar a automação para rodar no Railway
+  - Como fazer o deploy da automação no Railway via GitHub
+  - Como configurar as credenciais e variáveis de ambiente no Railway sem expô-las
+  - Como monitorar se a automação está rodando corretamente
+  - Quando faz sentido manter local e quando vale subir para a nuvem
+
+  ---
+  Capítulo 10: Automações prontas para usar (700 a 800 palavras)
+
+  Uma coleção de automações prontas, com a instrução exata para pedir ao Claude Code em bloco de código para cada uma:
+
+  - Resumo diário da agenda no Telegram (Google Calendar)
+  - Resumo dos emails não lidos com classificação de prioridade (Gmail)
+  - Registro de gastos por mensagem no Telegram (Google Sheets)
+  - Captura de ideias pelo Telegram direto no Notion
+  - Relatório semanal de produtividade combinando Calendar, Sheets e Notion
+  - Lembrete de tarefas pendentes do Notion toda manhã
+  - Criação de evento no Calendar por mensagem no Telegram
+  - Resumo semanal de emails importantes
+
+  Para cada automação: o que ela faz, quais MCPs usa, e a instrução exata ao Claude Code.
+
+  ---
+  Capítulo 11: Quando algo der errado (400 a 500 palavras)
+
+  - Os erros mais comuns em automações com MCP
+  - Como descrever um erro ao Claude Code de forma que ele consiga corrigir
+  - O que fazer quando um MCP perde a autenticação
+  - Como testar uma automação isoladamente antes de combinar com outras
+  - Como desativar uma automação que está se comportando de forma inesperada
+
+  ---
+  Conclusão (300 a 400 palavras)
+
+  - O que o leitor agora é capaz de fazer
+  - Como pensar nas próximas automações a partir do que aprendeu
+  - Como o ecossistema de MCPs está crescendo: novas integrações surgem toda semana
+  - O próximo passo natural: combinar automações em rotinas completas
+
+  ---
+  Regras de escrita
+
+  1. Nunca use "—" (travessão). Substitua por vírgula, dois pontos, ponto e vírgula ou reescreva.
+  2. Escreva em português brasileiro correto e natural.
+  3. Termos em inglês sem boa tradução podem ser usados, mas explique na primeira ocorrência.
+  4. Não use linguagem motivacional. Seja direto e prático.
+  5. Não use palavras como "incrível", "revolucionário", "poderoso". Mostre os fatos.
+  6. Cada capítulo deve ter subtítulos internos.
+  7. Use blocos de código apenas para instruções exatas ao Claude Code.
+  8. Não resuma. Escreva o texto completo conforme os limites de palavras indicados.
+  9. O ebook deve fluir como um livro, não como uma lista de tópicos.
+  10. Incorpore os insights das fontes pesquisadas de forma natural, sem citar explicitamente.
+  11. Sempre que o leitor precisar dar uma instrução ao Claude Code, mostre a instrução exata em bloco de código.     
+  12. Os exemplos concretos são o coração do ebook. Cada um deve ser detalhado o suficiente para o leitor entender    
+  exatamente o que acontece, passo a passo, sem precisar adivinhar nada.
+  13. O capítulo 10 deve ser tratado como um guia de referência rápida: direto, sem texto desnecessário, focado nas   
+  instruções.
+
+  ---
+  Escreva o ebook completo agora, começando pela introdução e seguindo a ordem dos capítulos. Não pare para pedir     
+  confirmações. Escreva tudo de uma vez.
+
+
+PRIMEIRAMENTE olhe os outros ebooks em ebooks/claude e a pasta ebooks, nao use powershell para escrever os arquivos de jeito nenhum pq buga tudo. no final verifique RAPIDAMENTE se escreveu todos os capitulos, nao palavra por palavra

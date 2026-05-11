@@ -1,0 +1,230 @@
+Você é um escritor técnico especializado em ferramentas de desenvolvimento e automação. Sua tarefa é criar um ebook completo em português brasileiro sobre Claude Code avançado. O leitor é um desenvolvedor experiente que já usa Claude Code no dia a dia e quer dominar os recursos avançados da ferramenta.
+
+REGRA ABSOLUTA: Nunca use o caractere "—" (travessão) em nenhuma parte do texto. Use vírgula, ponto e vírgula, dois pontos ou reescreva a frase.
+
+Sobre o ebook
+
+Título: Claude Code Avançado: Automação, Agentes e Controle Total
+
+Objetivo declarado no ebook: Este ebook é um guia técnico e prático para desenvolvedores que já dominam o uso básico do Claude Code e querem ir além: automatizar fluxos de trabalho com hooks, criar servidores MCP customizados, orquestrar múltiplos agentes, integrar o Claude Code em pipelines de CI/CD, usar o SDK programaticamente e configurar o ambiente com precisão cirúrgica. O foco é produtividade real em projetos reais.
+
+Público-alvo: Desenvolvedores que sabem programar, já usam Claude Code, e querem dominar os recursos avançados para automatizar, escalar e integrar a ferramenta em seus fluxos de trabalho profissionais.
+
+Tom: Técnico, direto e denso. Sem explicações básicas. O leitor sabe o que é um hook, sabe o que é CI/CD, sabe o que é TypeScript. Escreva como se estivesse documentando para um colega sênior. Mostre código real, configurações reais, casos de uso reais.
+
+Extensão: Entre 45 e 60 páginas, proporcional à complexidade técnica de cada capítulo.
+
+Formato: Ebook completo com texto corrido, capítulos bem desenvolvidos, subtítulos, blocos de código extensos e precisos, tabelas de referência onde couber.
+
+Stack e ferramentas abordadas
+
+- Claude Code CLI (@anthropic-ai/claude-code)
+- Anthropic SDK (@anthropic-ai/sdk) para uso programático
+- MCP SDK (@modelcontextprotocol/sdk) para servidores customizados
+- GitHub Actions com claude-code-action
+- Git worktrees para isolamento de agentes
+- settings.json / settings.local.json / .mcp.json
+- Hooks: PreToolUse, PostToolUse, Stop, Notification
+- Custom slash commands em .claude/commands/
+- CLAUDE.md hierárquico para monorepos
+
+Estrutura obrigatória
+
+---
+Introdução (300 a 400 palavras)
+
+- O que separa o uso básico do uso avançado do Claude Code
+- O que o leitor vai dominar ao final deste ebook
+- Pré-requisito: uso fluente do Claude Code, conhecimento de TypeScript/Node.js
+- Como este ebook está organizado
+
+---
+Capítulo 1: Arquitetura interna do Claude Code (500 a 600 palavras)
+
+- Como o Claude Code funciona por dentro: o loop agente-ferramenta
+- A diferença entre o modelo, o harness e as ferramentas
+- Como o Claude Code decide quando usar uma ferramenta
+- O ciclo de vida de uma sessão: inicialização, leitura do CLAUDE.md, execução, compactação de contexto
+- Como o contexto é gerenciado e quando é compactado automaticamente
+- Por que entender a arquitetura muda a forma de escrever prompts e configurações
+- O papel do settings.json na arquitetura: o que o harness lê e quando
+
+---
+Capítulo 2: Configuração avançada com settings.json (600 a 700 palavras)
+
+- Hierarquia de configurações: global (~/.claude/settings.json), projeto (.claude/settings.json) e local (.claude/settings.local.json)
+- Quando usar cada nível e o que nunca commitar
+- Sistema de permissões granulares: allow e deny com glob patterns
+- Padrões de permissão para diferentes contextos: desenvolvimento, CI/CD, produção
+- Variáveis de ambiente injetadas via settings.json
+- Configuração de modelo por projeto
+- Referência completa dos campos disponíveis com exemplos
+- Blocos de código com configurações reais para projetos TypeScript, monorepos e pipelines
+
+---
+Capítulo 3: Hooks: automação no nível do harness (700 a 800 palavras)
+
+- O que são hooks e por que eles rodam fora do modelo
+- Os quatro tipos de hook: PreToolUse, PostToolUse, Stop, Notification
+- Como configurar hooks no settings.json: estrutura, matcher, command
+- Variáveis de ambiente disponíveis nos hooks ($CLAUDE_TOOL_NAME, $CLAUDE_TOOL_INPUT_FILE_PATH, etc.)
+- Como usar exit codes para bloquear execução no PreToolUse
+- Casos de uso avançados com código completo:
+  - Rodar prettier/eslint automaticamente após cada edição de arquivo
+  - Bloquear comandos destrutivos (rm -rf, DROP TABLE, git push --force)
+  - Enviar notificação no celular via ntfy.sh quando a tarefa termina
+  - Logar todas as ferramentas usadas para auditoria
+  - Rodar testes automaticamente após edições em arquivos de teste
+  - Injetar secrets em tempo de execução sem expô-los no CLAUDE.md
+- Debugging de hooks: como testar e inspecionar o que está sendo executado
+- Blocos de código com hooks completos e prontos para uso
+
+---
+Capítulo 4: Custom slash commands (500 a 600 palavras)
+
+- O que são slash commands customizados e como o Claude Code os carrega
+- Estrutura de arquivos: .claude/commands/ (projeto) e ~/.claude/commands/ (global)
+- Frontmatter disponível: description, e outros campos
+- Como usar $ARGUMENTS para comandos parametrizados
+- Diferença entre commands de projeto e commands globais
+- Casos de uso práticos com arquivos completos:
+  - /review: code review completo das mudanças staged
+  - /pr: criar pull request com descrição gerada automaticamente
+  - /migrate: criar e aplicar migration de banco de dados
+  - /component [nome]: criar componente React seguindo convenções do projeto
+  - /debug [erro]: diagnóstico sistemático de um erro específico
+- Como organizar uma biblioteca de commands para um time
+- Blocos de código com os arquivos .md completos de cada command
+
+---
+Capítulo 5: MCP: conectando o Claude Code ao mundo real (800 a 900 palavras)
+
+- O que é o Model Context Protocol e por que ele existe
+- Diferença entre ferramentas nativas do Claude Code e ferramentas MCP
+- Configuração do .mcp.json: estrutura, campos, variáveis de ambiente
+- Servidores MCP oficiais e da comunidade mais úteis para desenvolvedores:
+  - filesystem, github, postgres, sqlite, puppeteer, stripe, supabase
+- Como criar um servidor MCP customizado do zero com @modelcontextprotocol/sdk:
+  - Estrutura básica de um servidor MCP em TypeScript
+  - Definindo ferramentas com inputSchema
+  - Implementando handlers de tools/list e tools/call
+  - Transportes disponíveis: stdio (local) e HTTP (remoto)
+  - Publicando e distribuindo um servidor MCP
+- Exemplo completo: servidor MCP que expõe uma API interna como ferramenta do Claude Code
+- Debugging de servidores MCP: logs, erros comuns e como inspecionar
+- Blocos de código com implementação completa em TypeScript
+
+---
+Capítulo 6: CLAUDE.md avançado para projetos grandes (600 a 700 palavras)
+
+- Por que um CLAUDE.md mal escrito degrada a qualidade do agente ao longo do tempo
+- CLAUDE.md hierárquico em monorepos: como o Claude Code carrega múltiplos arquivos
+- O que incluir e o que nunca incluir no CLAUDE.md
+- Técnicas para manter o CLAUDE.md enxuto sem perder contexto crítico
+- Como descrever invariantes e regras invioláveis de forma que o modelo respeite
+- Como documentar arquitetura complexa sem transformar o CLAUDE.md em um livro
+- Padrões para times: como versionar e manter o CLAUDE.md como documentação viva
+- Template avançado para monorepo com múltiplos serviços
+- Como usar @import para referenciar arquivos externos no CLAUDE.md
+- Blocos de código com exemplos reais de CLAUDE.md para projetos complexos
+
+---
+Capítulo 7: Modo headless e integração com CI/CD (700 a 800 palavras)
+
+- O que é o modo headless e quando usá-lo
+- Flags essenciais: --print, --no-interactive, --max-turns, --output-format, --dangerously-skip-permissions
+- Como passar input via stdin com --pipe
+- Estratégias de segurança para CI/CD: permissões mínimas, sandboxing, auditoria
+- GitHub Actions com claude-code-action: configuração completa
+- Casos de uso com workflows completos:
+  - Code review automático em pull requests (mencionar @claude em comentários)
+  - Auto-fix de erros de lint após push
+  - Geração automática de changelog a partir de commits
+  - Verificação de segurança em PRs com análise de diff
+  - Geração de documentação automática após merge
+- Como lidar com rate limits e custos em pipelines de CI/CD
+- Blocos de código com workflows completos do GitHub Actions
+
+---
+Capítulo 8: Orquestração de múltiplos agentes (700 a 800 palavras)
+
+- O padrão orquestrador-subagente: quando e por que usar
+- Como o Claude Code usa a ferramenta Task internamente para subagentes
+- Isolamento de contexto: por que subagentes com contexto separado produzem resultados melhores
+- Git worktrees para isolamento de agentes em paralelo: como configurar e usar
+- Padrões de orquestração via CLI com scripts shell
+- Padrões de orquestração via SDK com TypeScript
+- Casos de uso avançados com código completo:
+  - Agente de análise + agente de implementação + agente de testes em paralelo
+  - Pipeline de refatoração com agentes especializados por módulo
+  - Agente de revisão que valida o output de outro agente
+- Como agregar e reconciliar outputs de múltiplos agentes
+- Limitações e armadilhas da orquestração multi-agente
+- Blocos de código com implementações completas
+
+---
+Capítulo 9: Uso programático com o SDK (700 a 800 palavras)
+
+- Quando usar o SDK em vez do CLI
+- Instalação e configuração do @anthropic-ai/claude-code para uso programático
+- A função query(): interface simplificada para uso em scripts
+- O agentic loop completo com @anthropic-ai/sdk: implementação do zero
+- Como implementar ferramentas customizadas no loop agente
+- Streaming de output e como processar eventos em tempo real
+- Gerenciamento de estado entre turnos: como passar contexto entre chamadas
+- Casos de uso com código completo:
+  - Script de análise de codebase que gera relatório estruturado
+  - Ferramenta de migração automática de código legado
+  - Bot de Slack que usa Claude Code para responder perguntas sobre o repositório
+  - Pipeline de geração de testes para código sem cobertura
+- Como lidar com erros, timeouts e retries no SDK
+- Blocos de código com implementações completas em TypeScript
+
+---
+Capítulo 10: Segurança, custos e operação em produção (500 a 600 palavras)
+
+- Modelo de ameaças do Claude Code: o que pode dar errado e como mitigar
+- Prompt injection via arquivos externos: como o Claude Code se protege e como você deve se proteger
+- Configuração de permissões mínimas para diferentes contextos de uso
+- Como auditar o que o Claude Code fez em uma sessão
+- Estratégias para controlar custos: max-turns, compactação de contexto, escolha de modelo
+- Como monitorar uso de tokens em pipelines automatizados
+- O que nunca deixar no CLAUDE.md ou em prompts: secrets, dados sensíveis, PII
+- Checklist de segurança para times que usam Claude Code em produção
+- Blocos de código com configurações de segurança recomendadas
+
+---
+Conclusão (300 a 400 palavras)
+
+- O que o leitor domina agora
+- Como combinar os recursos avançados em um fluxo de trabalho coeso
+- O que ainda está evoluindo no Claude Code e onde acompanhar
+- Recursos para continuar aprofundando: documentação oficial, repositório, comunidade
+
+---
+Regras de escrita
+
+1. Nunca use "—" (travessão). Substitua por vírgula, dois pontos, ponto e vírgula ou reescreva.
+2. Escreva em português brasileiro correto e natural.
+3. Termos técnicos em inglês sem boa tradução podem ser usados sem explicação (o leitor é desenvolvedor).
+4. Tom técnico e direto. Sem introduções longas, sem repetição de conceitos básicos.
+5. Não use palavras como "incrível", "revolucionário", "poderoso". Mostre os fatos e o código.
+6. Cada capítulo deve ter subtítulos internos.
+7. Blocos de código devem ser completos, funcionais e comentados onde necessário.
+8. Não resuma. Escreva o texto completo conforme os limites de palavras indicados.
+9. O ebook deve fluir como documentação técnica de alta qualidade, não como tutorial para iniciantes.
+10. Priorize exemplos reais e casos de uso concretos sobre explicações abstratas.
+11. Tabelas de referência são bem-vindas para campos de configuração, variáveis de ambiente e flags de CLI.
+12. O capítulo 3 (hooks) e o capítulo 5 (MCP) são os mais importantes. Trate-os com profundidade máxima.
+13. Cada bloco de código deve ser autocontido: o leitor deve conseguir copiar e usar sem contexto adicional.
+
+---
+Formato do ebook
+
+Olhe os ebooks existentes na pasta ebooks/claude/ e replique exatamente o mesmo formato HTML com as mesmas classes CSS, estrutura de páginas (.page), cabeçalhos de capítulo (.chapter-header), blocos de código (.code-box), caixas de informação (.info-box), caixas de aviso (.warn-box), checklist (.checklist) e rodapé (.footer).
+
+Use uma paleta de cores diferente dos outros ebooks. Sugestão: tons de roxo/violeta (#7C3AED como cor principal) para diferenciar visualmente este ebook dos outros.
+
+Salve o ebook em: ebooks/claude/ebook-claude-code-avancado.html
+
+Escreva o ebook completo agora, começando pela introdução e seguindo a ordem dos capítulos. Não pare para pedir confirmações. Escreva tudo de uma vez.

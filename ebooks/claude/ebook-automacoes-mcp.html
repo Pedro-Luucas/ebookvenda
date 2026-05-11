@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<!--
+  RESUMO PARA IA — Claude Code no Piloto Automático: Automatize Sua Vida com IA e MCP
+  =====================================================================================
+  Foco: automações pessoais de produtividade com Claude Code e servidores MCP.
+  Ferramentas: Telegram, Google Calendar, Gmail, Google Sheets, Notion.
+  Público: usuários do Claude Code que não sabem programar.
+  Capítulos: Introdução, 11 capítulos, Conclusão.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Claude Code no Piloto Automático: Automatize Sua Vida com IA e MCP</title>
+<style>
+  :root{
+    --orange:#D97757;
+    --orange-light:#E8956D;
+    --orange-dark:#B85C3A;
+    --orange-bg:#FDF4F0;
+    --clay:#C96442;
+    --sand:#F5E6D8;
+    --black:#0D0D0D;
+    --black-rich:#1A0F0A;
+    --gray-text:#2D2420;
+    --gray-light:#F7F3F0;
+    --gray-mid:#E0D4CC;
+    --white:#FFFFFF;
+    --accent:#8B4513;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#e5e5e5;font-family:Arial,sans-serif;color:var(--gray-text);}
+  .page{
+    width:794px;
+    min-height:1123px;
+    margin:0 auto 32px;
+    background:white;
+    padding:70px 80px;
+    position:relative;
+    box-shadow:0 4px 24px rgba(0,0,0,0.08);
+    overflow:hidden;
+  }
+  h1.chapter-title{font-family:Georgia,serif;font-size:36px;font-weight:900;color:#0D0D0D;line-height:1.2;}
+  h2{font-family:Georgia,serif;font-size:22px;font-weight:bold;color:#B85C3A;margin:32px 0 14px;}
+  h3{font-family:Arial,sans-serif;font-size:14px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#0D0D0D;margin:24px 0 10px;}
+  p{font-family:Arial,sans-serif;font-size:16px;line-height:1.9;color:#2D2420;margin-bottom:16px;}
+  em{font-style:italic;}
+  strong{color:#0D0D0D;}
+  .label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#D97757;font-weight:bold;}
+
+  .chapter-header{padding-top:60px;border-top:3px solid #D97757;margin-bottom:24px;}
+  .chapter-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#D97757,#B85C3A);color:white;border-radius:50%;font-family:Georgia,serif;font-weight:bold;font-size:18px;margin-right:14px;vertical-align:middle;}
+  .chapter-label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#D97757;font-weight:bold;vertical-align:middle;}
+  .deco-line{width:60px;height:3px;background:linear-gradient(90deg,#D97757,#8B4513);margin:16px 0 28px;}
+  .opening{font-family:Georgia,serif;font-style:italic;font-size:18px;color:#2D2420;border-left:3px solid #E8956D;padding-left:16px;margin-bottom:28px;line-height:1.7;}
+
+  .quote-box{background:#FDF4F0;border-left:4px solid #D97757;padding:24px 28px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .quote-box p{font-family:Georgia,serif;font-style:italic;font-size:18px;color:#B85C3A;margin-bottom:10px;}
+  .quote-box .author{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#D97757;font-weight:bold;}
+
+  .code-box{background:#1A0F0A;border-left:4px solid #D97757;border-radius:0 8px 8px 0;padding:24px 28px;margin:28px 0;}
+  .code-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#E8956D;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .code-box pre{font-family:'Courier New',monospace;font-size:13px;color:#F5E6D8;line-height:1.8;white-space:pre-wrap;}
+  .code-box .comment{color:#8B6B5A;font-style:italic;}
+  .code-box .cmd{color:#E8956D;font-weight:bold;}
+
+  .info-box{background:#F7F3F0;border:1px solid #E0D4CC;border-top:3px solid #D97757;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .info-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#D97757;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .info-box .item{margin-bottom:12px;font-size:14px;color:#2D2420;line-height:1.6;}
+  .info-box .item b{color:#B85C3A;}
+
+  .tip-box{border:1px solid #E8956D;border-top:3px solid #D97757;border-radius:8px;padding:24px 28px;margin:28px 0;background:white;}
+  .tip-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#D97757;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .tip-box p{font-size:15px;color:#2D2420;}
+
+  .checklist{background:#F7F3F0;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .checklist .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#D97757;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:16px;}
+  .checklist .item{display:flex;align-items:flex-start;margin-bottom:12px;font-size:14px;color:#2D2420;line-height:1.6;}
+  .checklist .check{flex-shrink:0;width:18px;height:18px;border:2px solid #D97757;border-radius:3px;margin-right:14px;margin-top:2px;background:white;}
+
+  .warn-box{background:#FDF4F0;border-left:4px solid #C96442;padding:20px 24px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .warn-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#C96442;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .warn-box p{font-size:14px;color:#2D2420;margin-bottom:8px;}
+
+  .badge{display:inline-block;background:linear-gradient(135deg,#D97757,#B85C3A);color:white;border-radius:6px;padding:4px 14px;font-size:13px;font-weight:bold;font-family:Arial,sans-serif;}
+
+  .footer{position:absolute;bottom:28px;left:80px;right:80px;border-top:0.5px solid #E0D4CC;padding-top:10px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+  .footer .left{color:#D97757;font-weight:bold;}
+  .footer .right{color:#8B4513;font-weight:bold;}
+
+  /* CAPA */
+  .cover{background:linear-gradient(135deg,#0D0D0D 0%,#1A0F0A 50%,#2D1810 100%);color:white;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;position:relative;overflow:hidden;}
+  .cover-bg{position:absolute;inset:0;opacity:0.07;}
+  .cover-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:24px;padding-top:50px;}
+  .cover-badge-top{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#E8956D;font-weight:bold;}
+  .cover-title{font-family:Georgia,serif;font-size:58px;font-weight:bold;color:white;line-height:0.95;letter-spacing:-1px;}
+  .cover-title .orange{color:#D97757;display:block;}
+  .cover-subtitle{font-family:Georgia,serif;font-style:italic;font-size:20px;color:#E8956D;margin-top:6px;}
+  .cover-line{width:120px;height:3px;background:linear-gradient(90deg,#D97757,#8B4513);margin:16px auto;}
+  .cover-desc{font-family:Georgia,serif;font-style:italic;font-size:16px;color:#C4A090;max-width:480px;line-height:1.7;}
+  .cover-bottom{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:40px;}
+  .cover-year{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:5px;color:#D97757;font-weight:bold;}
+
+  /* SUMARIO */
+  .toc-list{margin-top:30px;}
+  .toc-item{display:flex;align-items:center;padding:12px 0;border-bottom:1px dashed #E0D4CC;}
+  .toc-num{flex-shrink:0;width:32px;height:32px;background:linear-gradient(135deg,#D97757,#B85C3A);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:bold;font-size:13px;margin-right:18px;}
+  .toc-name{flex-grow:1;font-family:Georgia,serif;font-size:15px;color:#0D0D0D;}
+  .toc-dot{color:#D97757;font-size:13px;margin:0 6px;}
+
+  @media print {
+    body{background:white;}
+    .page{margin:0;box-shadow:none;page-break-after:always;}
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: CAPA -->
+<div class="page cover">
+  <div class="cover-bg">
+    <svg viewBox="0 0 794 1123" preserveAspectRatio="none" width="100%" height="100%">
+      <defs>
+        <pattern id="grid" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#D97757" stroke-width="0.6"/>
+        </pattern>
+      </defs>
+      <rect width="794" height="1123" fill="url(#grid)"/>
+    </svg>
+  </div>
+  <div class="cover-content">
+    <div class="cover-badge-top">Guia Prático · 2026</div>
+    <svg width="140" height="140" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="logoG" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#D97757"/>
+          <stop offset="1" stop-color="#8B4513"/>
+        </linearGradient>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="none" stroke="#D97757" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="100" cy="100" r="72" fill="none" stroke="#E8956D" stroke-width="0.6" opacity="0.5"/>
+      <!-- Automation icon: gears + arrows -->
+      <rect x="38" y="60" width="52" height="40" rx="6" fill="none" stroke="url(#logoG)" stroke-width="2.5"/>
+      <text x="52" y="86" font-family="Courier New" font-size="18" fill="#D97757" font-weight="bold">⚙</text>
+      <rect x="110" y="60" width="52" height="40" rx="6" fill="none" stroke="url(#logoG)" stroke-width="2.5"/>
+      <text x="124" y="86" font-family="Courier New" font-size="18" fill="#E8956D" font-weight="bold">⚙</text>
+      <line x1="90" y1="80" x2="110" y2="80" stroke="#D97757" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="64" y="130" font-family="Courier New" font-size="11" fill="#C4A090">MCP · IA · AUTO</text>
+    </svg>
+    <div class="cover-title">PILOTO<span class="orange">AUTOMÁTICO</span></div>
+    <div class="cover-subtitle">Claude Code + MCP na prática</div>
+    <div class="cover-line"></div>
+    <div class="cover-desc">Como automatizar tarefas do dia a dia com inteligência artificial, sem saber programar, usando Telegram, Google Calendar, Gmail, Sheets e Notion.</div>
+  </div>
+  <div class="cover-bottom">
+    <svg width="120" height="20" viewBox="0 0 120 20">
+      <circle cx="20" cy="10" r="4" fill="#D97757"/>
+      <circle cx="40" cy="10" r="3" fill="#8B4513"/>
+      <line x1="50" y1="10" x2="70" y2="10" stroke="#E8956D" stroke-width="1"/>
+      <circle cx="80" cy="10" r="3" fill="#8B4513"/>
+      <circle cx="100" cy="10" r="4" fill="#D97757"/>
+    </svg>
+    <div class="cover-year">Edição 2026</div>
+  </div>
+</div>
+
+<!-- PAGE 2: SUMÁRIO -->
+<div class="page">
+  <div style="padding-top:20px;">
+    <div class="label">Conteúdo do Ebook</div>
+    <h1 class="chapter-title" style="margin-top:8px;font-size:38px;">Sumário</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="toc-list">
+    <div class="toc-item"><div class="toc-num">00</div><div class="toc-name">Introdução: automações que trabalham por você</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">01</div><div class="toc-name">Como pensar em automações antes de criar</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">02</div><div class="toc-name">Configurando o ambiente de automações</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">03</div><div class="toc-name">Telegram: seu painel de controle pessoal</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">04</div><div class="toc-name">Google Calendar: sua agenda inteligente</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">05</div><div class="toc-name">Gmail: sua caixa de entrada sob controle</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">06</div><div class="toc-name">Google Sheets: seu banco de dados pessoal</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">07</div><div class="toc-name">Notion: seu segundo cérebro</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">08</div><div class="toc-name">Combinando ferramentas em automações completas</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">09</div><div class="toc-name">Rodando automações na nuvem</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">10</div><div class="toc-name">Automações prontas para usar</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">11</div><div class="toc-name">Quando algo der errado</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">12</div><div class="toc-name">Conclusão: o que vem a seguir</div><div class="toc-dot">◆</div></div>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Sumário</div></div>
+</div>
+
+<!-- PAGE 3: INTRODUÇÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="label">Introdução</div>
+    <h1 class="chapter-title" style="margin-top:10px;">Automações que trabalham por você</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p>Toda semana, você repete as mesmas tarefas. Abre o e-mail, verifica a agenda, anota um gasto, registra uma ideia em algum lugar que provavelmente vai esquecer. São tarefas pequenas, mas somadas consomem tempo e atenção que poderiam estar em outro lugar.</p>
+  <p>Automações pessoais existem para resolver exatamente isso: fazer com que tarefas repetitivas aconteçam sozinhas, sem que você precise iniciar cada uma delas manualmente. Não é um conceito novo. O que mudou é que, até pouco tempo atrás, criar automações exigia saber programar ou pagar por ferramentas como Zapier ou Make.</p>
+  <p>O Claude Code com MCP muda essa equação. A diferença em relação a ferramentas como Zapier não é só de custo: é de inteligência. Zapier conecta campos. O Claude Code entende contexto. Você não precisa mapear "campo A vai para campo B". Você descreve o que quer em linguagem natural, e o agente descobre como fazer.</p>
+  <p>Este ebook ensina como usar o Claude Code, junto com servidores MCP (Model Context Protocol, o protocolo que permite ao Claude Code se conectar a ferramentas externas), para criar automações pessoais que integram as ferramentas do seu dia a dia: Telegram, Google Calendar, Gmail, Google Sheets e Notion. Você não precisa saber programar. Toda automação é criada pelo próprio Claude Code via MCP, sem scripts manuais sempre que possível.</p>
+  <h2>O que você vai ser capaz de fazer</h2>
+  <p>Ao final deste ebook, você vai saber como receber um resumo da sua agenda toda manhã direto no Telegram, como registrar gastos enviando uma mensagem de texto, como capturar ideias no Notion sem abrir o aplicativo, como fazer o Claude Code ler seus e-mails e classificar o que é urgente, e como combinar tudo isso em rotinas automáticas que rodam sem intervenção.</p>
+  <p>Você também vai aprender a rodar essas automações na nuvem, de forma gratuita, para que funcionem mesmo quando seu computador estiver desligado.</p>
+  <h2>Uma nota sobre o WhatsApp</h2>
+  <p>O WhatsApp é o aplicativo de mensagens mais usado no Brasil, mas a integração com bots exige a API oficial do WhatsApp Business, que tem custo por mensagem enviada e processo de aprovação. Por isso, este ebook usa o Telegram como canal de mensagens principal. O Telegram tem API aberta, gratuita, sem aprovação necessária, e é ideal para bots pessoais. Se você ainda não usa o Telegram, criar uma conta leva menos de dois minutos.</p>
+  <h2>Pré-requisitos</h2>
+  <p>Este ebook assume que você já tem o Claude Code instalado e sabe como instalar servidores MCP. Se ainda não chegou nesse ponto, o ebook <em>Claude Code: O Guia Completo</em> cobre esses passos em detalhes. Aqui, o ponto de partida é: Claude Code funcionando, terminal aberto, pronto para criar.</p>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Introdução</div></div>
+</div>
+
+<!-- PAGE 4: CAPÍTULO 1 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">1</span><span class="chapter-label">Capítulo Um</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Como pensar em automações antes de criar</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">Uma automação mal planejada não economiza tempo. Ela só transfere o problema para outro lugar.</div>
+  <h2>O que é uma automação, em linguagem simples</h2>
+  <p>Uma automação é uma tarefa que acontece sozinha. Em vez de você abrir o Google Calendar toda manhã para ver o que tem no dia, a automação faz isso por você e manda o resultado no Telegram. Em vez de você anotar um gasto manualmente na planilha, você envia uma mensagem e a automação registra.</p>
+  <p>O mecanismo por trás é sempre o mesmo: algo dispara a automação (um horário, uma mensagem, um evento), e a automação executa uma ou mais ações em resposta. Esse par, gatilho e ação, é a estrutura de toda automação que você vai criar neste ebook.</p>
+  <h2>Os três tipos de automação cobertos neste ebook</h2>
+  <div class="info-box">
+    <span class="lbl">Tipos de acionamento</span>
+    <div class="item"><b>Via terminal:</b> você abre o terminal e digita uma instrução ao Claude Code. É o modo mais simples, útil para tarefas que você quer executar agora, sob demanda.</div>
+    <div class="item"><b>Via Telegram:</b> você envia uma mensagem ao seu bot pessoal, e o bot aciona o Claude Code. Funciona de qualquer lugar, pelo celular, sem precisar abrir o computador.</div>
+    <div class="item"><b>Via agendamento:</b> a automação roda sozinha em horário fixo, sem nenhuma intervenção. Ideal para resumos diários, relatórios semanais e tarefas recorrentes.</div>
+  </div>
+  <h2>Como identificar o que vale a pena automatizar</h2>
+  <p>Nem toda tarefa merece uma automação. Criar uma automação tem um custo inicial de configuração. Se a tarefa acontece raramente ou muda muito de uma vez para outra, o esforço de automatizar pode não compensar.</p>
+  <p>As melhores candidatas a automação têm três características: são repetitivas (acontecem toda semana ou todo dia), são previsíveis (seguem sempre o mesmo padrão) e são chatas (você não ganha nada fazendo manualmente, só perde tempo).</p>
+  <h2>Gatilho e ação: a estrutura de toda automação</h2>
+  <p>Antes de pedir ao Claude Code para criar qualquer automação, você precisa ter claro na cabeça qual é o gatilho e qual é a ação. O gatilho é o que dispara a automação. A ação é o que ela faz.</p>
+  <p>Exemplos concretos: o gatilho é "todo dia às 7h da manhã" e a ação é "ler os eventos do Google Calendar e mandar um resumo no Telegram". Ou: o gatilho é "eu enviar a mensagem 'gastei R$50 no mercado' no Telegram" e a ação é "registrar esse gasto na planilha do Google Sheets".</p>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 1</div></div>
+</div>
+
+<!-- PAGE 5: CAPÍTULO 1 cont. -->
+<div class="page">
+  <h2>Como descrever uma automação ao Claude Code</h2>
+  <p>O Claude Code entende linguagem natural, mas quanto mais precisa for a sua descrição, melhor o resultado. Uma boa instrução tem quatro elementos: o que deve acontecer, quando deve acontecer, quais ferramentas estão envolvidas e qual deve ser o formato do resultado.</p>
+  <div class="warn-box">
+    <span class="lbl">Instrução vaga (evite)</span>
+    <p>"Me manda um resumo da agenda no Telegram."</p>
+  </div>
+  <div class="tip-box">
+    <span class="lbl">Instrução precisa (use)</span>
+    <p>"Todo dia às 7h da manhã, leia os eventos do meu Google Calendar para o dia atual e mande uma mensagem formatada no meu bot do Telegram com: saudação com o dia da semana, lista dos eventos com horário e título, e uma linha final com o total de compromissos."</p>
+  </div>
+  <p>A segunda instrução não exige que você saiba programar. Ela só exige que você saiba o que quer. O Claude Code cuida do resto.</p>
+  <h2>Os erros mais comuns de quem automatiza sem planejar</h2>
+  <p>O erro mais frequente é criar uma automação sem definir o que fazer quando algo der errado. E algo sempre pode dar errado: o MCP perde a autenticação, o Google Calendar não tem eventos naquele dia, o Telegram não recebe a mensagem. Uma automação bem planejada prevê esses casos e define um comportamento para eles.</p>
+  <p>O segundo erro é automatizar demais de uma vez. Começar com uma automação simples, testar, ajustar e só depois adicionar complexidade é sempre mais eficiente do que tentar criar uma rotina completa de uma vez e depurar dez coisas ao mesmo tempo.</p>
+  <p>O terceiro erro é não documentar. Quando você cria uma automação hoje e ela para de funcionar em três meses, você vai querer saber o que ela fazia e por quê. Um arquivo CLAUDE.md com uma linha descrevendo cada automação resolve esse problema.</p>
+  <div class="tip-box">
+    <span class="lbl">Regra prática</span>
+    <p>Comece com uma automação. Faça ela funcionar bem. Só então crie a próxima. Automações simples que funcionam valem mais do que rotinas complexas que quebram.</p>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 1</div></div>
+</div>
+
+<!-- PAGE 6: CAPÍTULO 2 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">2</span><span class="chapter-label">Capítulo Dois</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Configurando o ambiente de automações</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">Antes de criar qualquer automação, o ambiente precisa estar organizado. Um MCP mal configurado vai travar tudo na hora errada.</div>
+  <h2>Como organizar os MCPs no arquivo .mcp.json</h2>
+  <p>O arquivo <code>.mcp.json</code> fica na raiz do seu projeto e lista todos os servidores MCP que o Claude Code pode usar. Para um projeto de automações pessoais, você vai ter vários MCPs configurados ao mesmo tempo: Telegram, Google Calendar, Gmail, Google Sheets e Notion.</p>
+  <p>A estrutura do arquivo é sempre a mesma: cada MCP tem um nome, um comando para iniciar o servidor e as variáveis de ambiente que ele precisa para funcionar. Veja um exemplo de como o arquivo fica com todos os MCPs deste ebook configurados:</p>
+  <div class="code-box">
+    <span class="lbl">Exemplo de .mcp.json para automações pessoais</span>
+    <pre>{
+  "mcpServers": {
+    "telegram": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-telegram"],
+      "env": {
+        "TELEGRAM_BOT_TOKEN": "seu_token_aqui"
+      }
+    },
+    "google-calendar": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-calendar"],
+      "env": {
+        "GOOGLE_CLIENT_ID": "seu_client_id",
+        "GOOGLE_CLIENT_SECRET": "seu_client_secret",
+        "GOOGLE_REFRESH_TOKEN": "seu_refresh_token"
+      }
+    },
+    "gmail": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gmail"],
+      "env": {
+        "GOOGLE_CLIENT_ID": "seu_client_id",
+        "GOOGLE_CLIENT_SECRET": "seu_client_secret",
+        "GOOGLE_REFRESH_TOKEN": "seu_refresh_token"
+      }
+    },
+    "google-sheets": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-sheets"],
+      "env": {
+        "GOOGLE_CLIENT_ID": "seu_client_id",
+        "GOOGLE_CLIENT_SECRET": "seu_client_secret",
+        "GOOGLE_REFRESH_TOKEN": "seu_refresh_token"
+      }
+    },
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-notion"],
+      "env": {
+        "NOTION_API_KEY": "sua_chave_aqui"
+      }
+    }
+  }
+}</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 2</div></div>
+</div>
+
+<!-- PAGE 7: CAPÍTULO 2 cont. -->
+<div class="page">
+  <h2>O conceito de credenciais: tokens e chaves de API</h2>
+  <p>Cada ferramenta que você conecta ao Claude Code precisa de uma forma de confirmar que você tem permissão para acessá-la. Essa confirmação é feita por meio de credenciais, que podem ser um token (uma sequência de letras e números que funciona como uma senha) ou uma chave de API (o mesmo conceito, com outro nome).</p>
+  <p>Você não precisa entender como esses tokens funcionam por dentro. O que você precisa saber é: onde encontrar cada um, como colocá-los no arquivo .mcp.json e que eles devem ser tratados como senhas. Nunca compartilhe um token em público, nunca coloque em um repositório aberto no GitHub.</p>
+  <div class="info-box">
+    <span class="lbl">Onde encontrar as credenciais de cada ferramenta</span>
+    <div class="item"><b>Telegram:</b> o token do bot é gerado pelo BotFather, dentro do próprio Telegram. O Capítulo 3 mostra o passo a passo.</div>
+    <div class="item"><b>Google Calendar, Gmail e Sheets:</b> as credenciais vêm do Google Cloud Console. Você cria um projeto, ativa as APIs necessárias e gera um Client ID e Client Secret. O processo é o mesmo para as três ferramentas Google.</div>
+    <div class="item"><b>Notion:</b> a chave de API é gerada em notion.so/my-integrations. Você cria uma integração, copia a chave e conecta ao workspace que quer usar.</div>
+  </div>
+  <h2>Como verificar se cada MCP está funcionando</h2>
+  <p>Antes de criar qualquer automação, confirme que cada MCP responde corretamente. A forma mais simples é pedir ao Claude Code uma tarefa básica com cada ferramenta: listar os eventos de hoje no Calendar, verificar quantos e-mails não lidos existem no Gmail, ler o título da primeira linha de uma planilha no Sheets.</p>
+  <p>Se o MCP responder com dados reais, está funcionando. Se retornar um erro de autenticação, o problema está nas credenciais. Se não responder nada, o servidor MCP pode não ter iniciado corretamente.</p>
+  <h2>Como estruturar o CLAUDE.md para automações</h2>
+  <p>O arquivo CLAUDE.md é lido pelo Claude Code toda vez que você inicia uma sessão. Para um projeto de automações, ele deve conter: quais MCPs estão configurados, qual é o ID do seu chat no Telegram, quais são os IDs das planilhas e bases de dados que você usa, e uma lista das automações existentes com uma linha descrevendo cada uma.</p>
+  <div class="code-box">
+    <span class="lbl">Exemplo completo de CLAUDE.md para automações pessoais</span>
+    <pre># Projeto: Automações Pessoais
+
+## MCPs configurados
+- telegram: bot pessoal para notificações e acionamento
+- google-calendar: agenda principal (conta pessoal)
+- gmail: caixa de entrada principal
+- google-sheets: planilha de gastos e registros
+- notion: base de conhecimento pessoal
+
+## IDs importantes
+- TELEGRAM_CHAT_ID: 123456789
+- SHEETS_GASTOS_ID: 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms
+- NOTION_DATABASE_TAREFAS: abc123def456...
+
+## Automações ativas
+- resumo_diario: todo dia às 7h, Calendar + Telegram
+- registro_gastos: acionada pelo Telegram, grava no Sheets
+- captura_ideias: acionada pelo Telegram, cria página no Notion
+- resumo_emails: toda segunda às 8h, Gmail + Telegram
+
+## Regras
+- Sempre confirmar antes de enviar mensagem no Telegram
+- Nunca deletar eventos do Calendar sem confirmação explícita
+- Registrar gastos sempre com data, categoria e valor</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 2</div></div>
+</div>
+
+<!-- PAGE 8: CAPÍTULO 3 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">3</span><span class="chapter-label">Capítulo Três</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Telegram: seu painel de controle pessoal</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">O Telegram é o ponto de entrada e saída de quase todas as automações deste ebook. É por onde você aciona e por onde recebe os resultados.</div>
+  <h2>Por que o Telegram é o centro das automações</h2>
+  <p>O Telegram permite criar bots com uma API completamente gratuita, sem aprovação, sem custo por mensagem e sem limite de uso para bots pessoais. Um bot do Telegram é simplesmente um número de telefone virtual que recebe e envia mensagens. Você cria o bot, conecta ao Claude Code via MCP, e passa a ter um canal direto entre o seu celular e o agente.</p>
+  <p>Na prática, isso significa que você pode acionar qualquer automação de qualquer lugar, só enviando uma mensagem. E todas as notificações das automações agendadas chegam no mesmo lugar: o chat do seu bot.</p>
+  <h2>Como criar um bot no Telegram do zero</h2>
+  <div class="checklist">
+    <span class="lbl">Passo a passo: criando seu bot</span>
+    <div class="item"><div class="check"></div>Abra o Telegram e pesquise por @BotFather na barra de busca.</div>
+    <div class="item"><div class="check"></div>Inicie uma conversa com o BotFather e envie o comando /newbot.</div>
+    <div class="item"><div class="check"></div>O BotFather vai pedir um nome para o bot (pode ser qualquer nome, como "Meu Assistente").</div>
+    <div class="item"><div class="check"></div>Em seguida, vai pedir um username para o bot. Deve terminar em "bot" (exemplo: meuassistente_bot).</div>
+    <div class="item"><div class="check"></div>O BotFather vai retornar um token no formato 123456789:ABCdefGHIjklMNOpqrSTUvwxYZ. Copie e guarde esse token.</div>
+    <div class="item"><div class="check"></div>Abra uma conversa com o seu novo bot e envie qualquer mensagem para ativar o chat.</div>
+    <div class="item"><div class="check"></div>Para descobrir o seu Chat ID, acesse: api.telegram.org/botSEU_TOKEN/getUpdates. O campo "chat":{"id": ...} é o seu Chat ID.</div>
+  </div>
+  <h2>Como instalar e configurar o MCP do Telegram</h2>
+  <p>Com o token em mãos, adicione o MCP do Telegram ao seu arquivo .mcp.json conforme mostrado no Capítulo 2. Depois, abra o Claude Code e confirme que o MCP está ativo:</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Use o MCP do Telegram para me enviar uma mensagem de teste
+no chat ID 123456789 com o texto "MCP do Telegram funcionando."</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 3</div></div>
+</div>
+
+<!-- PAGE 9: CAPÍTULO 3 cont. -->
+<div class="page">
+  <h2>Como usar o Claude Code para enviar mensagens via Telegram</h2>
+  <p>Uma vez que o MCP está configurado, enviar mensagens pelo Claude Code é direto. Você pode pedir mensagens simples, mensagens formatadas com negrito e listas, ou mensagens com dados calculados na hora.</p>
+  <div class="code-box">
+    <span class="lbl">Exemplos de instruções para envio de mensagens</span>
+    <pre><span class="comment"># Mensagem simples</span>
+Envie uma mensagem no meu Telegram dizendo que são 7h
+e que o dia começou.
+
+<span class="comment"># Mensagem com dados do Calendar</span>
+Leia os eventos do meu Google Calendar para hoje
+e envie um resumo formatado no Telegram com cada evento
+em uma linha, no formato: HH:MM - Título do evento.
+
+<span class="comment"># Mensagem com cálculo do Sheets</span>
+Leia a planilha de gastos do Google Sheets, some todos
+os gastos desta semana e envie o total no Telegram.</pre>
+  </div>
+  <h2>Como configurar o bot para receber mensagens e acionar o Claude Code</h2>
+  <p>Para que o bot receba mensagens e acione automações, você precisa de um script que fique escutando as mensagens recebidas e chame o Claude Code quando uma mensagem chegar. O Claude Code pode criar esse script para você:</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie um script em Python que:
+1. Fique escutando mensagens no meu bot do Telegram
+   (token: SEU_TOKEN_AQUI)
+2. Quando receber a mensagem "resumo do dia", execute
+   o Claude Code com a instrução de ler os eventos do
+   Google Calendar de hoje e responder no Telegram
+3. Quando receber qualquer outra mensagem, responda
+   "Comando não reconhecido."
+O script deve rodar continuamente.</pre>
+  </div>
+  <h2>Exemplo concreto: bot que responde com a agenda do dia</h2>
+  <p>Este é o fluxo completo do exemplo mais básico deste ebook: você envia "resumo do dia" para o seu bot, e ele responde com os eventos do Google Calendar de hoje.</p>
+  <p>O que acontece por dentro: o script Python recebe a mensagem, identifica o comando "resumo do dia", chama o Claude Code com a instrução de ler o Calendar, o Claude Code usa o MCP do Google Calendar para buscar os eventos, formata o resultado e usa o MCP do Telegram para enviar a resposta de volta para você. Tudo isso acontece em segundos.</p>
+  <div class="tip-box">
+    <span class="lbl">Como testar se o bot está funcionando</span>
+    <p>Envie a mensagem "resumo do dia" para o seu bot. Se receber uma resposta com os eventos do dia, está funcionando. Se receber "Comando não reconhecido", o script está rodando mas não reconheceu o comando. Se não receber nada, o script pode não estar rodando.</p>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 3</div></div>
+</div>
+
+<!-- PAGE 10: CAPÍTULO 4 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">4</span><span class="chapter-label">Capítulo Quatro</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Google Calendar: sua agenda inteligente</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">O Google Calendar guarda informações sobre o seu tempo. Com o MCP certo, o Claude Code consegue ler, criar e resumir esses dados sem que você precise abrir o aplicativo.</div>
+  <h2>Como instalar e configurar o MCP do Google Calendar</h2>
+  <p>O MCP do Google Calendar usa as credenciais do Google Cloud Console. O processo de configuração é feito uma única vez e vale também para o Gmail e o Google Sheets, já que todos usam a mesma conta Google.</p>
+  <p>Os passos são: acessar console.cloud.google.com, criar um novo projeto, ativar a API do Google Calendar, criar credenciais do tipo "OAuth 2.0 Client ID", baixar o arquivo JSON com as credenciais e usar o fluxo de autorização para gerar o refresh token. O Claude Code pode guiar você por cada um desses passos se você pedir:</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Me guie passo a passo para configurar as credenciais
+do Google Calendar no Google Cloud Console e gerar
+o refresh token necessário para o MCP.</pre>
+  </div>
+  <h2>O que o Claude Code consegue fazer com o Google Calendar</h2>
+  <div class="info-box">
+    <span class="lbl">Capacidades do MCP do Google Calendar</span>
+    <div class="item"><b>Ler eventos:</b> listar eventos de um dia, semana ou período específico, com horário, título, descrição e participantes.</div>
+    <div class="item"><b>Criar eventos:</b> criar novos eventos com título, data, horário, duração, descrição e convidados.</div>
+    <div class="item"><b>Editar eventos:</b> alterar horário, título ou descrição de eventos existentes.</div>
+    <div class="item"><b>Resumir agenda:</b> gerar um texto formatado com os compromissos do dia ou da semana.</div>
+  </div>
+  <h2>Exemplo concreto: resumo matinal automático no Telegram</h2>
+  <p>Esta é uma das automações mais úteis do ebook: todo dia às 7h da manhã, o Claude Code lê os eventos do dia no Google Calendar e manda um resumo formatado no Telegram. Você acorda com a agenda já no celular, sem precisar abrir nenhum aplicativo.</p>
+  <p>Para criar essa automação, peça ao Claude Code:</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie uma automação agendada que:
+1. Rode todo dia às 7h da manhã
+2. Leia os eventos do meu Google Calendar para o dia atual
+3. Formate a mensagem assim:
+   "Bom dia! Hoje é [dia da semana], [data].
+   Seus compromissos de hoje:
+   [HH:MM] - [Título do evento]
+   (repita para cada evento)
+   Total: [N] compromisso(s)."
+4. Se não houver eventos, envie: "Agenda livre hoje."
+5. Envie a mensagem no meu Telegram (chat ID: SEU_ID)
+Use cron job para o agendamento.</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 4</div></div>
+</div>
+
+<!-- PAGE 11: CAPÍTULO 4 cont. -->
+<div class="page">
+  <h2>Como pedir ao Claude Code para criar eventos com linguagem natural</h2>
+  <p>Uma das vantagens do Claude Code sobre ferramentas tradicionais é que você não precisa preencher formulários. Você descreve o evento em linguagem natural e o agente interpreta e cria.</p>
+  <div class="code-box">
+    <span class="lbl">Exemplos de criação de eventos por linguagem natural</span>
+    <pre><span class="comment"># Evento simples</span>
+Crie um evento no meu Google Calendar para amanhã
+às 15h com o título "Reunião com dentista", duração
+de 1 hora.
+
+<span class="comment"># Evento com detalhes</span>
+Crie um evento recorrente toda segunda-feira às 9h
+com o título "Planejamento semanal", duração de 30
+minutos, e adicione na descrição: "Revisar tarefas
+da semana anterior e definir prioridades."
+
+<span class="comment"># Evento a partir de informação de e-mail</span>
+Leia o último e-mail do Gmail com assunto "Convite"
+e crie um evento no Calendar com as informações
+de data, horário e local que estiverem no e-mail.</pre>
+  </div>
+  <h2>Como combinar Google Calendar com Gmail</h2>
+  <p>Uma das combinações mais práticas é criar eventos a partir de e-mails. Quando você recebe um e-mail com uma data de reunião, uma confirmação de consulta ou um convite de evento, o Claude Code pode ler o e-mail e criar o evento no Calendar automaticamente.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Leia os últimos 10 e-mails não lidos do Gmail.
+Para cada e-mail que contenha uma data e horário
+de compromisso (reunião, consulta, evento, entrega),
+crie um evento no Google Calendar com o título
+extraído do e-mail, a data e horário encontrados,
+e o nome do remetente na descrição.
+Me informe no Telegram quais eventos foram criados.</pre>
+  </div>
+  <div class="tip-box">
+    <span class="lbl">Dica de uso</span>
+    <p>Rode essa instrução uma vez por semana para garantir que nenhum compromisso recebido por e-mail fique fora da agenda. O Claude Code é bom em identificar datas em diferentes formatos, inclusive escritas por extenso.</p>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 4</div></div>
+</div>
+
+<!-- PAGE 12: CAPÍTULO 5 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">5</span><span class="chapter-label">Capítulo Cinco</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Gmail: sua caixa de entrada sob controle</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">E-mail é onde a maioria das pessoas perde mais tempo. Ler, classificar, responder: o Claude Code pode assumir boa parte desse trabalho.</div>
+  <h2>Como instalar e configurar o MCP do Gmail</h2>
+  <p>O MCP do Gmail usa as mesmas credenciais do Google Cloud Console que o Google Calendar. Se você já configurou o Calendar, o processo é quase idêntico: basta ativar também a API do Gmail no mesmo projeto do Google Cloud e garantir que o escopo de permissão inclua leitura e envio de e-mails.</p>
+  <p>Um detalhe importante: o Gmail exige que você especifique os escopos de acesso durante a autorização. Para as automações deste ebook, você vai precisar de permissão para ler e-mails, modificar labels e rascunhar respostas. Peça ao Claude Code para guiar a configuração:</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Configure o MCP do Gmail com permissões para:
+- Ler e-mails (gmail.readonly)
+- Modificar labels (gmail.modify)
+- Criar rascunhos (gmail.compose)
+Me guie pelo processo de autorização OAuth.</pre>
+  </div>
+  <h2>O que o Claude Code consegue fazer com o Gmail</h2>
+  <div class="info-box">
+    <span class="lbl">Capacidades do MCP do Gmail</span>
+    <div class="item"><b>Ler e-mails:</b> acessar e-mails por remetente, assunto, data ou label, incluindo o corpo completo da mensagem.</div>
+    <div class="item"><b>Classificar:</b> aplicar labels, marcar como lido, mover para pastas ou arquivar e-mails com base em critérios definidos por você.</div>
+    <div class="item"><b>Resumir:</b> gerar um texto com os pontos principais de um e-mail ou de um conjunto de e-mails.</div>
+    <div class="item"><b>Rascunhar respostas:</b> criar um rascunho de resposta com base no conteúdo do e-mail original e nas suas instruções.</div>
+  </div>
+  <h2>Exemplo concreto: resumo dos e-mails não lidos com prioridade</h2>
+  <p>Esta automação lê todos os e-mails não lidos, classifica por prioridade e manda um resumo no Telegram. Você vê o que é urgente sem precisar abrir o Gmail.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Leia todos os e-mails não lidos do Gmail.
+Classifique cada um em três categorias:
+- URGENTE: requer resposta hoje
+- IMPORTANTE: requer atenção, mas não hoje
+- INFORMATIVO: newsletters, notificações, avisos
+
+Envie um resumo no Telegram neste formato:
+"Caixa de entrada: [N] e-mails não lidos
+
+URGENTE ([N]):
+- [Remetente]: [Assunto resumido]
+
+IMPORTANTE ([N]):
+- [Remetente]: [Assunto resumido]
+
+INFORMATIVO ([N] e-mails, sem detalhar)"</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 5</div></div>
+</div>
+
+<!-- PAGE 13: CAPÍTULO 5 cont. -->
+<div class="page">
+  <h2>Exemplo concreto: rascunhando uma resposta para um e-mail</h2>
+  <p>Quando você recebe um e-mail que precisa de resposta, mas não tem tempo de escrever agora, o Claude Code pode criar um rascunho para você revisar e enviar depois.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Leia o e-mail mais recente do remetente
+contato@empresa.com no Gmail.
+Crie um rascunho de resposta que:
+- Agradeça pelo contato
+- Confirme que recebi a informação
+- Diga que responderei com mais detalhes
+  até sexta-feira
+- Use tom profissional mas direto
+Salve como rascunho, não envie ainda.</pre>
+  </div>
+  <h2>Como criar filtros inteligentes com linguagem natural</h2>
+  <p>Filtros no Gmail tradicional exigem que você configure regras por remetente, assunto ou palavras-chave. Com o Claude Code, você descreve o comportamento que quer e ele aplica as labels e ações correspondentes.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Nos últimos 30 dias de e-mails do Gmail:
+1. Aplique a label "Financeiro" em todos os e-mails
+   de bancos, cartões de crédito e cobranças
+2. Aplique a label "Trabalho" em e-mails com domínios
+   corporativos (não gmail.com, não hotmail.com)
+3. Aplique a label "Newsletter" em e-mails com
+   "unsubscribe" ou "cancelar inscrição" no rodapé
+Me informe quantos e-mails foram classificados
+em cada categoria.</pre>
+  </div>
+  <h2>Cuidados ao dar acesso ao Gmail</h2>
+  <p>O Gmail contém informações sensíveis. Antes de configurar o MCP, entenda o que ele pode e não pode fazer. O MCP do Gmail, com os escopos configurados neste ebook, pode ler e-mails, criar rascunhos e aplicar labels. Ele não envia e-mails automaticamente a menos que você instrua explicitamente o Claude Code a fazer isso.</p>
+  <div class="warn-box">
+    <span class="lbl">Atenção</span>
+    <p>Nunca instrua o Claude Code a enviar e-mails automaticamente sem revisão, especialmente em automações agendadas. Sempre use "crie um rascunho" em vez de "envie". Revise antes de enviar.</p>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 5</div></div>
+</div>
+
+<!-- PAGE 14: CAPÍTULO 6 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">6</span><span class="chapter-label">Capítulo Seis</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Google Sheets: seu banco de dados pessoal</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">O Google Sheets é mais do que uma planilha. Para automações pessoais, ele funciona como um banco de dados simples, acessível de qualquer lugar e fácil de visualizar.</div>
+  <h2>Como instalar e configurar o MCP do Google Sheets</h2>
+  <p>O MCP do Google Sheets usa as mesmas credenciais OAuth do Google Calendar e Gmail. Se você já configurou um deles, basta ativar a API do Google Sheets no mesmo projeto do Google Cloud Console e garantir que o escopo de permissão inclua leitura e escrita em planilhas.</p>
+  <p>Para identificar uma planilha específica, você vai precisar do ID dela. O ID fica na URL da planilha, entre /d/ e /edit. Por exemplo, na URL docs.google.com/spreadsheets/d/1BxiMVs0XRA5.../edit, o ID é 1BxiMVs0XRA5....</p>
+  <h2>O que o Claude Code consegue fazer com o Google Sheets</h2>
+  <div class="info-box">
+    <span class="lbl">Capacidades do MCP do Google Sheets</span>
+    <div class="item"><b>Ler dados:</b> acessar células, linhas, colunas ou intervalos específicos de qualquer planilha.</div>
+    <div class="item"><b>Escrever dados:</b> inserir novas linhas, atualizar células existentes ou adicionar dados em colunas específicas.</div>
+    <div class="item"><b>Calcular:</b> somar, filtrar e agregar dados antes de enviar o resultado para outro lugar.</div>
+    <div class="item"><b>Gerar relatórios:</b> ler um conjunto de dados e produzir um resumo em texto para enviar no Telegram.</div>
+  </div>
+  <h2>Exemplo concreto: registro de gastos por mensagem no Telegram</h2>
+  <p>Esta automação transforma o Telegram em um registro de gastos. Você envia uma mensagem como "gastei 45 reais no mercado" e o Claude Code registra automaticamente na planilha com data, categoria e valor.</p>
+  <p>Primeiro, crie uma planilha no Google Sheets com as colunas: Data, Categoria, Descrição, Valor. Depois, peça ao Claude Code para criar o script de escuta:</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie um script que:
+1. Fique escutando mensagens no meu bot do Telegram
+2. Quando receber uma mensagem que descreva um gasto
+   (ex: "gastei 45 no mercado", "paguei 120 de luz"),
+   extraia: valor, categoria (mercado, conta, transporte,
+   restaurante, etc.) e descrição
+3. Registre uma nova linha na planilha Google Sheets
+   (ID: SEU_ID_AQUI) com:
+   - Coluna A: data de hoje no formato DD/MM/AAAA
+   - Coluna B: categoria identificada
+   - Coluna C: descrição original da mensagem
+   - Coluna D: valor numérico
+4. Responda no Telegram: "Registrado: R$[valor]
+   em [categoria] em [data]."</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 15: CAPÍTULO 6 cont. -->
+<div class="page">
+  <h2>Exemplo concreto: relatório semanal de gastos no Telegram</h2>
+  <p>Esta automação complementa o registro de gastos: toda segunda-feira de manhã, o Claude Code lê a planilha, soma os gastos da semana anterior por categoria e manda um resumo no Telegram.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie uma automação agendada que:
+1. Rode toda segunda-feira às 8h
+2. Leia a planilha de gastos (ID: SEU_ID_AQUI)
+3. Filtre apenas os registros da semana anterior
+   (segunda a domingo)
+4. Some os valores por categoria
+5. Envie no Telegram:
+   "Resumo da semana passada:
+   [Categoria]: R$[total]
+   (repita para cada categoria)
+   Total geral: R$[soma total]
+   Maior gasto: [categoria] com R$[valor]"</pre>
+  </div>
+  <h2>Como usar o Google Sheets como banco de dados para outras automações</h2>
+  <p>O Google Sheets pode armazenar qualquer tipo de dado estruturado: lista de contatos, registro de tarefas concluídas, histórico de automações executadas, notas de reuniões. Outras automações podem ler esses dados para tomar decisões.</p>
+  <p>Por exemplo: você pode ter uma planilha com uma lista de lembretes recorrentes. Toda manhã, o Claude Code lê a planilha, verifica quais lembretes são para hoje e manda no Telegram. Você gerencia os lembretes editando a planilha, sem precisar mexer no código.</p>
+  <h2>Como combinar Google Sheets com Google Calendar</h2>
+  <p>Uma combinação útil é registrar automaticamente na planilha os eventos do Calendar que já passaram. Isso cria um histórico de compromissos cumpridos, útil para relatórios de produtividade.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Todo domingo às 22h:
+1. Leia os eventos do Google Calendar da semana atual
+   (segunda a domingo)
+2. Para cada evento que já passou, registre na planilha
+   (ID: SEU_ID_AQUI) com: data, título do evento,
+   duração em minutos e categoria (trabalho, pessoal,
+   saúde, outro)
+3. Envie no Telegram: "Semana registrada:
+   [N] eventos adicionados à planilha."</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 16: CAPÍTULO 7 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">7</span><span class="chapter-label">Capítulo Sete</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Notion: seu segundo cérebro</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">O Notion é onde o conhecimento fica organizado. Com o MCP, o Claude Code consegue criar páginas, atualizar bases de dados e consultar informações sem que você precise abrir o aplicativo.</div>
+  <h2>Como instalar e configurar o MCP do Notion</h2>
+  <p>O Notion usa um sistema de integração próprio, diferente do OAuth do Google. O processo é mais simples: você cria uma integração no painel do Notion, copia a chave de API gerada e conecta essa integração às páginas ou bases de dados que quer que o Claude Code acesse.</p>
+  <div class="checklist">
+    <span class="lbl">Passo a passo: configurando o MCP do Notion</span>
+    <div class="item"><div class="check"></div>Acesse notion.so/my-integrations e clique em "New integration".</div>
+    <div class="item"><div class="check"></div>Dê um nome à integração (ex: "Claude Code") e selecione o workspace que quer usar.</div>
+    <div class="item"><div class="check"></div>Nas permissões, marque: Read content, Update content, Insert content.</div>
+    <div class="item"><div class="check"></div>Clique em Submit e copie o "Internal Integration Token" gerado.</div>
+    <div class="item"><div class="check"></div>Abra cada página ou base de dados do Notion que quer usar, clique em "..." no canto superior direito, vá em "Connections" e adicione a integração que você criou.</div>
+    <div class="item"><div class="check"></div>Cole o token no campo NOTION_API_KEY do seu .mcp.json.</div>
+  </div>
+  <h2>O que o Claude Code consegue fazer com o Notion</h2>
+  <div class="info-box">
+    <span class="lbl">Capacidades do MCP do Notion</span>
+    <div class="item"><b>Criar páginas:</b> criar novas páginas em qualquer seção do workspace, com título, conteúdo formatado e propriedades.</div>
+    <div class="item"><b>Atualizar bases de dados:</b> adicionar novos registros ou atualizar registros existentes em bases de dados do Notion.</div>
+    <div class="item"><b>Ler conteúdo:</b> acessar o texto de páginas existentes ou consultar registros de bases de dados com filtros.</div>
+    <div class="item"><b>Buscar:</b> encontrar páginas por título ou conteúdo dentro do workspace.</div>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 17: CAPÍTULO 7 cont. -->
+<div class="page">
+  <h2>Exemplo concreto: captura de ideias pelo Telegram direto no Notion</h2>
+  <p>Esta automação resolve um problema comum: você tem uma ideia, anota em algum lugar aleatório e nunca mais encontra. Com essa automação, você envia a ideia pelo Telegram e ela vai direto para uma página organizada no Notion.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie um script que:
+1. Fique escutando mensagens no meu bot do Telegram
+2. Quando receber uma mensagem que comece com "ideia:",
+   extraia o texto após os dois pontos
+3. Crie uma nova página no Notion dentro da página
+   "Ideias" (ID: SEU_ID_AQUI) com:
+   - Título: primeiras 60 caracteres da ideia
+   - Conteúdo: texto completo da ideia
+   - Propriedade "Data": data de hoje
+   - Propriedade "Status": "Nova"
+4. Responda no Telegram: "Ideia registrada no Notion."</pre>
+  </div>
+  <h2>Exemplo concreto: resumo de tarefas pendentes no Telegram</h2>
+  <p>Se você usa o Notion para gerenciar tarefas, esta automação lê as tarefas pendentes e manda um resumo no Telegram toda manhã, junto com o resumo da agenda.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Todo dia às 7h15:
+1. Consulte a base de dados "Tarefas" no Notion
+   (ID: SEU_ID_AQUI)
+2. Filtre os registros onde Status = "Pendente"
+   e Data de entrega <= hoje + 3 dias
+3. Ordene por Data de entrega (mais próxima primeiro)
+4. Envie no Telegram:
+   "Tarefas próximas:
+   [Data] - [Título da tarefa]
+   (repita para cada tarefa)
+   Total: [N] tarefa(s) nos próximos 3 dias."
+5. Se não houver tarefas, envie: "Nenhuma tarefa
+   com prazo nos próximos 3 dias."</pre>
+  </div>
+  <h2>Como usar o Notion como central de registro das automações</h2>
+  <p>Uma prática útil é manter uma página no Notion chamada "Automações" onde cada automação tem um registro com: nome, descrição, MCPs usados, gatilho, última execução e status. O Claude Code pode atualizar esse registro automaticamente após cada execução, criando um histórico de funcionamento.</p>
+  <div class="tip-box">
+    <span class="lbl">Dica de organização</span>
+    <p>Crie uma base de dados no Notion com as colunas: Nome, Descrição, Gatilho, MCPs, Última execução, Status. Peça ao Claude Code para atualizar o campo "Última execução" e "Status" ao final de cada automação agendada.</p>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 18: CAPÍTULO 8 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">8</span><span class="chapter-label">Capítulo Oito</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Combinando ferramentas em automações completas</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">Cada ferramenta sozinha já é útil. Combinadas, elas formam rotinas que substituem várias tarefas manuais de uma vez.</div>
+  <h2>Como o Claude Code orquestra múltiplos MCPs</h2>
+  <p>Quando você dá uma instrução ao Claude Code que envolve mais de uma ferramenta, ele decide sozinho a ordem de execução. Primeiro lê os dados necessários, depois processa, depois escreve ou envia. Você não precisa coordenar essa sequência: basta descrever o resultado que quer.</p>
+  <p>O que muda em automações com múltiplos MCPs é a instrução: ela precisa ser mais detalhada, especificando de onde vêm os dados, o que fazer com eles e para onde vão. Quanto mais claro o fluxo na instrução, menos chance de o agente interpretar algo de forma inesperada.</p>
+  <h2>Exemplo completo: rotina matinal automática</h2>
+  <p>Esta é a automação mais completa do ebook. Ela roda todo dia às 7h, coleta informações de três fontes diferentes e entrega tudo em uma única mensagem no Telegram.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie uma automação agendada que rode todo dia às 7h:
+
+1. Leia os eventos do Google Calendar para hoje.
+   Se não houver eventos, use "Agenda livre".
+
+2. Leia os e-mails não lidos do Gmail recebidos
+   nas últimas 12 horas. Identifique os urgentes
+   (que precisam de resposta hoje). Se não houver
+   urgentes, use "Nenhum e-mail urgente".
+
+3. Consulte a base de dados "Tarefas" no Notion
+   (ID: SEU_ID_AQUI) e liste as tarefas com prazo
+   para hoje ou atrasadas. Se não houver, use
+   "Nenhuma tarefa para hoje".
+
+4. Monte uma mensagem no Telegram neste formato:
+   "Bom dia! [dia da semana], [data]
+
+   AGENDA DE HOJE:
+   [lista de eventos ou "Agenda livre"]
+
+   E-MAILS URGENTES:
+   [lista ou "Nenhum e-mail urgente"]
+
+   TAREFAS DO DIA:
+   [lista ou "Nenhuma tarefa para hoje"]"
+
+5. Envie a mensagem no chat ID: SEU_CHAT_ID</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 19: CAPÍTULO 8 cont. -->
+<div class="page">
+  <h2>Exemplo completo: captura de nota pelo Telegram com múltiplas ações</h2>
+  <p>Esta automação é acionada pelo Telegram. Você envia uma nota de texto descrevendo algo que precisa fazer ou lembrar, e o Claude Code cria o evento no Calendar, registra no Notion e confirma no Telegram.</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie um script que escute mensagens no Telegram.
+Quando receber uma mensagem que comece com "nota:",
+faça o seguinte com o texto após os dois pontos:
+
+1. Analise o texto e identifique:
+   - Se há uma data ou prazo mencionado
+   - Se é uma tarefa (algo a fazer) ou uma ideia
+   - O título resumido (máximo 60 caracteres)
+
+2. Se houver data/prazo identificado:
+   Crie um evento no Google Calendar com o título
+   resumido e a data encontrada.
+
+3. Crie uma nova página no Notion dentro de "Notas"
+   (ID: SEU_ID_AQUI) com:
+   - Título: título resumido
+   - Conteúdo: texto completo
+   - Tipo: "Tarefa" ou "Ideia" conforme identificado
+   - Data: hoje
+
+4. Responda no Telegram com um resumo do que foi feito:
+   "Nota registrada:
+   Notion: [título]
+   Calendar: [criado com data X / não criado]"</pre>
+  </div>
+  <h2>Como construir automações complexas passo a passo</h2>
+  <p>A abordagem mais eficiente para automações com múltiplos MCPs é construir em camadas. Primeiro, crie e teste a parte de leitura de dados. Depois, adicione o processamento. Por último, adicione o envio do resultado.</p>
+  <p>Se algo der errado em uma automação complexa, você vai saber exatamente em qual camada o problema está, porque cada uma foi testada separadamente antes de ser combinada.</p>
+  <h2>Como testar automações complexas antes de deixar rodando</h2>
+  <p>Antes de agendar uma automação para rodar sozinha, execute-a manualmente pelo terminal algumas vezes com dados reais. Verifique se o resultado no Telegram está formatado como esperado, se os dados no Sheets ou Notion foram registrados corretamente e se o comportamento quando não há dados (agenda vazia, sem e-mails) está correto.</p>
+  <div class="tip-box">
+    <span class="lbl">Checklist antes de agendar</span>
+    <p>Execute manualmente três vezes: uma com dados normais, uma com dados ausentes (agenda vazia, sem e-mails) e uma com dados em excesso (muitos eventos, muitos e-mails). Se as três funcionarem, a automação está pronta para ser agendada.</p>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 20: CAPÍTULO 9 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">9</span><span class="chapter-label">Capítulo Nove</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Rodando automações na nuvem</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">Automações agendadas só funcionam se o computador estiver ligado. Para rodar de madrugada ou quando você estiver fora, a nuvem resolve.</div>
+  <h2>Por que algumas automações precisam rodar na nuvem</h2>
+  <p>Automações acionadas pelo Telegram ou pelo terminal funcionam bem no computador local: você está presente, o computador está ligado. Mas automações agendadas para rodar às 7h da manhã, ou às 22h de domingo, dependem de o computador estar ligado naquele momento.</p>
+  <p>A solução é hospedar a automação em um servidor na nuvem, que fica ligado 24 horas por dia. O servidor executa o script no horário programado, independente do estado do seu computador.</p>
+  <h2>A plataforma recomendada: Railway</h2>
+  <p>O Railway é uma plataforma de hospedagem que tem um plano gratuito sem necessidade de cartão de crédito, interface simples e suporte a deploy direto do GitHub. Para automações pessoais leves, o plano gratuito é suficiente.</p>
+  <p>Outras opções gratuitas existem (Render, Fly.io, Google Cloud Run), mas o Railway tem a curva de aprendizado mais baixa para quem não tem experiência com infraestrutura.</p>
+  <h2>Como criar uma conta no Railway</h2>
+  <div class="checklist">
+    <span class="lbl">Passo a passo</span>
+    <div class="item"><div class="check"></div>Acesse railway.app e clique em "Start a New Project".</div>
+    <div class="item"><div class="check"></div>Faça login com sua conta do GitHub (necessário para o deploy).</div>
+    <div class="item"><div class="check"></div>Confirme o e-mail se solicitado.</div>
+    <div class="item"><div class="check"></div>Você está pronto para criar o primeiro projeto.</div>
+  </div>
+  <h2>Como pedir ao Claude Code para preparar a automação para o Railway</h2>
+  <p>O Claude Code pode preparar todos os arquivos necessários para o deploy. Você só precisa descrever o que a automação faz e pedir a preparação:</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Prepare a automação de resumo matinal para deploy
+no Railway. A automação roda todo dia às 7h, lê
+o Google Calendar e envia mensagem no Telegram.
+Crie:
+1. O arquivo principal da automação (main.py)
+2. Um arquivo requirements.txt com as dependências
+3. Um Procfile para o Railway
+4. Um arquivo .env.example com as variáveis
+   de ambiente necessárias (sem os valores reais)
+5. Um README.md explicando como fazer o deploy</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 21: CAPÍTULO 9 cont. -->
+<div class="page">
+  <h2>Como fazer o deploy no Railway via GitHub</h2>
+  <div class="checklist">
+    <span class="lbl">Passo a passo do deploy</span>
+    <div class="item"><div class="check"></div>Crie um repositório privado no GitHub com os arquivos preparados pelo Claude Code.</div>
+    <div class="item"><div class="check"></div>No Railway, clique em "New Project" e selecione "Deploy from GitHub repo".</div>
+    <div class="item"><div class="check"></div>Selecione o repositório da automação.</div>
+    <div class="item"><div class="check"></div>O Railway vai detectar o tipo de projeto automaticamente.</div>
+    <div class="item"><div class="check"></div>Antes de ativar, configure as variáveis de ambiente (próximo passo).</div>
+  </div>
+  <h2>Como configurar as credenciais no Railway</h2>
+  <p>As credenciais (tokens, chaves de API) nunca devem ficar no código. No Railway, elas são configuradas como variáveis de ambiente, acessíveis pelo script mas invisíveis para quem vê o repositório.</p>
+  <p>No painel do Railway, acesse o projeto, clique em "Variables" e adicione cada variável do seu .env.example com o valor real. O Railway injeta essas variáveis automaticamente quando o script roda.</p>
+  <div class="info-box">
+    <span class="lbl">Variáveis de ambiente típicas para as automações deste ebook</span>
+    <div class="item"><b>TELEGRAM_BOT_TOKEN:</b> token do seu bot do Telegram</div>
+    <div class="item"><b>TELEGRAM_CHAT_ID:</b> ID do seu chat pessoal</div>
+    <div class="item"><b>GOOGLE_CLIENT_ID:</b> Client ID do Google Cloud Console</div>
+    <div class="item"><b>GOOGLE_CLIENT_SECRET:</b> Client Secret do Google Cloud Console</div>
+    <div class="item"><b>GOOGLE_REFRESH_TOKEN:</b> Refresh token gerado na autorização OAuth</div>
+    <div class="item"><b>NOTION_API_KEY:</b> token da integração do Notion</div>
+    <div class="item"><b>ANTHROPIC_API_KEY:</b> chave da API do Claude (necessária para chamar o Claude Code na nuvem)</div>
+  </div>
+  <h2>Como monitorar se a automação está rodando</h2>
+  <p>O Railway tem um painel de logs onde você vê a saída de cada execução. Se a automação rodou com sucesso, você vai ver as mensagens de log. Se falhou, vai ver o erro.</p>
+  <p>Uma forma mais prática de monitorar é fazer a própria automação enviar uma mensagem de confirmação no Telegram ao final de cada execução bem-sucedida. Se você não receber a mensagem no horário esperado, sabe que algo deu errado.</p>
+  <h2>Quando manter local e quando subir para a nuvem</h2>
+  <div class="info-box">
+    <span class="lbl">Critério de decisão</span>
+    <div class="item"><b>Mantenha local:</b> automações acionadas manualmente pelo terminal, automações que você roda sob demanda, automações em fase de teste.</div>
+    <div class="item"><b>Suba para a nuvem:</b> automações agendadas para horários fixos, automações que precisam rodar quando o computador está desligado, o bot do Telegram que fica escutando mensagens continuamente.</div>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 22: CAPÍTULO 10 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">10</span><span class="chapter-label">Capítulo Dez</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Automações prontas para usar</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p>Esta é uma referência rápida. Para cada automação: o que ela faz, quais MCPs usa e a instrução exata para o Claude Code.</p>
+
+  <h2>1. Resumo diário da agenda no Telegram</h2>
+  <p><strong>O que faz:</strong> todo dia às 7h, lê os eventos do Google Calendar e envia um resumo formatado no Telegram.<br>
+  <strong>MCPs:</strong> google-calendar, telegram</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie uma automação agendada para todo dia às 7h que leia
+os eventos do Google Calendar para o dia atual e envie
+no Telegram (chat ID: SEU_ID) uma mensagem com: dia da
+semana, data, lista de eventos no formato HH:MM - Título,
+e total de compromissos. Se não houver eventos, envie
+"Agenda livre hoje."</pre>
+  </div>
+
+  <h2>2. Resumo dos e-mails não lidos com prioridade</h2>
+  <p><strong>O que faz:</strong> lê os e-mails não lidos, classifica por urgência e envia resumo no Telegram.<br>
+  <strong>MCPs:</strong> gmail, telegram</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Leia todos os e-mails não lidos do Gmail. Classifique
+em URGENTE (resposta hoje), IMPORTANTE (atenção em breve)
+e INFORMATIVO (newsletters e avisos). Envie no Telegram
+(chat ID: SEU_ID) um resumo com remetente e assunto dos
+urgentes e importantes, e apenas a contagem dos
+informativos.</pre>
+  </div>
+
+  <h2>3. Registro de gastos por mensagem no Telegram</h2>
+  <p><strong>O que faz:</strong> quando você envia um gasto pelo Telegram, registra automaticamente na planilha.<br>
+  <strong>MCPs:</strong> telegram, google-sheets</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie um script que escute o Telegram. Quando receber
+uma mensagem descrevendo um gasto (ex: "gastei 50 no
+mercado"), extraia valor, categoria e descrição, e
+registre uma nova linha na planilha (ID: SEU_ID) com
+data, categoria, descrição e valor. Confirme no Telegram.</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 10</div></div>
+</div>
+
+<!-- PAGE 23: CAPÍTULO 10 cont. -->
+<div class="page">
+  <h2>4. Captura de ideias pelo Telegram direto no Notion</h2>
+  <p><strong>O que faz:</strong> mensagens que começam com "ideia:" viram páginas no Notion automaticamente.<br>
+  <strong>MCPs:</strong> telegram, notion</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie um script que escute o Telegram. Quando receber
+uma mensagem começando com "ideia:", crie uma página
+no Notion dentro de "Ideias" (ID: SEU_ID) com título
+(primeiros 60 caracteres), conteúdo completo e data
+de hoje. Confirme no Telegram.</pre>
+  </div>
+
+  <h2>5. Relatório semanal de produtividade</h2>
+  <p><strong>O que faz:</strong> toda segunda às 8h, combina dados do Calendar, Sheets e Notion em um relatório semanal.<br>
+  <strong>MCPs:</strong> google-calendar, google-sheets, notion, telegram</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Toda segunda às 8h: leia os eventos do Google Calendar
+da semana anterior e conte por categoria (trabalho,
+pessoal, saúde). Leia a planilha de gastos (ID: SEU_ID)
+e some por categoria. Leia as tarefas concluídas no
+Notion (ID: SEU_ID) da semana. Envie no Telegram um
+relatório com: compromissos por categoria, total gasto
+por categoria e tarefas concluídas.</pre>
+  </div>
+
+  <h2>6. Lembrete de tarefas pendentes do Notion toda manhã</h2>
+  <p><strong>O que faz:</strong> todo dia às 7h15, lista as tarefas com prazo para hoje ou atrasadas.<br>
+  <strong>MCPs:</strong> notion, telegram</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Todo dia às 7h15: consulte a base de dados "Tarefas"
+no Notion (ID: SEU_ID), filtre tarefas com Status =
+"Pendente" e prazo até hoje + 3 dias, ordene por prazo
+e envie no Telegram com data e título de cada tarefa.
+Se não houver, envie "Nenhuma tarefa com prazo próximo."</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 10</div></div>
+</div>
+
+<!-- PAGE 24: CAPÍTULO 10 cont. 2 -->
+<div class="page">
+  <h2>7. Criação de evento no Calendar por mensagem no Telegram</h2>
+  <p><strong>O que faz:</strong> você descreve um evento em linguagem natural no Telegram e ele é criado no Calendar.<br>
+  <strong>MCPs:</strong> telegram, google-calendar</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Crie um script que escute o Telegram. Quando receber
+uma mensagem começando com "evento:", interprete o
+texto como descrição de um evento (data, horário,
+título, duração). Crie o evento no Google Calendar
+com as informações identificadas. Confirme no Telegram
+com: título, data e horário do evento criado.</pre>
+  </div>
+
+  <h2>8. Resumo semanal de e-mails importantes</h2>
+  <p><strong>O que faz:</strong> toda sexta às 17h, lê os e-mails da semana e gera um resumo dos mais relevantes.<br>
+  <strong>MCPs:</strong> gmail, telegram</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>Toda sexta às 17h: leia os e-mails recebidos nos
+últimos 5 dias no Gmail. Filtre os que não são
+newsletters ou notificações automáticas. Para cada
+e-mail relevante, extraia remetente, assunto e um
+resumo de uma linha. Envie no Telegram uma lista
+com os 10 e-mails mais relevantes da semana,
+ordenados por data.</pre>
+  </div>
+
+  <div class="tip-box">
+    <span class="lbl">Como usar este capítulo</span>
+    <p>Copie a instrução, substitua os IDs pelos seus (chat ID do Telegram, IDs das planilhas e bases de dados do Notion) e cole no Claude Code. Cada instrução foi escrita para funcionar diretamente, sem adaptações além dos IDs.</p>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 10</div></div>
+</div>
+
+<!-- PAGE 25: CAPÍTULO 11 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">11</span><span class="chapter-label">Capítulo Onze</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Quando algo der errado</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="opening">Automações quebram. Saber diagnosticar o problema é tão importante quanto saber criar a automação.</div>
+  <h2>Os erros mais comuns em automações com MCP</h2>
+  <div class="info-box">
+    <span class="lbl">Erros frequentes e o que significam</span>
+    <div class="item"><b>Erro de autenticação (401 Unauthorized):</b> o token ou a chave de API expirou ou está incorreto. Solução: regenerar as credenciais e atualizar o .mcp.json.</div>
+    <div class="item"><b>MCP não encontrado:</b> o servidor MCP não iniciou. Verifique se o nome no .mcp.json está correto e se o pacote está instalado.</div>
+    <div class="item"><b>Permissão negada (403 Forbidden):</b> as credenciais estão corretas, mas não têm permissão para a ação solicitada. Verifique os escopos de autorização.</div>
+    <div class="item"><b>Timeout:</b> a operação demorou demais. Pode ser instabilidade na API da ferramenta. Tente novamente em alguns minutos.</div>
+    <div class="item"><b>Dados não encontrados:</b> o ID da planilha, base de dados ou chat está errado. Verifique os IDs no CLAUDE.md.</div>
+  </div>
+  <h2>Como descrever um erro ao Claude Code para que ele corrija</h2>
+  <p>Quando uma automação falha, copie a mensagem de erro completa e cole no Claude Code junto com uma descrição do que a automação deveria fazer. Quanto mais contexto você der, mais rápido o agente identifica o problema.</p>
+  <div class="code-box">
+    <span class="lbl">Modelo de descrição de erro</span>
+    <pre>A automação de resumo matinal parou de funcionar.
+O erro que aparece é:
+[cole aqui a mensagem de erro completa]
+
+O que a automação deveria fazer:
+- Rodar todo dia às 7h
+- Ler o Google Calendar
+- Enviar mensagem no Telegram
+
+O que aconteceu antes de parar:
+- Funcionou normalmente por 2 semanas
+- Parou ontem sem mudanças no código
+
+Por favor, identifique o problema e corrija.</pre>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 11</div></div>
+</div>
+
+<!-- PAGE 26: CAPÍTULO 11 cont. -->
+<div class="page">
+  <h2>O que fazer quando um MCP perde a autenticação</h2>
+  <p>Tokens do Google expiram periodicamente. O refresh token dura mais, mas também pode ser revogado se você alterar a senha da conta ou revogar o acesso manualmente no painel do Google. Quando isso acontece, o MCP retorna erro 401.</p>
+  <p>A solução é refazer o fluxo de autorização OAuth para gerar um novo refresh token. Peça ao Claude Code:</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre>O MCP do Google Calendar está retornando erro 401.
+Me guie pelo processo de renovar o refresh token
+usando as credenciais que já tenho no .mcp.json
+(Client ID e Client Secret).</pre>
+  </div>
+  <p>Para o Telegram, o token do bot não expira automaticamente, mas pode ser revogado se você pedir ao BotFather. Se isso acontecer, gere um novo token com o comando /token no BotFather e atualize o .mcp.json.</p>
+  <h2>Como testar uma automação isoladamente</h2>
+  <p>Quando uma automação com múltiplos MCPs falha, o primeiro passo é isolar qual parte está com problema. Teste cada MCP separadamente antes de testar a automação completa:</p>
+  <div class="code-box">
+    <span class="lbl">Instrução ao Claude Code</span>
+    <pre><span class="comment"># Teste isolado do Google Calendar</span>
+Use apenas o MCP do Google Calendar e liste
+os eventos de hoje. Não use nenhum outro MCP.
+
+<span class="comment"># Teste isolado do Telegram</span>
+Use apenas o MCP do Telegram e envie a mensagem
+"teste" no chat ID SEU_ID. Não use nenhum outro MCP.</pre>
+  </div>
+  <p>Se cada MCP funcionar isoladamente, o problema está na lógica de combinação. Se um MCP falhar isoladamente, o problema está nas credenciais ou configuração daquele MCP específico.</p>
+  <h2>Como desativar uma automação que está se comportando de forma inesperada</h2>
+  <p>Se uma automação agendada está enviando mensagens erradas, registrando dados incorretos ou executando ações não esperadas, a forma mais rápida de parar é remover ou comentar o cron job que a aciona. No Railway, você pode pausar o serviço diretamente pelo painel sem precisar deletar o projeto.</p>
+  <div class="warn-box">
+    <span class="lbl">Regra de segurança</span>
+    <p>Nunca deixe uma automação que acessa Gmail ou cria eventos no Calendar rodando sem ter testado o comportamento com dados ausentes ou inesperados. Um loop mal configurado pode criar dezenas de eventos ou enviar dezenas de mensagens antes de você perceber.</p>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Capítulo 11</div></div>
+</div>
+
+<!-- PAGE 27: CONCLUSÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="label">Conclusão</div>
+    <h1 class="chapter-title" style="margin-top:10px;">O que vem a seguir</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p>Você chegou ao final deste ebook com um conjunto concreto de habilidades. Sabe como configurar MCPs para cinco ferramentas diferentes, como descrever automações ao Claude Code de forma que ele entenda, como combinar múltiplas ferramentas em uma única rotina e como hospedar automações na nuvem para que rodem sem depender do seu computador.</p>
+  <p>Mais do que as automações específicas que você aprendeu, o que importa é o padrão de raciocínio: identificar uma tarefa repetitiva, definir o gatilho e a ação, descrever com precisão ao Claude Code e testar antes de deixar rodando. Esse padrão funciona para qualquer automação que você queira criar a partir de agora.</p>
+
+  <h2>Como pensar nas próximas automações</h2>
+  <p>O melhor ponto de partida para a próxima automação é a sua própria rotina. Observe durante uma semana quais tarefas você faz de forma mecânica, sem pensar. Essas são as candidatas. Depois, aplique o filtro: é repetitiva, previsível e chata? Se sim, vale automatizar.</p>
+  <p>Não tente criar a automação perfeita de primeira. Comece com a versão mais simples que resolve o problema. Depois de ela estar funcionando, adicione complexidade gradualmente: mais fontes de dados, mais ações, mais condições. Automações evoluem com o uso.</p>
+
+  <h2>O ecossistema de MCPs está crescendo</h2>
+  <p>Quando este ebook foi escrito, os MCPs cobertos aqui representavam uma fração do que está disponível. Novos servidores MCP surgem toda semana: para Slack, Spotify, GitHub, Trello, Linear, Airtable, WhatsApp Business, sistemas de CRM e dezenas de outras ferramentas.</p>
+  <p>O repositório oficial de MCPs em modelcontextprotocol.io lista os servidores disponíveis e mantidos pela comunidade. Vale visitar periodicamente para descobrir novas integrações que podem se encaixar na sua rotina.</p>
+
+  <h2>O próximo passo natural</h2>
+  <p>O próximo passo natural é combinar as automações individuais que você criou em rotinas completas. A rotina matinal que você montou no Capítulo 8 é um exemplo: ela não é uma automação, é uma orquestração de várias automações rodando em sequência.</p>
+  <p>À medida que você acumula automações funcionando, começa a ver conexões entre elas. O registro de gastos no Sheets alimenta o relatório semanal. As tarefas do Notion aparecem no resumo matinal. Os e-mails do Gmail viram eventos no Calendar. Cada automação nova se conecta às que já existem, e o sistema como um todo fica mais útil do que a soma das partes.</p>
+  <p>Esse é o ponto onde a automação pessoal deixa de ser uma coleção de scripts e passa a ser uma infraestrutura de produtividade que trabalha por você enquanto você faz outras coisas.</p>
+
+  <div class="quote-box">
+    <p>"A melhor automação é aquela que você esquece que existe, porque simplesmente funciona."</p>
+    <div class="author">Princípio de automações pessoais</div>
+  </div>
+  <div class="footer"><div class="left">Piloto Automático</div><div class="right">Conclusão</div></div>
+</div>
+
+</body>
+</html>

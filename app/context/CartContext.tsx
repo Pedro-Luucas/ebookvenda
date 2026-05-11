@@ -7,7 +7,7 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import type { Product } from "@/app/data/products";
+import type { Product } from "@/app/types/product";
 
 export interface CartItem {
   product: Product;

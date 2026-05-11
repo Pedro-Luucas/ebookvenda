@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<!--
+  RESUMO PARA IA — Claude Code: O Guia Completo para Criar Softwares Sem Saber Programar
+  ========================================================================================
+  Foco: uso do Claude Code por pessoas sem conhecimento de programação.
+  Capítulos: Introdução, O que é Claude Code, Instalação, Interface, Leitura de Projetos,
+  Criando Software, Skills, MCP, Integrações, Segurança, Limites/Custos, Fluxo Completo, Conclusão.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Claude Code: O Guia Completo para Criar Softwares Sem Saber Programar</title>
+<style>
+  :root{
+    --orange:#D97757;
+    --orange-light:#E8956D;
+    --orange-dark:#B85C3A;
+    --orange-bg:#FDF4F0;
+    --clay:#C96442;
+    --sand:#F5E6D8;
+    --black:#0D0D0D;
+    --black-rich:#1A0F0A;
+    --gray-text:#2D2420;
+    --gray-light:#F7F3F0;
+    --gray-mid:#E0D4CC;
+    --white:#FFFFFF;
+    --accent:#8B4513;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#e5e5e5;font-family:Arial,sans-serif;color:var(--gray-text);}
+  .page{
+    width:794px;
+    min-height:1123px;
+    margin:0 auto 32px;
+    background:white;
+    padding:70px 80px;
+    position:relative;
+    box-shadow:0 4px 24px rgba(0,0,0,0.08);
+    overflow:hidden;
+  }
+  h1.chapter-title{font-family:Georgia,serif;font-size:36px;font-weight:900;color:#0D0D0D;line-height:1.2;}
+  h2{font-family:Georgia,serif;font-size:22px;font-weight:bold;color:#B85C3A;margin:32px 0 14px;}
+  h3{font-family:Arial,sans-serif;font-size:14px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#0D0D0D;margin:24px 0 10px;}
+  p{font-family:Arial,sans-serif;font-size:16px;line-height:1.9;color:#2D2420;margin-bottom:16px;}
+  em{font-style:italic;}
+  strong{color:#0D0D0D;}
+  .label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#D97757;font-weight:bold;}
+
+  .chapter-header{padding-top:60px;border-top:3px solid #D97757;margin-bottom:24px;}
+  .chapter-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#D97757,#B85C3A);color:white;border-radius:50%;font-family:Georgia,serif;font-weight:bold;font-size:18px;margin-right:14px;vertical-align:middle;}
+  .chapter-label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#D97757;font-weight:bold;vertical-align:middle;}
+  .deco-line{width:60px;height:3px;background:linear-gradient(90deg,#D97757,#8B4513);margin:16px 0 28px;}
+  .opening{font-family:Georgia,serif;font-style:italic;font-size:18px;color:#2D2420;border-left:3px solid #E8956D;padding-left:16px;margin-bottom:28px;line-height:1.7;}
+
+  .quote-box{background:#FDF4F0;border-left:4px solid #D97757;padding:24px 28px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .quote-box p{font-family:Georgia,serif;font-style:italic;font-size:18px;color:#B85C3A;margin-bottom:10px;}
+  .quote-box .author{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#D97757;font-weight:bold;}
+
+  .code-box{background:#1A0F0A;border-left:4px solid #D97757;border-radius:0 8px 8px 0;padding:24px 28px;margin:28px 0;}
+  .code-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#E8956D;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .code-box pre{font-family:'Courier New',monospace;font-size:14px;color:#F5E6D8;line-height:1.8;white-space:pre-wrap;}
+  .code-box .comment{color:#8B6B5A;font-style:italic;}
+  .code-box .cmd{color:#E8956D;font-weight:bold;}
+
+  .info-box{background:#F7F3F0;border:1px solid #E0D4CC;border-top:3px solid #D97757;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .info-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#D97757;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .info-box .item{margin-bottom:12px;font-size:14px;color:#2D2420;line-height:1.6;}
+  .info-box .item b{color:#B85C3A;}
+
+  .tip-box{border:1px solid #E8956D;border-top:3px solid #D97757;border-radius:8px;padding:24px 28px;margin:28px 0;background:white;}
+  .tip-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#D97757;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .tip-box p{font-size:15px;color:#2D2420;}
+
+  .checklist{background:#F7F3F0;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .checklist .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#D97757;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:16px;}
+  .checklist .item{display:flex;align-items:flex-start;margin-bottom:12px;font-size:14px;color:#2D2420;line-height:1.6;}
+  .checklist .check{flex-shrink:0;width:18px;height:18px;border:2px solid #D97757;border-radius:3px;margin-right:14px;margin-top:2px;background:white;}
+
+  .warn-box{background:#FDF4F0;border-left:4px solid #C96442;padding:20px 24px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .warn-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#C96442;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .warn-box p{font-size:14px;color:#2D2420;margin-bottom:8px;}
+
+  .badge{display:inline-block;background:linear-gradient(135deg,#D97757,#B85C3A);color:white;border-radius:6px;padding:4px 14px;font-size:13px;font-weight:bold;font-family:Arial,sans-serif;}
+
+  .footer{position:absolute;bottom:28px;left:80px;right:80px;border-top:0.5px solid #E0D4CC;padding-top:10px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+  .footer .left{color:#D97757;font-weight:bold;}
+  .footer .right{color:#8B4513;font-weight:bold;}
+
+  /* CAPA */
+  .cover{background:linear-gradient(135deg,#0D0D0D 0%,#1A0F0A 50%,#2D1810 100%);color:white;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;position:relative;overflow:hidden;}
+  .cover-bg{position:absolute;inset:0;opacity:0.07;}
+  .cover-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:24px;padding-top:50px;}
+  .cover-badge-top{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#E8956D;font-weight:bold;}
+  .cover-title{font-family:Georgia,serif;font-size:68px;font-weight:bold;color:white;line-height:0.95;letter-spacing:-1px;}
+  .cover-title .orange{color:#D97757;display:block;}
+  .cover-subtitle{font-family:Georgia,serif;font-style:italic;font-size:20px;color:#E8956D;margin-top:6px;}
+  .cover-line{width:120px;height:3px;background:linear-gradient(90deg,#D97757,#8B4513);margin:16px auto;}
+  .cover-desc{font-family:Georgia,serif;font-style:italic;font-size:16px;color:#C4A090;max-width:480px;line-height:1.7;}
+  .cover-bottom{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:40px;}
+  .cover-year{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:5px;color:#D97757;font-weight:bold;}
+
+  /* SUMARIO */
+  .toc-list{margin-top:30px;}
+  .toc-item{display:flex;align-items:center;padding:14px 0;border-bottom:1px dashed #E0D4CC;}
+  .toc-num{flex-shrink:0;width:32px;height:32px;background:linear-gradient(135deg,#D97757,#B85C3A);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:bold;font-size:14px;margin-right:18px;}
+  .toc-name{flex-grow:1;font-family:Georgia,serif;font-size:16px;color:#0D0D0D;}
+  .toc-dot{color:#D97757;font-size:13px;margin:0 6px;}
+
+  @media print {
+    body{background:white;}
+    .page{margin:0;box-shadow:none;page-break-after:always;}
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: CAPA -->
+<div class="page cover">
+  <div class="cover-bg">
+    <svg viewBox="0 0 794 1123" preserveAspectRatio="none" width="100%" height="100%">
+      <defs>
+        <pattern id="grid" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#D97757" stroke-width="0.6"/>
+        </pattern>
+      </defs>
+      <rect width="794" height="1123" fill="url(#grid)"/>
+    </svg>
+  </div>
+  <div class="cover-content">
+    <div class="cover-badge-top">Guia Completo · 2026</div>
+    <svg width="160" height="160" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="logoG" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#D97757"/>
+          <stop offset="1" stop-color="#8B4513"/>
+        </linearGradient>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="none" stroke="#D97757" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="100" cy="100" r="72" fill="none" stroke="#E8956D" stroke-width="0.6" opacity="0.5"/>
+      <!-- Terminal icon -->
+      <rect x="40" y="55" width="120" height="90" rx="8" fill="none" stroke="url(#logoG)" stroke-width="2.5"/>
+      <rect x="40" y="55" width="120" height="22" rx="8" fill="url(#logoG)" opacity="0.9"/>
+      <circle cx="56" cy="66" r="4" fill="#1A0F0A"/>
+      <circle cx="70" cy="66" r="4" fill="#1A0F0A"/>
+      <circle cx="84" cy="66" r="4" fill="#1A0F0A"/>
+      <!-- Prompt -->
+      <text x="52" y="100" font-family="Courier New" font-size="14" fill="#D97757" font-weight="bold">$</text>
+      <line x1="64" y1="100" x2="100" y2="100" stroke="#E8956D" stroke-width="2"/>
+      <rect x="102" y="90" width="3" height="14" fill="#D97757" opacity="0.9"/>
+      <text x="52" y="120" font-family="Courier New" font-size="11" fill="#8B6B5A">claude --help</text>
+      <text x="52" y="136" font-family="Courier New" font-size="11" fill="#C4A090">Pronto.</text>
+    </svg>
+    <div class="cover-title">CLAUDE<span class="orange">CODE</span></div>
+    <div class="cover-subtitle">O Guia Completo</div>
+    <div class="cover-line"></div>
+    <div class="cover-desc">Como criar softwares reais, sem saber programar, usando inteligência artificial como parceira de desenvolvimento.</div>
+  </div>
+  <div class="cover-bottom">
+    <svg width="120" height="20" viewBox="0 0 120 20">
+      <circle cx="20" cy="10" r="4" fill="#D97757"/>
+      <circle cx="40" cy="10" r="3" fill="#8B4513"/>
+      <line x1="50" y1="10" x2="70" y2="10" stroke="#E8956D" stroke-width="1"/>
+      <circle cx="80" cy="10" r="3" fill="#8B4513"/>
+      <circle cx="100" cy="10" r="4" fill="#D97757"/>
+    </svg>
+    <div class="cover-year">Edição 2026</div>
+  </div>
+</div>
+
+<!-- PAGE 2: SUMÁRIO -->
+<div class="page">
+  <div style="padding-top:20px;">
+    <div class="label">Conteúdo do Ebook</div>
+    <h1 class="chapter-title" style="margin-top:8px;font-size:38px;">Sumário</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="toc-list">
+    <div class="toc-item"><div class="toc-num">01</div><div class="toc-name">O que é o Claude Code</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">02</div><div class="toc-name">Como instalar e configurar o Claude Code</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">03</div><div class="toc-name">A interface do Claude Code</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">04</div><div class="toc-name">Como o Claude Code lê e entende seu projeto</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">05</div><div class="toc-name">Criando software do zero com Claude Code</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">06</div><div class="toc-name">Skills: expandindo as capacidades do agente</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">07</div><div class="toc-name">MCP: conectando o Claude Code ao mundo real</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">08</div><div class="toc-name">Integrações e o ecossistema do Claude Code</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">09</div><div class="toc-name">Segurança, permissões e boas práticas</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">10</div><div class="toc-name">Limites, custos e o que esperar</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">11</div><div class="toc-name">Fluxo de trabalho completo para não programadores</div><div class="toc-dot">◆</div></div>
+  </div>
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Sumário</div></div>
+</div>
+
+<!-- PAGE 3: INTRODUÇÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="label">Introdução</div>
+    <h1 class="chapter-title" style="margin-top:10px;">O Desenvolvimento de Software Mudou. Você Não Precisa Ficar Para Trás.</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Por décadas, criar um software exigiu anos de estudo, domínio de linguagens de programação e uma equipe técnica cara. Isso mudou. Não de forma gradual: de forma abrupta.</p>
+
+  <p>Durante muito tempo, a barreira entre uma ideia de negócio e o software que a executa foi o código. Você podia ter clareza total sobre o que queria construir, um mercado esperando, recursos disponíveis, e ainda assim precisava de um desenvolvedor para transformar sua visão em realidade. Essa dependência moldou como empresas eram criadas, quanto custavam e quem podia criá-las.</p>
+
+  <p>A inteligência artificial mudou essa equação. Não porque os computadores passaram a "pensar" no sentido humano, mas porque modelos de linguagem treinados em bilhões de linhas de código aprenderam a escrever, revisar, depurar e organizar software com uma competência que, em muitos contextos, supera a de desenvolvedores experientes. O que antes levava semanas pode ser feito em horas. O que exigia uma equipe pode ser feito por uma pessoa com as ferramentas certas.</p>
+
+  <p>O Claude Code é uma dessas ferramentas. Mas ele não é um chatbot onde você cola uma pergunta e recebe uma resposta. É um agente de desenvolvimento: um programa que lê seu projeto inteiro, entende o que você quer construir, escreve o código, executa testes, corrige erros e itera, tudo dentro do seu computador, com você supervisionando cada passo.</p>
+
+  <p>Este ebook foi escrito para pessoas que têm ideias de software mas não sabem programar. Você vai aprender o que é o Claude Code, como instalá-lo, como dar instruções eficazes, como usar recursos avançados como Skills e MCP, como manter seu projeto seguro e como trabalhar de forma sustentável ao longo do tempo. Ao final, você terá o mapa completo para criar sistemas reais, sejam ERPs, plataformas SaaS, automações ou ferramentas internas, sem precisar aprender a programar do zero.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Introdução</div></div>
+</div>
+
+<!-- PAGE 4: CAPÍTULO 1 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">1</span><span class="chapter-label">Capítulo Um</span>
+    <h1 class="chapter-title" style="margin-top:16px;">O que é o Claude Code</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Claude Code não é um assistente que responde perguntas. É um agente que age: lê arquivos, escreve código, executa comandos e itera até o resultado estar correto.</p>
+
+  <h2>Definição clara: o que é e o que não é</h2>
+  <p>O Claude Code é uma ferramenta de linha de comando desenvolvida pela Anthropic, a mesma empresa que criou o modelo de inteligência artificial Claude. Ele roda no seu computador, dentro de um terminal, e tem acesso direto aos arquivos do seu projeto. Isso significa que ele não apenas sugere código: ele lê o que já existe, entende a estrutura do projeto, escreve novos arquivos, modifica os existentes e executa comandos no sistema.</p>
+  <p>O que ele não é: não é um chatbot de perguntas e respostas. Não é um gerador de código que você copia e cola manualmente. Não é uma ferramenta que trabalha em isolamento, sem ver o contexto do seu projeto. E não é autônomo no sentido de que age sem você saber: por padrão, ele pede confirmação antes de executar ações que modificam arquivos ou rodam comandos no sistema.</p>
+
+  <h2>A diferença entre Claude e Claude Code</h2>
+  <p>Claude é o modelo de linguagem da Anthropic, acessível pelo site claude.ai. Você abre o navegador, digita uma pergunta, recebe uma resposta. É útil para redigir textos, explicar conceitos, resumir documentos. Mas quando você fecha a janela, o Claude não sabe nada sobre o que você estava fazendo antes. Cada conversa começa do zero.</p>
+  <p>O Claude Code é diferente em três aspectos fundamentais. Primeiro, ele tem acesso ao seu sistema de arquivos: pode ler qualquer arquivo do seu projeto, entender como as peças se conectam e escrever código que se encaixa no que já existe. Segundo, ele pode executar comandos no terminal, como instalar dependências, rodar testes ou iniciar um servidor. Terceiro, ele mantém o contexto do projeto ao longo de uma sessão de trabalho, o que significa que ele "lembra" o que foi feito e pode tomar decisões coerentes com o estado atual do código.</p>
+
+  <h2>O conceito de agente</h2>
+  <p>A palavra "agente" tem um significado técnico específico aqui. Um agente é um sistema que percebe o ambiente, toma decisões e age para atingir um objetivo. No caso do Claude Code, o ambiente é o seu projeto: os arquivos, a estrutura de pastas, o histórico de mudanças. O objetivo é o que você descreve em linguagem natural. As ações são as operações que ele executa: ler arquivos, escrever código, rodar comandos.</p>
+  <p>Na prática, isso significa que quando você diz "crie uma página de login com validação de email e senha", o Claude Code não apenas escreve um bloco de código genérico. Ele primeiro lê os arquivos existentes para entender qual tecnologia o projeto usa, qual é o padrão de organização das pastas, como outros componentes foram escritos. Depois escreve o código novo de forma consistente com o que já existe. Se encontrar um erro durante a execução, ele analisa a mensagem de erro e tenta corrigir. Esse ciclo de percepção, decisão e ação é o que define um agente.</p>
+
+  <div class="quote-box">
+    <p>"A diferença entre pedir código a um chatbot e usar o Claude Code é a diferença entre pedir uma planta baixa e contratar um arquiteto que conhece o terreno."</p>
+    <div class="author">Conceito central do desenvolvimento agêntico</div>
+  </div>
+
+  <h2>Por que isso importa para quem não sabe programar</h2>
+  <p>Quando você não sabe programar, o maior obstáculo não é a falta de criatividade ou de ideias. É a distância entre o que você quer e o que você consegue expressar em código. Um chatbot reduz essa distância parcialmente: você descreve, ele gera código, você tenta usar. Mas sem saber programar, você não consegue avaliar se o código está correto, não sabe onde colocá-lo, não entende por que ele não funciona quando algo dá errado.</p>
+  <p>O Claude Code reduz essa distância de forma mais completa porque ele opera no nível do projeto, não do trecho de código. Você não precisa saber onde colocar o arquivo: ele sabe. Você não precisa entender a mensagem de erro: ele lê, interpreta e corrige. Você não precisa conhecer a sintaxe da linguagem: ele escreve código correto e consistente com o restante do projeto. O que você precisa saber é descrever o que quer com clareza suficiente para que o agente entenda a intenção.</p>
+  <p>Isso não significa que você pode usar o Claude Code sem nenhum envolvimento. Você ainda precisa revisar o que foi feito, testar se o resultado corresponde ao que esperava e tomar decisões sobre a direção do projeto. Mas o trabalho técnico de transformar intenção em código funcional passa a ser responsabilidade do agente, não sua.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 1</div></div>
+</div>
+
+<!-- PAGE 5: CAPÍTULO 2 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">2</span><span class="chapter-label">Capítulo Dois</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Como instalar e configurar o Claude Code</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">A instalação do Claude Code leva menos de dez minutos. O que leva mais tempo é entender o que cada peça faz, e por isso este capítulo explica cada etapa com contexto.</p>
+
+  <h2>Pré-requisitos: o que você precisa ter antes</h2>
+  <p>O Claude Code roda em cima do Node.js, uma plataforma que permite executar JavaScript fora do navegador. Você não precisa saber o que isso significa em detalhes: basta instalar. Acesse nodejs.org e baixe a versão LTS (Long Term Support), que é a versão estável recomendada para uso geral. Instale normalmente, como qualquer programa.</p>
+  <p>Você também precisa de um terminal. No Windows, use o PowerShell ou o Terminal do Windows. No macOS, use o Terminal ou o iTerm2. No Linux, qualquer emulador de terminal funciona. O terminal é a interface onde você vai digitar comandos e ver as respostas do Claude Code. Se nunca usou um terminal antes, não se preocupe: os comandos que você vai usar são poucos e simples.</p>
+
+  <h2>Instalação passo a passo</h2>
+  <p>Com o Node.js instalado, abra o terminal e digite o seguinte comando:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">npm install -g @anthropic-ai/claude-code</span></pre>
+  </div>
+
+  <p>O <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">npm</code> é o gerenciador de pacotes do Node.js. O <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">-g</code> significa que o pacote será instalado globalmente, disponível em qualquer pasta do seu computador. Aguarde a instalação terminar. Quando o terminal voltar ao prompt normal, a instalação foi concluída.</p>
+  <p>Para confirmar que funcionou, digite:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">claude --version</span></pre>
+  </div>
+
+  <p>Se aparecer um número de versão, está tudo certo.</p>
+
+  <h2>Primeiro acesso e autenticação</h2>
+  <p>Na primeira vez que você rodar o Claude Code dentro de uma pasta de projeto, ele vai pedir autenticação. Você pode autenticar de duas formas: com uma conta no claude.ai (plano Pro ou acima) ou com uma chave de API da Anthropic. Para a maioria dos usuários iniciantes, a autenticação via conta claude.ai é mais simples. Digite <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">claude</code> no terminal e siga as instruções que aparecem na tela. O processo abre o navegador para você fazer login.</p>
+
+  <h2>Estrutura básica de um projeto</h2>
+  <p>O Claude Code funciona dentro de uma pasta de projeto. Antes de começar qualquer trabalho, crie uma pasta para o seu projeto e navegue até ela no terminal:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">mkdir meu-projeto</span>
+<span class="cmd">cd meu-projeto</span>
+<span class="cmd">claude</span></pre>
+  </div>
+
+  <p>A partir desse momento, o Claude Code está ativo dentro da pasta <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">meu-projeto</code> e pode ler e escrever arquivos nela.</p>
+
+  <h2>O arquivo CLAUDE.md: instruções permanentes para o agente</h2>
+  <p>O CLAUDE.md é um arquivo de texto que você cria na raiz do seu projeto. Ele funciona como um briefing permanente para o Claude Code: tudo que você escrever nele será lido pelo agente no início de cada sessão. É onde você descreve o que o projeto faz, quais tecnologias usa, quais convenções devem ser seguidas e quais comportamentos você espera.</p>
+  <p>Por exemplo, se o seu projeto é um sistema de gestão em português, você pode escrever no CLAUDE.md que toda a interface deve estar em português, que os preços são armazenados em centavos e que o banco de dados usa PostgreSQL. O agente vai respeitar essas instruções em todas as sessões, sem que você precise repetir a cada vez.</p>
+  <p>Criar um CLAUDE.md bem escrito é um dos investimentos mais importantes que você pode fazer no início de um projeto. O capítulo 11 mostra como escrever um CLAUDE.md eficaz do zero.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 2</div></div>
+</div>
+
+<!-- PAGE 6: CAPÍTULO 3 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">3</span><span class="chapter-label">Capítulo Três</span>
+    <h1 class="chapter-title" style="margin-top:16px;">A interface do Claude Code</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O terminal parece intimidador para quem nunca usou. Mas a interface do Claude Code é, na prática, uma conversa: você escreve o que quer, ele responde e age.</p>
+
+  <h2>O terminal como interface principal</h2>
+  <p>Diferente de ferramentas com botões e menus visuais, o Claude Code opera no terminal. Isso não é uma limitação: é uma escolha deliberada. O terminal permite que o agente execute qualquer operação no sistema, leia qualquer arquivo e rode qualquer comando, sem as restrições de uma interface gráfica. Para você, usuário, isso significa que a interação acontece por texto: você digita uma instrução, pressiona Enter e o agente trabalha.</p>
+  <p>Quando você inicia o Claude Code com o comando <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">claude</code>, aparece um prompt interativo. É ali que você vai digitar suas instruções. O agente responde no mesmo terminal, mostrando o que está fazendo, quais arquivos está lendo ou escrevendo e pedindo confirmação quando necessário.</p>
+
+  <h2>Comandos básicos do dia a dia</h2>
+  <p>Você não precisa memorizar dezenas de comandos. Os mais usados são poucos:</p>
+
+  <div class="info-box">
+    <span class="lbl">Comandos essenciais</span>
+    <div class="item"><b>claude</b> — inicia o Claude Code na pasta atual</div>
+    <div class="item"><b>claude "sua instrução aqui"</b> — executa uma instrução diretamente, sem abrir o modo interativo</div>
+    <div class="item"><b>claude --continue</b> — retoma a última conversa de onde parou</div>
+    <div class="item"><b>claude --resume</b> — lista conversas anteriores para você escolher qual retomar</div>
+    <div class="item"><b>Ctrl+C</b> — interrompe o que o agente está fazendo no momento</div>
+  </div>
+
+  <h2>Modos de operação: interativo e autônomo</h2>
+  <p>O Claude Code tem dois modos principais de operação. No modo interativo, você e o agente trabalham em diálogo: ele propõe uma ação, você aprova ou rejeita, ele executa e reporta o resultado. Esse modo é recomendado para quem está começando, porque permite revisar cada passo antes que ele aconteça.</p>
+  <p>No modo autônomo, você dá uma instrução mais ampla e o agente executa uma sequência de ações sem pedir confirmação a cada passo. Esse modo é útil para tarefas repetitivas ou bem definidas, mas exige mais confiança no agente e mais atenção ao revisar o resultado final. Para ativar o modo autônomo, use a flag <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">--dangerously-skip-permissions</code>, mas leia o capítulo 9 antes de usar essa opção.</p>
+
+  <h2>Como dar instruções eficazes</h2>
+  <p>A qualidade do resultado do Claude Code depende diretamente da qualidade da instrução que você dá. Instruções vagas produzem resultados genéricos. Instruções específicas produzem resultados precisos. Alguns princípios práticos:</p>
+  <p>Descreva o comportamento esperado, não apenas o que você quer criar. Em vez de "crie um formulário de contato", diga "crie um formulário de contato com campos de nome, email e mensagem, que valide se o email tem formato correto e exiba uma mensagem de sucesso após o envio". A segunda instrução deixa pouco espaço para interpretação.</p>
+  <p>Mencione restrições relevantes. Se o projeto usa uma tecnologia específica, diga qual. Se há um padrão visual a seguir, descreva-o. Se há algo que não deve ser alterado, diga explicitamente.</p>
+  <p>Divida tarefas grandes em partes menores. Em vez de pedir "construa o módulo de vendas completo", comece com "crie a tela de listagem de pedidos" e avance passo a passo. Isso facilita a revisão e reduz o risco de erros acumulados.</p>
+
+  <h2>Slash commands: atalhos para ações comuns</h2>
+  <p>Dentro do modo interativo, o Claude Code oferece comandos de barra que executam ações específicas rapidamente:</p>
+
+  <div class="info-box">
+    <span class="lbl">Slash commands úteis</span>
+    <div class="item"><b>/help</b> — mostra a lista de comandos disponíveis</div>
+    <div class="item"><b>/clear</b> — limpa o histórico da conversa atual e libera contexto</div>
+    <div class="item"><b>/compact</b> — comprime o histórico para economizar contexto sem perder o essencial</div>
+    <div class="item"><b>/status</b> — mostra informações sobre o uso de contexto e tokens</div>
+    <div class="item"><b>/model</b> — permite trocar o modelo de IA em uso (Opus, Sonnet, Haiku)</div>
+    <div class="item"><b>/review</b> — solicita uma revisão do código recém-escrito</div>
+    <div class="item"><b>/init</b> — cria um CLAUDE.md inicial para o projeto atual</div>
+  </div>
+
+  <p>O comando <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">/init</code> merece atenção especial: ele analisa o projeto atual e gera automaticamente um CLAUDE.md com as informações básicas detectadas. É um bom ponto de partida para projetos que já têm algum código.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 3</div></div>
+</div>
+
+<!-- PAGE 7: CAPÍTULO 4 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">4</span><span class="chapter-label">Capítulo Quatro</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Como o Claude Code lê e entende seu projeto</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Antes de escrever uma linha de código, o Claude Code lê. Ele mapeia o projeto, entende a estrutura e só então age. Esse processo de leitura é o que torna o agente capaz de trabalhar de forma coerente.</p>
+
+  <h2>Como o Claude Code mapeia arquivos e pastas</h2>
+  <p>Quando você inicia o Claude Code em uma pasta, ele não lê todos os arquivos de uma vez. Ele começa pelo CLAUDE.md, se existir, e depois explora a estrutura de pastas para entender a organização do projeto. Conforme você dá instruções, ele lê os arquivos relevantes para aquela tarefa específica.</p>
+  <p>Por exemplo, se você pede para criar uma nova página em um projeto web, o agente vai ler as páginas existentes para entender o padrão usado, os componentes disponíveis e as convenções de nomenclatura. Ele não vai ler o banco de dados ou os arquivos de configuração de servidor, a menos que sejam relevantes para a tarefa.</p>
+  <p>Essa leitura seletiva é importante porque o agente tem um limite de quanto pode processar de uma vez, o chamado "contexto". Projetos muito grandes exigem atenção especial a esse limite, assunto tratado no capítulo 10.</p>
+
+  <h2>O conceito de contexto</h2>
+  <p>Contexto, no vocabulário do Claude Code, é tudo que o agente "vê" em um determinado momento: o histórico da conversa, os arquivos que leu, as instruções do CLAUDE.md e os resultados das ações que executou. Quanto mais contexto, mais informação o agente tem para tomar decisões. Mas o contexto tem um limite físico: quando ele enche, o agente começa a "esquecer" as partes mais antigas da conversa.</p>
+  <p>Para sessões longas de trabalho, use o comando <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">/compact</code> periodicamente. Ele resume o histórico da conversa, liberando espaço sem perder as informações essenciais. Se a sessão ficar muito longa, considere iniciar uma nova com <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">/clear</code> e retomar o trabalho com uma instrução que resume o estado atual.</p>
+
+  <h2>Como o CLAUDE.md guia o comportamento do agente</h2>
+  <p>O CLAUDE.md é lido no início de cada sessão e funciona como a memória permanente do projeto. Tudo que você escrever nele vai influenciar como o agente se comporta. Isso inclui: a descrição do projeto, as tecnologias usadas, as convenções de código, as regras de negócio importantes e qualquer instrução específica sobre como o agente deve agir.</p>
+  <p>Um CLAUDE.md bem escrito reduz drasticamente a quantidade de instruções repetitivas que você precisa dar. Em vez de lembrar ao agente a cada sessão que "os preços são em centavos" ou "a interface deve estar em português", você escreve isso uma vez no CLAUDE.md e ele respeita em todas as sessões seguintes.</p>
+
+  <h2>Boas práticas para organizar o projeto</h2>
+  <p>A organização do projeto afeta diretamente a qualidade do trabalho do Claude Code. Projetos bem organizados, com pastas claras e nomes de arquivos descritivos, permitem que o agente navegue com mais precisão. Algumas práticas que fazem diferença:</p>
+
+  <div class="checklist">
+    <span class="lbl">Organização que ajuda o agente</span>
+    <div class="item"><div class="check"></div>Use nomes de pastas e arquivos em português ou inglês, mas seja consistente: não misture os dois idiomas</div>
+    <div class="item"><div class="check"></div>Separe claramente o código de interface (frontend) do código de lógica de negócio (backend)</div>
+    <div class="item"><div class="check"></div>Mantenha um arquivo README.md com uma descrição básica do projeto</div>
+    <div class="item"><div class="check"></div>Evite arquivos muito grandes: prefira dividir em arquivos menores e bem nomeados</div>
+    <div class="item"><div class="check"></div>Use Git desde o início, mesmo que não entenda todos os detalhes (o capítulo 11 explica como)</div>
+  </div>
+
+  <h2>Permissões de leitura e escrita</h2>
+  <p>Por padrão, o Claude Code pede confirmação antes de escrever ou modificar arquivos. Quando ele propõe uma mudança, você vê exatamente o que vai ser alterado antes de aprovar. Isso é chamado de "diff": uma visualização que mostra em verde o que será adicionado e em vermelho o que será removido.</p>
+  <p>Você pode configurar permissões mais amplas para pastas específicas, permitindo que o agente escreva sem pedir confirmação a cada arquivo. Isso acelera o trabalho em tarefas repetitivas, mas exige que você revise o resultado com atenção ao final. As configurações de permissão ficam no arquivo <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">.claude/settings.json</code> dentro do projeto.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 4</div></div>
+</div>
+
+<!-- PAGE 8: CAPÍTULO 5 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">5</span><span class="chapter-label">Capítulo Cinco</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Criando software do zero com Claude Code</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Criar software com o Claude Code não é apertar um botão e esperar o resultado pronto. É um processo iterativo: você descreve, revisa, corrige e avança. Entender esse ciclo é o que separa quem obtém bons resultados de quem fica frustrado.</p>
+
+  <h2>O fluxo de trabalho básico</h2>
+  <p>O processo de criar software com o Claude Code segue três etapas que se repetem: descrever, revisar e aprovar. Você descreve o que quer em linguagem natural. O agente propõe uma solução, mostrando quais arquivos vai criar ou modificar. Você revisa a proposta e aprova, rejeita ou pede ajustes. Depois de aprovado, o agente executa e reporta o resultado.</p>
+  <p>Esse ciclo parece simples, mas a qualidade de cada etapa determina o resultado final. Uma descrição vaga leva a uma proposta genérica. Uma revisão superficial deixa passar erros. Uma aprovação sem entender o que foi feito acumula problemas que aparecem mais tarde.</p>
+
+  <h2>Como descrever o que você quer</h2>
+  <p>A instrução que você dá ao Claude Code é o ponto de partida de tudo. Quanto mais precisa, melhor o resultado. Algumas perguntas que ajudam a formular uma boa instrução:</p>
+  <p><strong>O que deve existir ao final?</strong> Descreva o resultado esperado, não o processo. "Quero uma tela que liste todos os clientes cadastrados, com nome, email e data de cadastro, e um botão para adicionar novo cliente" é melhor do que "crie uma tela de clientes".</p>
+  <p><strong>Quais são as regras de negócio?</strong> Se há validações, restrições ou comportamentos específicos, mencione-os. "O email deve ser único no sistema" ou "só usuários com perfil de administrador podem excluir registros" são informações que o agente não vai inventar: ele precisa que você forneça.</p>
+  <p><strong>O que não deve mudar?</strong> Se há partes do projeto que não devem ser tocadas, diga explicitamente. "Não altere o arquivo de configuração do banco de dados" ou "mantenha o estilo visual das outras telas" evita surpresas.</p>
+
+  <h2>O ciclo de iteração</h2>
+  <p>Raramente o primeiro resultado é o final. O fluxo normal é: você pede, o agente entrega, você testa, encontra algo que não está certo, pede ajuste, o agente corrige. Esse ciclo pode se repetir várias vezes para uma mesma funcionalidade, e isso é normal. Não é sinal de que o agente falhou: é o processo natural de refinamento.</p>
+  <p>A chave é ser específico nos ajustes. Em vez de "isso não ficou bom", diga "o botão de salvar está aparecendo antes do formulário ser preenchido, ele deve ficar desabilitado até que todos os campos obrigatórios tenham conteúdo". Quanto mais preciso o feedback, mais rápido o ajuste.</p>
+
+  <h2>Como lidar com erros</h2>
+  <p>Erros acontecem. O Claude Code vai encontrar situações onde o código que escreveu não funciona como esperado. Quando isso acontece, o agente normalmente detecta o erro, analisa a mensagem e tenta corrigir automaticamente. Se não conseguir resolver sozinho, ele vai descrever o problema e pedir orientação.</p>
+  <p>Para você, a postura correta diante de um erro é não entrar em pânico. Leia o que o agente reportou, mesmo que não entenda todos os detalhes técnicos. Muitas vezes a solução é simples: uma dependência que precisa ser instalada, uma configuração que está faltando, um arquivo que precisa ser criado. O agente vai guiar você.</p>
+
+  <h2>A importância de revisar mesmo sem saber programar</h2>
+  <p>Você não precisa entender o código para revisar o resultado. O que você precisa revisar é o comportamento: a tela aparece como esperado? O botão faz o que deveria? Os dados são salvos corretamente? Essa revisão funcional é sua responsabilidade, e ela é insubstituível.</p>
+  <p>O Claude Code pode escrever código tecnicamente correto que não faz o que você queria, simplesmente porque a instrução foi ambígua. Testar o resultado é a única forma de confirmar que a intenção foi traduzida corretamente.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: vibe coding e seus riscos</span>
+    <p>O termo "vibe coding" descreve a prática de usar IA para criar software sem revisar o que foi produzido, confiando cegamente no resultado. É tentador, especialmente quando o agente parece confiante. Mas código não revisado acumula problemas: falhas de segurança, lógica incorreta, dados corrompidos. Use o Claude Code como parceiro, não como substituto do seu julgamento. Revise sempre o que foi feito antes de colocar em produção.</p>
+  </div>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 5</div></div>
+</div>
+
+<!-- PAGE 9: CAPÍTULO 6 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">6</span><span class="chapter-label">Capítulo Seis</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Skills: expandindo as capacidades do agente</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O Claude Code, por padrão, já faz muito. Mas seu comportamento pode ser expandido com skills: conjuntos de instruções especializadas que ensinam o agente a executar tarefas específicas com mais precisão e profundidade.</p>
+
+  <h2>O que são skills</h2>
+  <p>Skills são arquivos de instrução que você instala no Claude Code para adicionar capacidades especializadas. Pense nelas como manuais de procedimento: quando você instala uma skill de revisão de segurança, por exemplo, o agente passa a saber exatamente quais aspectos verificar, quais padrões de vulnerabilidade procurar e como reportar os problemas encontrados. Sem a skill, ele faria uma revisão genérica. Com ela, faz uma revisão estruturada e completa.</p>
+  <p>Skills não são plugins no sentido técnico: elas não adicionam código novo ao Claude Code. São arquivos de texto com instruções detalhadas que o agente lê e segue. Isso significa que você pode criar suas próprias skills para tarefas específicas do seu negócio, como "revisar contratos segundo as regras da empresa" ou "gerar relatórios no formato padrão do cliente X".</p>
+
+  <h2>Como as skills expandem as capacidades padrão</h2>
+  <p>O Claude Code sem skills já consegue escrever código, corrigir erros e organizar projetos. Com skills, ele passa a executar fluxos de trabalho completos com consistência. Uma skill de desenvolvimento frontend, por exemplo, pode incluir instruções sobre acessibilidade, performance, padrões de componentes e testes visuais. O agente vai seguir todas essas diretrizes automaticamente, sem que você precise lembrar de cada uma.</p>
+
+  <h2>Como instalar uma skill</h2>
+  <p>A instalação de uma skill é feita pelo próprio Claude Code. Dentro de uma sessão interativa, use o comando:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">/install-skill nome-da-skill</span></pre>
+  </div>
+
+  <p>O agente vai buscar a skill no repositório oficial, baixar o arquivo de instrução e instalá-lo na pasta <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">.claude/skills/</code> do seu projeto. A partir desse momento, a skill está disponível para uso.</p>
+  <p>Você também pode instalar skills manualmente: basta criar um arquivo <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">.md</code> dentro da pasta <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">.claude/skills/</code> com as instruções que você quer que o agente siga. Esse arquivo pode ser escrito em linguagem natural, sem nenhum conhecimento técnico.</p>
+
+  <h2>Como usar uma skill depois de instalada</h2>
+  <p>Para invocar uma skill, use o comando de barra com o nome dela dentro de uma sessão interativa:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">/nome-da-skill</span></pre>
+  </div>
+
+  <p>O agente vai executar o fluxo definido pela skill no contexto atual do projeto. Algumas skills são invocadas diretamente; outras funcionam como modificadores de comportamento que ficam ativos durante toda a sessão.</p>
+
+  <h2>Skills mais úteis disponíveis</h2>
+
+  <div class="info-box">
+    <span class="lbl">Skills do ecossistema oficial</span>
+    <div class="item"><b>security-review</b> — analisa o código em busca de vulnerabilidades de segurança comuns, como injeção de SQL, exposição de dados e autenticação fraca</div>
+    <div class="item"><b>frontend-design</b> — orienta a criação de interfaces com qualidade visual, acessibilidade e boas práticas de UX</div>
+    <div class="item"><b>testing-debugging</b> — estrutura a escrita de testes automatizados e o processo de depuração de erros</div>
+    <div class="item"><b>nextjs-performance</b> — otimiza projetos Next.js para velocidade de carregamento e Core Web Vitals</div>
+    <div class="item"><b>github-pr-review</b> — automatiza a revisão de pull requests no GitHub, classificando comentários por severidade</div>
+    <div class="item"><b>init</b> — gera um CLAUDE.md completo analisando o projeto atual</div>
+  </div>
+
+  <h2>Como escolher as skills certas para o seu projeto</h2>
+  <p>Nem toda skill faz sentido para todo projeto. Um sistema de gestão interno não precisa das mesmas skills que uma plataforma SaaS pública. A regra prática é: instale skills para as tarefas que você vai repetir com frequência ou para as áreas onde você tem menos conhecimento para revisar o resultado. Se você não sabe avaliar se o código tem problemas de segurança, a skill <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">security-review</code> é essencial. Se o projeto tem interface visual, <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">frontend-design</code> vai elevar a qualidade do resultado.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 10: CAPÍTULO 7 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">7</span><span class="chapter-label">Capítulo Sete</span>
+    <h1 class="chapter-title" style="margin-top:16px;">MCP: conectando o Claude Code ao mundo real</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O Claude Code, por padrão, trabalha com os arquivos do seu projeto. O MCP quebra essa fronteira: ele conecta o agente a bancos de dados, navegadores, APIs externas e qualquer outro sistema que você precisar.</p>
+
+  <h2>O que é o MCP e por que ele existe</h2>
+  <p>MCP é a sigla para Model Context Protocol, um protocolo criado pela Anthropic para padronizar a forma como modelos de IA se conectam a ferramentas e fontes de dados externas. Antes do MCP, cada integração era feita de forma personalizada: quem quisesse conectar o Claude a um banco de dados precisava escrever código específico para isso. Com o MCP, existe um padrão único que qualquer ferramenta pode implementar, e o Claude Code sabe como se comunicar com qualquer ferramenta que siga esse padrão.</p>
+  <p>O resultado prático é que o ecossistema de integrações cresceu rapidamente. Hoje existem servidores MCP para bancos de dados relacionais, sistemas de arquivos, navegadores web, plataformas de comunicação, APIs de serviços populares e muito mais. Você instala o servidor MCP correspondente à ferramenta que quer usar, e o Claude Code passa a ter acesso a ela.</p>
+
+  <h2>A analogia certa: MCP como tomada universal</h2>
+  <p>Imagine que o Claude Code é um aparelho elétrico. Por padrão, ele funciona com a energia que já tem: os arquivos do projeto. O MCP é como uma tomada universal que permite conectar esse aparelho a qualquer fonte de energia externa: um banco de dados, um serviço web, um sistema de arquivos remoto. Cada servidor MCP é um adaptador diferente, mas todos usam o mesmo padrão de encaixe.</p>
+  <p>Essa analogia ajuda a entender por que o MCP é importante: ele transforma o Claude Code de uma ferramenta que trabalha com arquivos locais em um agente capaz de interagir com sistemas reais em produção.</p>
+
+  <h2>Como o MCP funciona por baixo dos panos</h2>
+  <p>Um servidor MCP é um programa que roda em segundo plano no seu computador. Ele expõe um conjunto de "ferramentas" que o Claude Code pode usar: consultar um banco de dados, abrir uma página no navegador, enviar uma mensagem, ler um arquivo remoto. Quando você dá uma instrução ao Claude Code que requer uma dessas ferramentas, ele se comunica com o servidor MCP correspondente, que executa a ação e retorna o resultado.</p>
+  <p>Você não precisa entender os detalhes técnicos dessa comunicação. O que importa é que, do seu ponto de vista, o agente simplesmente passa a ter acesso a mais coisas. Você pode pedir "consulte o banco de dados e me mostre os pedidos do último mês" e o agente vai fazer isso, desde que o servidor MCP do banco de dados esteja configurado.</p>
+
+  <h2>Como instalar um servidor MCP</h2>
+  <p>A instalação de um servidor MCP é feita em duas etapas. Primeiro, você instala o pacote do servidor. Segundo, você registra o servidor na configuração do Claude Code.</p>
+  <p>Exemplo com o servidor MCP para PostgreSQL:</p>
+
+  <div class="code-box">
+    <span class="lbl">Passo 1: instalar o servidor</span>
+    <pre><span class="cmd">npm install -g @modelcontextprotocol/server-postgres</span></pre>
+  </div>
+
+  <div class="code-box">
+    <span class="lbl">Passo 2: registrar no Claude Code</span>
+    <pre><span class="cmd">claude mcp add postgres -- npx @modelcontextprotocol/server-postgres postgresql://usuario:senha@localhost/banco</span></pre>
+  </div>
+
+  <p>Após o registro, o Claude Code vai reconhecer automaticamente as ferramentas disponibilizadas pelo servidor e poderá usá-las nas próximas sessões.</p>
+
+  <h2>Exemplos práticos de servidores MCP</h2>
+
+  <div class="info-box">
+    <span class="lbl">Servidores MCP disponíveis</span>
+    <div class="item"><b>Banco de dados (PostgreSQL, MySQL, SQLite)</b> — permite consultar, inserir e atualizar dados diretamente pelo Claude Code</div>
+    <div class="item"><b>Navegador (Puppeteer, Playwright)</b> — permite abrir páginas web, preencher formulários e capturar screenshots</div>
+    <div class="item"><b>Sistema de arquivos</b> — expande o acesso a pastas fora do projeto atual</div>
+    <div class="item"><b>GitHub</b> — permite criar issues, pull requests e interagir com repositórios</div>
+    <div class="item"><b>Slack</b> — permite enviar mensagens e ler canais</div>
+    <div class="item"><b>Google Drive / Sheets</b> — permite ler e escrever em documentos e planilhas</div>
+    <div class="item"><b>APIs REST genéricas</b> — permite fazer chamadas a qualquer API com autenticação configurada</div>
+  </div>
+
+  <h2>Diferença entre skills e MCP</h2>
+  <p>Skills e MCP são complementares, mas servem a propósitos diferentes. Skills ensinam o agente <em>como</em> fazer algo: como revisar segurança, como estruturar testes, como organizar componentes. MCP dá ao agente <em>acesso</em> a algo: um banco de dados, um serviço externo, um sistema de arquivos remoto.</p>
+  <p>Use skills quando quiser que o agente siga um processo específico ou adote um padrão de trabalho. Use MCP quando quiser que o agente interaja com sistemas externos ao projeto. Em muitos casos, você vai usar os dois juntos: uma skill que define como fazer uma tarefa, e um servidor MCP que dá acesso aos dados necessários para executá-la.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 11: CAPÍTULO 8 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">8</span><span class="chapter-label">Capítulo Oito</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Integrações e o ecossistema do Claude Code</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O Claude Code não existe em isolamento. Ele se integra a editores de código, plataformas de versionamento e serviços externos, formando um ecossistema que cresce a cada mês.</p>
+
+  <h2>Integração com editores de código</h2>
+  <p>O Claude Code pode ser usado diretamente no terminal, mas também se integra aos editores de código mais populares. No VS Code (Visual Studio Code), existe uma extensão oficial que embute o Claude Code dentro do editor: você pode dar instruções ao agente sem sair do ambiente onde o código está aberto. O mesmo vale para os editores da família JetBrains, como IntelliJ IDEA, PyCharm e WebStorm.</p>
+  <p>Para quem não sabe programar, essa integração tem um benefício prático: você pode ver o código sendo escrito em tempo real, no mesmo lugar onde ele vai existir. Não é necessário alternar entre o terminal e o editor para acompanhar o que está sendo feito.</p>
+  <p>A instalação da extensão é feita pela loja de extensões do próprio editor. Busque por "Claude Code" e instale a extensão oficial da Anthropic. Após a instalação, a autenticação é compartilhada com a instalação de linha de comando: você não precisa fazer login duas vezes.</p>
+
+  <h2>Integração com GitHub</h2>
+  <p>O GitHub é a plataforma mais usada para armazenar e versionar código. O Claude Code se integra a ele de duas formas. A primeira é via MCP: com o servidor MCP do GitHub configurado, o agente pode criar branches, abrir pull requests, comentar em issues e executar outras ações diretamente da linha de comando. A segunda é via a skill <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">github-pr-review</code>, que automatiza o processo de revisão de código: o agente lê os comentários de revisores, classifica por severidade e aplica as correções necessárias.</p>
+  <p>Para quem não sabe programar, a integração com GitHub é especialmente útil para manter um histórico seguro do projeto. O capítulo 11 explica como usar Git e GitHub com a ajuda do Claude Code, sem precisar entender os detalhes técnicos.</p>
+
+  <h2>O conceito de hooks</h2>
+  <p>Hooks são ações automáticas que o Claude Code executa em resposta a eventos específicos. Por exemplo: sempre que o agente terminar de escrever código, execute automaticamente os testes. Ou: antes de qualquer commit, verifique se há problemas de segurança. Ou: após cada sessão, gere um resumo do que foi feito.</p>
+  <p>Os hooks são configurados no arquivo <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">.claude/settings.json</code> e podem executar qualquer comando do sistema. Para quem não sabe programar, a forma mais simples de configurar hooks é pedir ao próprio Claude Code que os configure: descreva o comportamento que você quer e ele vai escrever a configuração necessária.</p>
+
+  <div class="code-box">
+    <span class="lbl">Exemplo de instrução para configurar um hook</span>
+    <pre><span class="comment"># Dentro de uma sessão do Claude Code:</span>
+<span class="cmd">Configure um hook que execute os testes automaticamente
+sempre que você terminar de escrever ou modificar código.</span></pre>
+  </div>
+
+  <h2>Visão geral do ecossistema</h2>
+  <p>O ecossistema do Claude Code está em expansão acelerada. Além das integrações oficiais com VS Code e JetBrains, existem integrações desenvolvidas pela comunidade com ferramentas como Cursor, Zed e outros editores. O repositório de servidores MCP cresce semanalmente, com novos conectores para serviços populares. E o sistema de skills permite que qualquer pessoa contribua com fluxos de trabalho especializados.</p>
+  <p>Para acompanhar o que está sendo construído, o repositório oficial da Anthropic no GitHub e a documentação em docs.anthropic.com são as fontes mais atualizadas. A comunidade também é ativa em fóruns e redes sociais, onde usuários compartilham configurações, skills e casos de uso.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 12: CAPÍTULO 9 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">9</span><span class="chapter-label">Capítulo Nove</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Segurança, permissões e boas práticas</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O Claude Code tem acesso ao seu sistema de arquivos e pode executar comandos no terminal. Isso é poderoso, e por isso exige atenção. Este capítulo explica como usar essa capacidade com segurança.</p>
+
+  <h2>O que o Claude Code pode e não pode fazer por padrão</h2>
+  <p>Por padrão, o Claude Code pode ler qualquer arquivo dentro da pasta do projeto, escrever e modificar arquivos (com sua confirmação), executar comandos no terminal (com sua confirmação) e acessar a internet para buscar documentação ou instalar dependências. O que ele não faz por padrão: não acessa arquivos fora da pasta do projeto sem permissão explícita, não executa ações irreversíveis sem confirmação e não envia dados do seu projeto para servidores externos além da API da Anthropic, que processa as instruções.</p>
+
+  <h2>Como funcionam as permissões</h2>
+  <p>O sistema de permissões do Claude Code funciona em camadas. A camada mais básica é a confirmação manual: antes de escrever um arquivo ou executar um comando, o agente mostra o que vai fazer e espera você aprovar. Você pode expandir as permissões para pastas específicas, permitindo que o agente escreva sem pedir confirmação a cada arquivo. E pode restringir ainda mais, bloqueando o acesso a pastas sensíveis como as que contêm credenciais ou configurações de produção.</p>
+  <p>As permissões são configuradas no arquivo <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">.claude/settings.json</code>. Para a maioria dos projetos, as configurações padrão são adequadas. Ajuste apenas quando tiver uma razão específica.</p>
+
+  <h2>Quando deixar o agente autônomo e quando supervisionar</h2>
+  <p>A decisão de quanto autonomia dar ao agente depende do tipo de tarefa e do estágio do projeto. Para tarefas de criação em projetos novos, onde não há risco de sobrescrever trabalho existente, mais autonomia acelera o desenvolvimento. Para tarefas que modificam código em produção, que alteram configurações críticas ou que envolvem dados reais de usuários, supervisione cada passo.</p>
+  <p>Uma regra prática: quanto mais irreversível a ação, mais supervisão ela merece. Criar um novo arquivo é reversível: você pode deletar. Modificar o banco de dados de produção pode não ser. Calibre a autonomia de acordo com o risco.</p>
+
+  <h2>O que nunca deixar o Claude Code fazer sem revisão</h2>
+
+  <div class="warn-box">
+    <span class="lbl">Ações que sempre exigem revisão</span>
+    <p><strong>Modificações em banco de dados de produção:</strong> qualquer alteração em dados reais de usuários deve ser revisada e testada em ambiente de desenvolvimento primeiro.</p>
+    <p><strong>Alterações em arquivos de configuração de segurança:</strong> senhas, chaves de API, certificados e configurações de autenticação nunca devem ser modificados sem revisão cuidadosa.</p>
+    <p><strong>Deploy para produção:</strong> o processo de colocar software em funcionamento para usuários reais deve sempre ter uma etapa de revisão humana.</p>
+    <p><strong>Exclusão de arquivos ou dados:</strong> operações de exclusão são irreversíveis. Confirme sempre antes de aprovar.</p>
+  </div>
+
+  <h2>Boas práticas para projetos reais</h2>
+  <p>Use Git desde o início do projeto. O Git é um sistema de controle de versão que registra cada mudança feita no código, permitindo voltar a qualquer estado anterior. Se o Claude Code fizer algo errado, você pode desfazer com um comando. O capítulo 11 explica como usar Git com a ajuda do próprio agente.</p>
+  <p>Nunca armazene senhas ou chaves de API diretamente no código. Use variáveis de ambiente: arquivos separados que contêm informações sensíveis e não são incluídos no controle de versão. O Claude Code sabe como configurar isso e vai sugerir a abordagem correta se você mencionar que tem credenciais para armazenar.</p>
+  <p>Faça backups regulares. Mesmo com Git, um backup externo do projeto completo é uma camada adicional de segurança. Serviços como GitHub, GitLab ou Bitbucket funcionam como backup remoto automático quando você faz push regularmente.</p>
+
+  <h2>Erros comuns de quem está começando</h2>
+  <p>O erro mais comum é aprovar ações sem ler o que o agente propõe. A pressa de ver o resultado leva a aprovações automáticas que acumulam problemas. Leia sempre o que o agente vai fazer antes de confirmar.</p>
+  <p>O segundo erro mais comum é trabalhar diretamente em produção. Sempre desenvolva em um ambiente separado (chamado de ambiente de desenvolvimento ou staging) e só transfira para produção após testar. O Claude Code pode ajudar a configurar esses ambientes.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 13: CAPÍTULO 10 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">10</span><span class="chapter-label">Capítulo Dez</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Limites, custos e o que esperar</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O Claude Code é uma ferramenta capaz, mas tem limites reais. Conhecê-los antes de começar evita frustrações e ajuda a planejar melhor o uso.</p>
+
+  <h2>O que o Claude Code faz bem</h2>
+  <p>O Claude Code se destaca em tarefas bem definidas com contexto claro. Criar componentes de interface, escrever lógica de negócio, configurar integrações com APIs, estruturar bancos de dados, escrever testes automatizados, refatorar código existente: tudo isso o agente faz com alta qualidade quando as instruções são precisas e o projeto está bem organizado.</p>
+  <p>Ele também é eficaz em tarefas de análise: revisar código em busca de problemas, explicar o que um trecho de código faz, sugerir melhorias de performance ou segurança. Para quem não sabe programar, essa capacidade de análise é especialmente valiosa: você pode pedir ao agente que explique em linguagem simples o que qualquer parte do projeto faz.</p>
+
+  <h2>Onde o Claude Code ainda falha</h2>
+  <p>O agente tem dificuldade com requisitos ambíguos ou contraditórios. Se você não sabe exatamente o que quer, o resultado vai refletir essa incerteza. Projetos sem estrutura clara, sem CLAUDE.md e sem convenções definidas produzem resultados inconsistentes.</p>
+  <p>Tarefas que exigem conhecimento de negócio muito específico também são um ponto fraco. O agente não conhece as regras tributárias do seu setor, os requisitos legais da sua indústria ou as particularidades do seu mercado. Você precisa fornecer essas informações explicitamente.</p>
+  <p>Por fim, o agente pode cometer erros em código complexo que envolve múltiplos sistemas interagindo. Quanto mais partes móveis, maior a chance de algo não funcionar como esperado na primeira tentativa.</p>
+
+  <h2>Limites de contexto em projetos grandes</h2>
+  <p>O contexto é a quantidade de informação que o agente pode processar de uma vez. Projetos muito grandes, com centenas de arquivos e milhares de linhas de código, podem exceder esse limite. Quando isso acontece, o agente começa a trabalhar com informação incompleta, o que pode levar a decisões inconsistentes.</p>
+  <p>Para projetos grandes, a estratégia é dividir o trabalho em sessões focadas: cada sessão trata de uma parte específica do projeto, com um CLAUDE.md que descreve o contexto relevante para aquela parte. O comando <code style="background:#F7F3F0;padding:2px 6px;border-radius:4px;font-family:Courier New;font-size:14px;color:#B85C3A;">/compact</code> também ajuda a gerenciar o contexto dentro de uma sessão longa.</p>
+
+  <h2>Modelo de cobrança</h2>
+  <p>O Claude Code pode ser usado de duas formas: com uma assinatura do claude.ai (plano Pro ou Max) ou com uma chave de API da Anthropic com cobrança por uso. No plano Pro, o uso do Claude Code está incluído dentro dos limites mensais da assinatura. No modelo de API, você paga por token processado: cada instrução que você dá e cada resposta que o agente gera consome tokens, e o custo depende do volume.</p>
+  <p>Para projetos pequenos e médios, o plano Pro costuma ser suficiente. Para uso intensivo, com muitas sessões longas por dia, o modelo de API pode ser mais econômico dependendo do volume. A Anthropic disponibiliza uma calculadora de custos na documentação oficial para ajudar a estimar.</p>
+
+  <h2>Quando o Claude Code não é a ferramenta certa</h2>
+  <p>Para projetos muito simples, como uma página estática ou um formulário básico, ferramentas como Webflow, Notion ou Google Sites podem ser mais rápidas e não exigem nenhuma configuração técnica. O Claude Code brilha em projetos com lógica de negócio real, integrações entre sistemas e necessidade de personalização que ferramentas no-code não conseguem atender.</p>
+  <p>Se o projeto exige conformidade regulatória rigorosa, como sistemas médicos ou financeiros com certificações específicas, o Claude Code pode ajudar no desenvolvimento, mas a validação e certificação ainda exigem profissionais especializados.</p>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 10</div></div>
+</div>
+
+<!-- PAGE 14: CAPÍTULO 11 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">11</span><span class="chapter-label">Capítulo Onze</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Fluxo de trabalho completo para não programadores</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Este capítulo reúne tudo que foi apresentado nos anteriores em um fluxo de trabalho prático: do zero ao software funcionando, com cada etapa descrita de forma que qualquer pessoa possa seguir.</p>
+
+  <h2>Antes de abrir o terminal: estruture suas ideias</h2>
+  <p>O trabalho mais importante acontece antes de digitar qualquer comando. Você precisa ter clareza sobre o que está construindo. Isso não significa escrever uma especificação técnica completa: significa responder a algumas perguntas básicas.</p>
+  <p>Qual é o problema que o software resolve? Quem vai usar? Quais são as ações principais que o usuário vai executar? Quais dados precisam ser armazenados? Existem integrações com outros sistemas? Há regras de negócio específicas, como cálculos, validações ou fluxos de aprovação?</p>
+  <p>Escreva as respostas em um documento simples, sem se preocupar com formato. Esse documento vai ser a base do seu CLAUDE.md e das suas primeiras instruções ao agente.</p>
+
+  <h2>Como escrever um CLAUDE.md eficaz</h2>
+  <p>Um bom CLAUDE.md tem quatro seções principais. A primeira é a descrição do projeto: o que é, para quem é e qual problema resolve. A segunda é a stack tecnológica: quais tecnologias o projeto usa (ou deve usar). Se você não sabe qual tecnologia escolher, peça ao Claude Code uma recomendação antes de criar o CLAUDE.md. A terceira é as convenções: idioma da interface, formato de datas, moeda, padrões de nomenclatura. A quarta é as regras de negócio críticas: as informações que o agente precisa conhecer para tomar decisões corretas.</p>
+
+  <div class="code-box">
+    <span class="lbl">Exemplo de CLAUDE.md para um sistema de gestão</span>
+    <pre><span class="comment"># Sistema de Gestão de Pedidos</span>
+
+<span class="comment">## Sobre o projeto</span>
+Sistema interno para gerenciar pedidos de uma loja de móveis.
+Permite cadastrar clientes, registrar pedidos, acompanhar
+status de entrega e gerar relatórios mensais.
+
+<span class="comment">## Tecnologias</span>
+- Next.js 15 com App Router
+- PostgreSQL via Supabase
+- Tailwind CSS para estilo
+- TypeScript
+
+<span class="comment">## Convenções</span>
+- Interface em português brasileiro
+- Preços em centavos (inteiro)
+- Datas no formato DD/MM/AAAA
+- Toda interface deve ser responsiva
+
+<span class="comment">## Regras de negócio</span>
+- Pedido só pode ser cancelado se status for "aguardando"
+- Desconto máximo permitido: 15%
+- Frete grátis para pedidos acima de R$ 500</pre>
+  </div>
+
+  <h2>Como usar Git sem entender de programação</h2>
+  <p>Git é um sistema que registra cada mudança feita no projeto, como um histórico detalhado que permite voltar a qualquer ponto anterior. Você não precisa entender como ele funciona internamente: o Claude Code pode executar os comandos Git por você.</p>
+  <p>Os três momentos em que você vai usar Git são: ao iniciar o projeto (para criar o repositório), ao final de cada sessão de trabalho (para salvar o progresso) e antes de qualquer mudança grande (para ter um ponto de retorno seguro). Para cada um desses momentos, basta pedir ao agente:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instruções Git para o Claude Code</span>
+    <pre><span class="comment"># Ao iniciar o projeto:</span>
+<span class="cmd">Inicialize um repositório Git neste projeto e faça o
+primeiro commit com todos os arquivos atuais.</span>
+
+<span class="comment"># Ao final de uma sessão:</span>
+<span class="cmd">Faça um commit com as mudanças desta sessão. Use uma
+mensagem descritiva sobre o que foi feito.</span>
+
+<span class="comment"># Antes de uma mudança grande:</span>
+<span class="cmd">Crie um commit de checkpoint antes de começarmos
+a refatorar o módulo de pagamentos.</span></pre>
+  </div>
+
+  <h2>Como testar o que foi criado</h2>
+  <p>Testar software não exige conhecimento técnico: exige atenção e método. Para cada funcionalidade criada, percorra o caminho que um usuário real percorreria. Preencha formulários com dados válidos e inválidos. Tente ações que não deveriam ser permitidas. Verifique se as mensagens de erro fazem sentido. Confirme que os dados são salvos e recuperados corretamente.</p>
+  <p>Além dos testes manuais, peça ao Claude Code que escreva testes automatizados para as funcionalidades críticas. Testes automatizados são programas que verificam se o software funciona corretamente de forma repetível. Você não precisa escrever esses testes: o agente faz isso. Mas você precisa rodá-los regularmente e investigar quando algum falhar.</p>
+
+  <h2>Como manter e evoluir o projeto</h2>
+  <p>Software não é um produto acabado: é um sistema vivo que precisa de manutenção e evolução. Para manter o projeto saudável ao longo do tempo, adote algumas práticas regulares.</p>
+  <p>Documente as decisões importantes no CLAUDE.md. Quando você decidir usar uma tecnologia específica, adotar uma convenção ou implementar uma regra de negócio, registre no CLAUDE.md o que foi decidido e por quê. Isso garante que o agente (e você mesmo, meses depois) entenda o contexto das escolhas.</p>
+  <p>Revise o CLAUDE.md periodicamente. À medida que o projeto evolui, as informações no CLAUDE.md podem ficar desatualizadas. Reserve um tempo a cada mês para revisar e atualizar o arquivo.</p>
+  <p>Mantenha o repositório Git atualizado. Faça commits frequentes, com mensagens descritivas. Isso cria um histórico que permite entender o que mudou e quando, e facilita a recuperação em caso de problemas.</p>
+
+  <div class="checklist">
+    <span class="lbl">Checklist de início de projeto</span>
+    <div class="item"><div class="check"></div>Documento de ideias escrito com problema, usuários e funcionalidades principais</div>
+    <div class="item"><div class="check"></div>CLAUDE.md criado com descrição, tecnologias, convenções e regras de negócio</div>
+    <div class="item"><div class="check"></div>Repositório Git inicializado e primeiro commit feito</div>
+    <div class="item"><div class="check"></div>Ambiente de desenvolvimento configurado e funcionando</div>
+    <div class="item"><div class="check"></div>Skills relevantes instaladas para o tipo de projeto</div>
+    <div class="item"><div class="check"></div>Servidores MCP configurados para as integrações necessárias</div>
+  </div>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Capítulo 11</div></div>
+</div>
+
+<!-- PAGE 15: CONCLUSÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="label">Conclusão</div>
+    <h1 class="chapter-title" style="margin-top:10px;">O que você já sabe fazer</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Você chegou ao final deste guia com um mapa completo de como o Claude Code funciona e como usá-lo para criar software real. O que vem a seguir é prática.</p>
+
+  <p>Ao longo deste ebook, você aprendeu que o Claude Code é um agente de desenvolvimento: não um chatbot, mas uma ferramenta que lê seu projeto, entende o contexto e age de forma autônoma dentro dos limites que você define. Aprendeu a instalá-lo, a configurar o ambiente, a dar instruções eficazes e a revisar o resultado mesmo sem saber programar.</p>
+
+  <p>Você entendeu o papel do CLAUDE.md como memória permanente do projeto, a diferença entre skills e MCP, como o ecossistema de integrações funciona e quais práticas de segurança são inegociáveis. Aprendeu também onde o agente tem limitações reais e como trabalhar dentro dessas limitações de forma produtiva.</p>
+
+  <p>O que você já é capaz de fazer: criar um projeto do zero com estrutura organizada, escrever um CLAUDE.md eficaz, dar instruções precisas que produzem resultados consistentes, instalar e usar skills para tarefas especializadas, conectar o agente a bancos de dados e serviços externos via MCP, manter o projeto com Git e revisar o trabalho do agente com critério.</p>
+
+  <h2>Os próximos passos recomendados</h2>
+  <p>O primeiro passo é começar um projeto real, mesmo que pequeno. Escolha algo que você genuinamente precisa: uma ferramenta interna, um sistema de controle simples, uma automação que economize tempo. Projetos reais ensinam mais do que qualquer exercício.</p>
+  <p>O segundo passo é explorar o ecossistema de MCP. Identifique quais sistemas você já usa no seu negócio, como planilhas, banco de dados ou ferramentas de comunicação, e configure os servidores MCP correspondentes. Cada integração que você adiciona expande o que o agente consegue fazer por você.</p>
+  <p>O terceiro passo é construir suas próprias skills. Depois de algumas semanas usando o Claude Code, você vai identificar padrões de trabalho que se repetem. Transforme esses padrões em skills: arquivos de instrução que o agente vai seguir automaticamente, sem que você precise repetir as mesmas orientações a cada sessão.</p>
+
+  <h2>Como continuar aprendendo</h2>
+  <p>A documentação oficial em docs.anthropic.com é a fonte mais atualizada sobre o Claude Code. A ferramenta evolui rapidamente, com novas funcionalidades sendo lançadas com frequência. Acompanhe as notas de versão para saber o que mudou.</p>
+  <p>A comunidade de usuários é outro recurso valioso. Fóruns, grupos e redes sociais reúnem pessoas que estão usando o Claude Code para os mais variados tipos de projeto. Compartilhar experiências, configurações e casos de uso acelera o aprendizado de todos.</p>
+  <p>Por fim, o melhor professor é o próprio agente. Quando tiver dúvidas sobre como fazer algo, pergunte ao Claude Code. Ele conhece suas próprias capacidades e limitações, e vai orientar você sobre a melhor abordagem para cada situação.</p>
+
+  <div class="quote-box">
+    <p>"A barreira entre uma ideia e o software que a executa nunca foi tão fina. O que faz a diferença agora é a clareza sobre o que você quer construir."</p>
+    <div class="author">Princípio do desenvolvimento com IA</div>
+  </div>
+
+  <div class="footer"><div class="left">Claude Code</div><div class="right">Conclusão</div></div>
+</div>
+
+</body>
+</html>

@@ -35,3 +35,9 @@ Copiar `.env.example` para `.env.local` e configurar `ABACATEPAY_API_KEY`.
 - Preços armazenados em **centavos** (inteiro). Formatação via `formatPrice()`.
 - Rotas dinâmicas usam `params` como `Promise` (Next.js 16): `const { slug } = await params`.
 - Palette: emerald como cor de destaque, zinc para neutros. Suporta dark mode via `prefers-color-scheme`.
+
+## Ebooks HTML
+
+- Ebooks ficam em `ebooks/` e `ebooks/claude/`.
+- Para criar ou editar ebooks HTML grandes, use SEMPRE a ferramenta Write diretamente. Nunca use comandos PowerShell (Add-Content, Out-File, Set-Content) para escrever conteúdo HTML.
+- Arquivos grandes devem ser escritos em múltiplas chamadas Write sequenciais, acumulando o conteúdo completo a cada chamada (não append, mas reescrita completa da seção atual até o ponto atual).

@@ -1,5 +1,5 @@
 import { useId } from "react";
-import type { Product } from "@/app/data/products";
+import type { Product } from "@/app/types/product";
 
 type CoverSize = "sm" | "md" | "lg";
 
@@ -51,6 +51,7 @@ function getTheme(slug: Product["slug"]) {
         lineColor: "bg-[linear-gradient(90deg,#6b21a8,#c9a84c)]",
       };
     case "persuasao-influencia":
+    case "persuasao-vendas":
       return {
         background:
           "bg-[linear-gradient(160deg,#0f0c10_0%,#24141f_50%,#140d11_100%)]",
@@ -95,6 +96,58 @@ function getTheme(slug: Product["slug"]) {
         footerColor: "text-[#d3a06e]/80",
         lineColor: "bg-[#e8820c]",
       };
+    case "claude-code-guia-completo":
+      return {
+        background: "bg-[linear-gradient(145deg,#0d0f14_0%,#1a1f2e_50%,#0f1420_100%)]",
+        badgeColor: "text-[#d4956a]/90",
+        titleColor: "text-white",
+        footerColor: "text-[#d4956a]/75",
+        lineColor: "bg-[linear-gradient(90deg,#c96442,#e8a87c)]",
+      };
+    case "claude-code-prompts-avancados":
+      return {
+        background: "bg-[linear-gradient(145deg,#0a0d18_0%,#141c30_50%,#0a0d18_100%)]",
+        badgeColor: "text-[#7eb8f7]/90",
+        titleColor: "text-white",
+        footerColor: "text-[#7eb8f7]/75",
+        lineColor: "bg-[linear-gradient(90deg,#3b82f6,#7eb8f7)]",
+      };
+    case "claude-code-automacao-workflows":
+      return {
+        background: "bg-[linear-gradient(145deg,#0a1410_0%,#0f2018_50%,#0a1410_100%)]",
+        badgeColor: "text-[#4ade80]/90",
+        titleColor: "text-white",
+        footerColor: "text-[#4ade80]/75",
+        lineColor: "bg-[linear-gradient(90deg,#16a34a,#4ade80)]",
+      };
+    case "claude-code-agentes-ia":
+      return {
+        background: "bg-[linear-gradient(145deg,#130a1e_0%,#1e1030_50%,#130a1e_100%)]",
+        badgeColor: "text-[#c084fc]/90",
+        titleColor: "text-white",
+        footerColor: "text-[#c084fc]/75",
+        lineColor: "bg-[linear-gradient(90deg,#9333ea,#c084fc)]",
+      };
+    case "facebook-ads-do-zero":
+    case "criativos-facebook-ads":
+      return {
+        background:
+          "bg-[linear-gradient(145deg,#080d1a_0%,#0f1a35_55%,#080d1a_100%)]",
+        badgeColor: "text-[#6b9fff]/90",
+        titleColor: "text-white",
+        footerColor: "text-[#6b9fff]/75",
+        lineColor: "bg-[#1877f2]",
+      };
+    case "copywriting-digital":
+    case "email-marketing-avancado":
+      return {
+        background:
+          "bg-[linear-gradient(145deg,#0d0a14_0%,#1e1530_55%,#0d0a14_100%)]",
+        badgeColor: "text-[#c084fc]/90",
+        titleColor: "text-white",
+        footerColor: "text-[#c084fc]/75",
+        lineColor: "bg-[#a855f7]",
+      };
     default:
       return {
         background:
@@ -127,6 +180,7 @@ function CoverPattern({
         </svg>
       );
     case "persuasao-influencia":
+    case "persuasao-vendas":
       return (
         <svg
           aria-hidden="true"
@@ -210,6 +264,127 @@ function CoverPattern({
           <circle cx="264" cy="336" r="42" stroke="#E8820C" />
         </svg>
       );
+    case "claude-code-guia-completo":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 300 400" className="absolute inset-0 h-full w-full opacity-15">
+          <defs>
+            <pattern id={`${idPrefix}-cc1-grid`} x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="#c96442" strokeWidth="0.4" />
+            </pattern>
+          </defs>
+          <rect width="300" height="400" fill={`url(#${idPrefix}-cc1-grid)`} />
+          <circle cx="150" cy="160" r="110" fill="none" stroke="#c96442" strokeWidth="0.8" />
+          <circle cx="150" cy="160" r="75" fill="none" stroke="#e8a87c" strokeWidth="0.5" />
+          <circle cx="40" cy="40" r="20" fill="none" stroke="#c96442" strokeWidth="0.6" />
+          <circle cx="260" cy="360" r="28" fill="none" stroke="#c96442" strokeWidth="0.6" />
+        </svg>
+      );
+    case "claude-code-prompts-avancados":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 300 400" className="absolute inset-0 h-full w-full opacity-18">
+          <defs>
+            <pattern id={`${idPrefix}-cc2-dots`} x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1" fill="#3b82f6" />
+            </pattern>
+          </defs>
+          <rect width="300" height="400" fill={`url(#${idPrefix}-cc2-dots)`} />
+          {/* Neural network lines */}
+          <line x1="60" y1="80" x2="150" y2="160" stroke="#3b82f6" strokeWidth="0.6" />
+          <line x1="240" y1="80" x2="150" y2="160" stroke="#3b82f6" strokeWidth="0.6" />
+          <line x1="60" y1="240" x2="150" y2="160" stroke="#7eb8f7" strokeWidth="0.6" />
+          <line x1="240" y1="240" x2="150" y2="160" stroke="#7eb8f7" strokeWidth="0.6" />
+          <line x1="150" y1="60" x2="150" y2="160" stroke="#3b82f6" strokeWidth="0.6" />
+          <line x1="150" y1="260" x2="150" y2="160" stroke="#3b82f6" strokeWidth="0.6" />
+          <circle cx="150" cy="160" r="18" fill="none" stroke="#7eb8f7" strokeWidth="1" />
+          <circle cx="60" cy="80" r="8" fill="none" stroke="#3b82f6" strokeWidth="0.8" />
+          <circle cx="240" cy="80" r="8" fill="none" stroke="#3b82f6" strokeWidth="0.8" />
+          <circle cx="60" cy="240" r="8" fill="none" stroke="#7eb8f7" strokeWidth="0.8" />
+          <circle cx="240" cy="240" r="8" fill="none" stroke="#7eb8f7" strokeWidth="0.8" />
+          <circle cx="150" cy="60" r="8" fill="none" stroke="#3b82f6" strokeWidth="0.8" />
+          <circle cx="150" cy="260" r="8" fill="none" stroke="#3b82f6" strokeWidth="0.8" />
+        </svg>
+      );
+    case "claude-code-automacao-workflows":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 300 400" className="absolute inset-0 h-full w-full opacity-20">
+          {/* Pipeline flow lines */}
+          <g stroke="#16a34a" strokeWidth="0.7" fill="none">
+            <line x1="30" y1="120" x2="270" y2="120" strokeDasharray="6 3" />
+            <line x1="30" y1="200" x2="270" y2="200" strokeDasharray="6 3" />
+            <line x1="30" y1="280" x2="270" y2="280" strokeDasharray="6 3" />
+          </g>
+          <g stroke="#4ade80" strokeWidth="0.5" fill="none">
+            <line x1="80" y1="60" x2="80" y2="340" />
+            <line x1="150" y1="60" x2="150" y2="340" />
+            <line x1="220" y1="60" x2="220" y2="340" />
+          </g>
+          {/* Nodes */}
+          <rect x="62" y="108" width="36" height="24" rx="4" fill="none" stroke="#16a34a" strokeWidth="1" />
+          <rect x="132" y="108" width="36" height="24" rx="4" fill="none" stroke="#4ade80" strokeWidth="1" />
+          <rect x="202" y="108" width="36" height="24" rx="4" fill="none" stroke="#16a34a" strokeWidth="1" />
+          <rect x="62" y="188" width="36" height="24" rx="4" fill="none" stroke="#4ade80" strokeWidth="1" />
+          <rect x="132" y="188" width="36" height="24" rx="4" fill="none" stroke="#16a34a" strokeWidth="1" />
+          <rect x="202" y="188" width="36" height="24" rx="4" fill="none" stroke="#4ade80" strokeWidth="1" />
+          {/* Arrows */}
+          <path d="M98 120 L132 120" stroke="#4ade80" strokeWidth="1" markerEnd="url(#arr)" />
+          <path d="M168 120 L202 120" stroke="#4ade80" strokeWidth="1" />
+        </svg>
+      );
+    case "claude-code-agentes-ia":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 300 400" className="absolute inset-0 h-full w-full opacity-18">
+          <defs>
+            <pattern id={`${idPrefix}-cc4-hex`} x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
+              <polygon points="18,0 36,9 36,27 18,36 0,27 0,9" fill="none" stroke="#9333ea" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="300" height="400" fill={`url(#${idPrefix}-cc4-hex)`} />
+          {/* Agent orbit rings */}
+          <circle cx="150" cy="170" r="90" fill="none" stroke="#9333ea" strokeWidth="0.8" strokeDasharray="8 4" />
+          <circle cx="150" cy="170" r="55" fill="none" stroke="#c084fc" strokeWidth="0.6" />
+          {/* Satellite nodes */}
+          <circle cx="150" cy="80" r="6" fill="none" stroke="#c084fc" strokeWidth="1" />
+          <circle cx="230" cy="140" r="6" fill="none" stroke="#9333ea" strokeWidth="1" />
+          <circle cx="210" cy="240" r="6" fill="none" stroke="#c084fc" strokeWidth="1" />
+          <circle cx="90" cy="240" r="6" fill="none" stroke="#9333ea" strokeWidth="1" />
+          <circle cx="70" cy="140" r="6" fill="none" stroke="#c084fc" strokeWidth="1" />
+        </svg>
+      );
+    case "facebook-ads-do-zero":
+    case "criativos-facebook-ads":
+      return (
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 300 400"
+          className="absolute inset-0 h-full w-full opacity-20"
+        >
+          <defs>
+            <pattern id={`${idPrefix}-fb-dots`} x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1" fill="#1877f2" />
+            </pattern>
+          </defs>
+          <rect width="300" height="400" fill={`url(#${idPrefix}-fb-dots)`} />
+          <circle cx="150" cy="160" r="100" fill="none" stroke="#1877f2" strokeWidth="1" />
+          <circle cx="150" cy="160" r="68" fill="none" stroke="#6b9fff" strokeWidth="0.6" />
+        </svg>
+      );
+    case "copywriting-digital":
+    case "email-marketing-avancado":
+      return (
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 300 400"
+          className="absolute inset-0 h-full w-full opacity-15"
+        >
+          <defs>
+            <pattern id={`${idPrefix}-mk-hex`} x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <polygon points="16,0 32,8 32,24 16,32 0,24 0,8" fill="none" stroke="#a855f7" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="300" height="400" fill={`url(#${idPrefix}-mk-hex)`} />
+          <circle cx="150" cy="160" r="90" fill="none" stroke="#a855f7" strokeWidth="0.8" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -246,6 +421,7 @@ function CoverGraphic({
         </svg>
       );
     case "persuasao-influencia":
+    case "persuasao-vendas":
       return (
         <svg aria-hidden="true" viewBox="0 0 200 200" className={className}>
           <circle cx="100" cy="100" r="72" fill="none" stroke="#C9A84C" strokeWidth="1.5" opacity="0.8" />
@@ -320,6 +496,171 @@ function CoverGraphic({
           <circle cx="112" cy="100" r="5" fill="#E8820C" />
         </svg>
       );
+    case "claude-code-guia-completo":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 200 200" className={className}>
+          <defs>
+            <linearGradient id={`${idPrefix}-cc1-grad`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#c96442" />
+              <stop offset="100%" stopColor="#e8a87c" />
+            </linearGradient>
+          </defs>
+          {/* Terminal window */}
+          <rect x="28" y="40" width="144" height="116" rx="8" fill="#0d0f14" stroke="#c96442" strokeWidth="1.5" />
+          <rect x="28" y="40" width="144" height="22" rx="8" fill="#1a1f2e" />
+          <rect x="28" y="51" width="144" height="11" fill="#1a1f2e" />
+          <circle cx="44" cy="51" r="4" fill="#ff5f57" />
+          <circle cx="58" cy="51" r="4" fill="#febc2e" />
+          <circle cx="72" cy="51" r="4" fill="#28c840" />
+          <text x="40" y="80" fontFamily="monospace" fontSize="9" fill="#c96442">$ claude</text>
+          <text x="40" y="94" fontFamily="monospace" fontSize="8" fill="#e8a87c" opacity="0.9">{">"} Analisando...</text>
+          <rect x="40" y="102" width="64" height="5" rx="2" fill="#c96442" opacity="0.3" />
+          <rect x="40" y="112" width="96" height="5" rx="2" fill="#e8a87c" opacity="0.2" />
+          <rect x="40" y="122" width="80" height="5" rx="2" fill="#e8a87c" opacity="0.2" />
+          <rect x="40" y="132" width="52" height="5" rx="2" fill="#c96442" opacity="0.25" />
+          <rect x="40" y="142" width="8" height="9" rx="1" fill={`url(#${idPrefix}-cc1-grad)`} opacity="0.9" />
+        </svg>
+      );
+    case "claude-code-prompts-avancados":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 200 200" className={className}>
+          <defs>
+            <linearGradient id={`${idPrefix}-cc2-grad`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#3b82f6" />
+              <stop offset="100%" stopColor="#7eb8f7" />
+            </linearGradient>
+          </defs>
+          {/* Brain/neural network */}
+          <circle cx="100" cy="100" r="28" fill="#0a0d18" stroke="#3b82f6" strokeWidth="1.5" />
+          <circle cx="100" cy="100" r="10" fill={`url(#${idPrefix}-cc2-grad)`} opacity="0.8" />
+          {/* Nodes */}
+          <circle cx="100" cy="44" r="7" fill="#0a0d18" stroke="#7eb8f7" strokeWidth="1.2" />
+          <circle cx="152" cy="72" r="7" fill="#0a0d18" stroke="#3b82f6" strokeWidth="1.2" />
+          <circle cx="152" cy="128" r="7" fill="#0a0d18" stroke="#7eb8f7" strokeWidth="1.2" />
+          <circle cx="100" cy="156" r="7" fill="#0a0d18" stroke="#3b82f6" strokeWidth="1.2" />
+          <circle cx="48" cy="128" r="7" fill="#0a0d18" stroke="#7eb8f7" strokeWidth="1.2" />
+          <circle cx="48" cy="72" r="7" fill="#0a0d18" stroke="#3b82f6" strokeWidth="1.2" />
+          {/* Connections */}
+          <line x1="100" y1="51" x2="100" y2="72" stroke="#3b82f6" strokeWidth="0.8" opacity="0.7" />
+          <line x1="145" y1="76" x2="126" y2="88" stroke="#7eb8f7" strokeWidth="0.8" opacity="0.7" />
+          <line x1="145" y1="124" x2="126" y2="112" stroke="#3b82f6" strokeWidth="0.8" opacity="0.7" />
+          <line x1="100" y1="149" x2="100" y2="128" stroke="#7eb8f7" strokeWidth="0.8" opacity="0.7" />
+          <line x1="55" y1="124" x2="74" y2="112" stroke="#3b82f6" strokeWidth="0.8" opacity="0.7" />
+          <line x1="55" y1="76" x2="74" y2="88" stroke="#7eb8f7" strokeWidth="0.8" opacity="0.7" />
+          {/* Prompt symbol */}
+          <text x="88" y="105" fontFamily="monospace" fontSize="14" fontWeight="bold" fill="#7eb8f7" opacity="0.9">{">"}_</text>
+        </svg>
+      );
+    case "claude-code-automacao-workflows":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 200 200" className={className}>
+          <defs>
+            <linearGradient id={`${idPrefix}-cc3-grad`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#16a34a" />
+              <stop offset="100%" stopColor="#4ade80" />
+            </linearGradient>
+            <marker id={`${idPrefix}-arr`} markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#4ade80" />
+            </marker>
+          </defs>
+          {/* Pipeline boxes */}
+          <rect x="20" y="56" width="44" height="28" rx="5" fill="#0a1410" stroke="#16a34a" strokeWidth="1.5" />
+          <text x="42" y="74" textAnchor="middle" fontFamily="monospace" fontSize="7" fill="#4ade80">BUILD</text>
+          <rect x="78" y="56" width="44" height="28" rx="5" fill="#0a1410" stroke="#4ade80" strokeWidth="1.5" />
+          <text x="100" y="74" textAnchor="middle" fontFamily="monospace" fontSize="7" fill="#4ade80">TEST</text>
+          <rect x="136" y="56" width="44" height="28" rx="5" fill="#0a1410" stroke="#16a34a" strokeWidth="1.5" />
+          <text x="158" y="74" textAnchor="middle" fontFamily="monospace" fontSize="7" fill="#4ade80">SHIP</text>
+          {/* Arrows */}
+          <line x1="64" y1="70" x2="78" y2="70" stroke="#4ade80" strokeWidth="1.2" markerEnd={`url(#${idPrefix}-arr)`} />
+          <line x1="122" y1="70" x2="136" y2="70" stroke="#4ade80" strokeWidth="1.2" markerEnd={`url(#${idPrefix}-arr)`} />
+          {/* Second row */}
+          <rect x="49" y="112" width="44" height="28" rx="5" fill="#0a1410" stroke="#4ade80" strokeWidth="1.5" />
+          <text x="71" y="130" textAnchor="middle" fontFamily="monospace" fontSize="7" fill="#4ade80">LINT</text>
+          <rect x="107" y="112" width="44" height="28" rx="5" fill="#0a1410" stroke="#16a34a" strokeWidth="1.5" />
+          <text x="129" y="130" textAnchor="middle" fontFamily="monospace" fontSize="7" fill="#4ade80">DEPLOY</text>
+          {/* Vertical connectors */}
+          <line x1="100" y1="84" x2="71" y2="112" stroke="#4ade80" strokeWidth="0.8" opacity="0.6" strokeDasharray="3 2" />
+          <line x1="158" y1="84" x2="129" y2="112" stroke="#4ade80" strokeWidth="0.8" opacity="0.6" strokeDasharray="3 2" />
+          {/* Gear icon */}
+          <circle cx="100" cy="162" r="12" fill="none" stroke={`url(#${idPrefix}-cc3-grad)`} strokeWidth="1.5" />
+          <circle cx="100" cy="162" r="5" fill="none" stroke="#4ade80" strokeWidth="1.2" />
+        </svg>
+      );
+    case "claude-code-agentes-ia":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 200 200" className={className}>
+          <defs>
+            <linearGradient id={`${idPrefix}-cc4-grad`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#9333ea" />
+              <stop offset="100%" stopColor="#c084fc" />
+            </linearGradient>
+          </defs>
+          {/* Agent head */}
+          <rect x="62" y="44" width="76" height="72" rx="12" fill="#130a1e" stroke="#9333ea" strokeWidth="1.5" />
+          {/* Eyes */}
+          <rect x="76" y="64" width="18" height="14" rx="4" fill="#1e1030" stroke="#c084fc" strokeWidth="1.2" />
+          <rect x="106" y="64" width="18" height="14" rx="4" fill="#1e1030" stroke="#c084fc" strokeWidth="1.2" />
+          <circle cx="85" cy="71" r="4" fill={`url(#${idPrefix}-cc4-grad)`} />
+          <circle cx="115" cy="71" r="4" fill={`url(#${idPrefix}-cc4-grad)`} />
+          {/* Mouth */}
+          <rect x="78" y="90" width="44" height="8" rx="4" fill="#1e1030" stroke="#9333ea" strokeWidth="1" />
+          <rect x="82" y="92" width="8" height="4" rx="2" fill="#c084fc" opacity="0.7" />
+          <rect x="94" y="92" width="8" height="4" rx="2" fill="#c084fc" opacity="0.7" />
+          <rect x="106" y="92" width="8" height="4" rx="2" fill="#c084fc" opacity="0.7" />
+          {/* Antenna */}
+          <line x1="100" y1="44" x2="100" y2="28" stroke="#9333ea" strokeWidth="1.5" />
+          <circle cx="100" cy="24" r="5" fill={`url(#${idPrefix}-cc4-grad)`} />
+          {/* Body */}
+          <rect x="72" y="116" width="56" height="36" rx="8" fill="#130a1e" stroke="#9333ea" strokeWidth="1.2" />
+          <rect x="80" y="124" width="16" height="20" rx="4" fill="#1e1030" stroke="#c084fc" strokeWidth="0.8" />
+          <rect x="104" y="124" width="16" height="20" rx="4" fill="#1e1030" stroke="#c084fc" strokeWidth="0.8" />
+          {/* Arms */}
+          <rect x="40" y="118" width="32" height="12" rx="6" fill="#130a1e" stroke="#9333ea" strokeWidth="1.2" />
+          <rect x="128" y="118" width="32" height="12" rx="6" fill="#130a1e" stroke="#9333ea" strokeWidth="1.2" />
+          {/* Circuit dots */}
+          <circle cx="46" cy="152" r="3" fill="#9333ea" opacity="0.6" />
+          <circle cx="154" cy="152" r="3" fill="#9333ea" opacity="0.6" />
+          <line x1="46" y1="149" x2="72" y2="140" stroke="#9333ea" strokeWidth="0.7" opacity="0.5" />
+          <line x1="154" y1="149" x2="128" y2="140" stroke="#9333ea" strokeWidth="0.7" opacity="0.5" />
+        </svg>
+      );
+    case "facebook-ads-do-zero":
+    case "criativos-facebook-ads":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 200 200" className={className}>
+          <defs>
+            <linearGradient id={`${idPrefix}-fb-grad`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#1877f2" />
+              <stop offset="100%" stopColor="#0a4fa8" />
+            </linearGradient>
+          </defs>
+          <circle cx="100" cy="100" r="72" fill={`url(#${idPrefix}-fb-grad)`} />
+          <text x="100" y="122" textAnchor="middle" fontFamily="serif" fontSize="72" fontWeight="bold" fill="white">f</text>
+        </svg>
+      );
+    case "copywriting-digital":
+    case "email-marketing-avancado":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 200 200" className={className}>
+          <defs>
+            <linearGradient id={`${idPrefix}-mk-grad`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#a855f7" />
+              <stop offset="100%" stopColor="#7c3aed" />
+            </linearGradient>
+          </defs>
+          {/* Envelope */}
+          <rect x="28" y="62" width="144" height="96" rx="8" fill="#1a0d2e" stroke="#a855f7" strokeWidth="1.5" />
+          <polyline points="28,62 100,118 172,62" fill="none" stroke="#a855f7" strokeWidth="1.5" />
+          <line x1="28" y1="158" x2="76" y2="118" stroke="#a855f7" strokeWidth="1" opacity="0.6" />
+          <line x1="172" y1="158" x2="124" y2="118" stroke="#a855f7" strokeWidth="1" opacity="0.6" />
+          {/* Sparkle */}
+          <circle cx="148" cy="56" r="12" fill={`url(#${idPrefix}-mk-grad)`} opacity="0.9" />
+          <line x1="148" y1="44" x2="148" y2="40" stroke="#c084fc" strokeWidth="1.5" />
+          <line x1="148" y1="68" x2="148" y2="72" stroke="#c084fc" strokeWidth="1.5" />
+          <line x1="136" y1="56" x2="132" y2="56" stroke="#c084fc" strokeWidth="1.5" />
+          <line x1="160" y1="56" x2="164" y2="56" stroke="#c084fc" strokeWidth="1.5" />
+        </svg>
+      );
     default:
       return (
         <svg aria-hidden="true" viewBox="0 0 200 200" className={className}>
@@ -342,6 +683,7 @@ function CoverTitle({ slug }: { slug: Product["slug"] }) {
         </>
       );
     case "persuasao-influencia":
+    case "persuasao-vendas":
       return (
         <>
           <span className="block">Persuasao</span>
@@ -375,6 +717,62 @@ function CoverTitle({ slug }: { slug: Product["slug"] }) {
           <span className="block">Negociacao</span>
           <span className="block">de Alto</span>
           <span className="block text-[#f5a73b]">Impacto</span>
+        </>
+      );
+    case "claude-code-guia-completo":
+      return (
+        <>
+          <span className="block">Claude Code</span>
+          <span className="block text-[#e8a87c]">Guia Completo</span>
+        </>
+      );
+    case "claude-code-prompts-avancados":
+      return (
+        <>
+          <span className="block">Prompts</span>
+          <span className="block text-[#e8a87c]">Avancados</span>
+        </>
+      );
+    case "claude-code-automacao-workflows":
+      return (
+        <>
+          <span className="block">Automacao</span>
+          <span className="block text-[#e8a87c]">Workflows</span>
+        </>
+      );
+    case "claude-code-agentes-ia":
+      return (
+        <>
+          <span className="block">Agentes</span>
+          <span className="block text-[#e8a87c]">de IA</span>
+        </>
+      );
+    case "facebook-ads-do-zero":
+      return (
+        <>
+          <span className="block">Facebook Ads</span>
+          <span className="block text-[#6b9fff]">do Zero</span>
+        </>
+      );
+    case "criativos-facebook-ads":
+      return (
+        <>
+          <span className="block">Criativos</span>
+          <span className="block text-[#6b9fff]">que Vendem</span>
+        </>
+      );
+    case "copywriting-digital":
+      return (
+        <>
+          <span className="block">Copywriting</span>
+          <span className="block text-[#c084fc]">Digital</span>
+        </>
+      );
+    case "email-marketing-avancado":
+      return (
+        <>
+          <span className="block">Email</span>
+          <span className="block text-[#c084fc]">Marketing</span>
         </>
       );
     default:

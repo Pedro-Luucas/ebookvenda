@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<!--
+  RESUMO PARA IA — Claude Code na Prática: Otimize e Substitua Suas Planilhas com IA
+  =====================================================================================
+  Público-alvo: Profissionais que usam planilhas no dia a dia (Excel/Google Sheets)
+  e querem usar o Claude Code para automatizar tarefas sem precisar aprender programação.
+
+  Introdução — Por que planilhas travam o crescimento
+  Planilhas foram criadas para cálculos simples, não para operar empresas inteiras.
+  O Claude Code gera scripts Python que fazem em segundos o que levaria horas manualmente.
+  O leitor aprende a descrever problemas, rodar scripts no Google Colab e obter resultados.
+
+  Capítulo 1 — Como o Claude Code lida com planilhas
+  Como enviar arquivos, descrever problemas, pedir diagnóstico antes de agir.
+
+  Capítulo 2 — Google Colab, seu laboratório de automação
+  O que é, como abrir, criar célula, colar script, rodar, baixar resultado.
+
+  Capítulo 3 — Planilhas bagunçadas, o ponto de partida real
+  Problemas comuns, como pedir limpeza, estrutura de dados, quando reconstruir do zero.
+
+  Capítulo 4 — Cenários financeiros
+  Fluxo de caixa, contas a pagar/receber, DRE simplificado, conciliação bancária.
+
+  Capítulo 5 — Cenários de vendas
+  Pipeline, comissões, metas e desempenho, histórico de clientes.
+
+  Capítulo 6 — Cenários de estoque
+  Entradas/saídas, ponto de reposição, inventário, custo médio.
+
+  Capítulo 7 — Cenários de RH
+  Controle de ponto, férias, onboarding/offboarding, indicadores de RH.
+
+  Capítulo 8 — Cenários operacionais
+  Cronograma de projetos, checklists, relatórios recorrentes, consolidação de planilhas.
+
+  Capítulo 9 — Quando substituir a planilha por uma aplicação web
+  Sinais de limite, padrão Next.js + SQLite, migração de dados, o que esperar.
+
+  Capítulo 10 — Boas práticas e erros comuns
+  Organização de arquivos, backup, como descrever problemas, iteração, dados sensíveis.
+
+  Conclusão — O que o leitor agora é capaz de fazer
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Claude Code na Prática: Otimize e Substitua Suas Planilhas com Inteligência Artificial</title>
+<style>
+  :root{
+    --blue:#1A4A7A;
+    --blue-light:#2E86CC;
+    --blue-dark:#0D2A4A;
+    --blue-bg:#EDF4F7;
+    --blue-glow:#1663A3;
+    --black:#0D0D0D;
+    --black-rich:#111520;
+    --gray-text:#3A3E4A;
+    --gray-light:#F2F4F7;
+    --gray-mid:#D0D5DD;
+    --white:#FFFFFF;
+    --accent:#F0A500;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#e5e5e5;font-family:Arial,sans-serif;color:var(--gray-text);}
+  .page{
+    width:794px;
+    min-height:1123px;
+    margin:0 auto 32px;
+    background:white;
+    padding:70px 80px;
+    position:relative;
+    box-shadow:0 4px 24px rgba(0,0,0,0.08);
+    overflow:hidden;
+  }
+  h1.chapter-title{font-family:Georgia,serif;font-size:34px;font-weight:900;color:#0D0D0D;line-height:1.15;}
+  h2{font-family:Georgia,serif;font-size:21px;font-weight:bold;color:#0D2A4A;margin:32px 0 14px;}
+  h3{font-family:Arial,sans-serif;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#0D0D0D;margin:24px 0 10px;}
+  p{font-family:Arial,sans-serif;font-size:15px;line-height:1.9;color:#3A3E4A;margin-bottom:16px;}
+  em{font-style:italic;}
+  strong{color:#0D0D0D;}
+  ul,ol{margin:0 0 16px 24px;}
+  li{font-family:Arial,sans-serif;font-size:15px;line-height:1.8;color:#3A3E4A;margin-bottom:6px;}
+  .label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#1A4A7A;font-weight:bold;}
+  .chapter-header{padding-top:60px;border-top:3px solid #1A4A7A;margin-bottom:24px;}
+  .chapter-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:#1A4A7A;color:white;border-radius:50%;font-family:Georgia,serif;font-weight:bold;font-size:18px;margin-right:14px;vertical-align:middle;}
+  .chapter-label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#1A4A7A;font-weight:bold;vertical-align:middle;}
+  .deco-line{width:60px;height:3px;background:#1A4A7A;margin:16px 0 28px;}
+  .opening{font-family:Georgia,serif;font-style:italic;font-size:17px;color:#3A3E4A;border-left:3px solid #2E86CC;padding-left:16px;margin-bottom:28px;line-height:1.7;}
+
+  .quote-box{background:#EDF4F7;border-left:4px solid #1A4A7A;padding:24px 28px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .quote-box p{font-family:Georgia,serif;font-style:italic;font-size:17px;color:#0D2A4A;margin-bottom:10px;}
+  .quote-box .author{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#1A4A7A;font-weight:bold;}
+
+  .code-box{background:#0D0D0D;border-left:4px solid #2E86CC;border-radius:0 8px 8px 0;padding:24px 28px;margin:28px 0;}
+  .code-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#2E86CC;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .code-box p{font-family:'Courier New',monospace;font-size:13px;color:#CCDDF7;line-height:1.9;margin-bottom:8px;}
+  .code-box .comment{color:#5A7A9A;font-style:italic;}
+
+  .info-box{background:#F2F4F7;border:1px solid #D0D5DD;border-top:3px solid #1A4A7A;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .info-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#1A4A7A;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .info-box p{font-size:14px;color:#3A3E4A;line-height:1.7;margin-bottom:10px;}
+
+  .warn-box{background:#FFF8ED;border:1px solid #F0A500;border-left:4px solid #F0A500;border-radius:8px;padding:20px 24px;margin:28px 0;}
+  .warn-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#B07800;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .warn-box p{font-size:14px;color:#5A4A00;line-height:1.7;margin-bottom:8px;}
+
+  .step-box{background:#F2F4F7;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .step-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#1A4A7A;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:16px;}
+  .step{display:flex;align-items:flex-start;margin-bottom:14px;}
+  .step-num{flex-shrink:0;width:28px;height:28px;background:#1A4A7A;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:bold;font-size:13px;margin-right:14px;margin-top:2px;}
+  .step-text{font-size:14px;color:#3A3E4A;line-height:1.7;}
+  .step-text b{color:#0D0D0D;}
+
+  .scenario-box{border:1px solid #2E86CC;border-top:3px solid #1A4A7A;border-radius:8px;padding:24px 28px;margin:28px 0;background:white;}
+  .scenario-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#1A4A7A;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:8px;}
+  .scenario-box .scenario-name{font-family:Georgia,serif;font-size:20px;font-weight:bold;color:#0D0D0D;margin-bottom:12px;}
+  .scenario-box p{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .scenario-tip{background:#EDF4F7;padding:12px 16px;border-radius:6px;margin-top:12px;font-size:13px;color:#0D2A4A;font-style:italic;}
+
+  .checklist{background:#F2F4F7;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .checklist .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#1A4A7A;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:16px;}
+  .checklist .item{display:flex;align-items:flex-start;margin-bottom:12px;font-size:14px;color:#3A3E4A;line-height:1.6;}
+  .checklist .check{flex-shrink:0;width:18px;height:18px;border:2px solid #1A4A7A;border-radius:3px;margin-right:14px;margin-top:2px;background:white;}
+
+  .footer{position:absolute;bottom:28px;left:80px;right:80px;border-top:0.5px solid #D0D5DD;padding-top:10px;display:flex;justify-content:space-between;font-size:11px;color:#AAAAAA;letter-spacing:1px;text-transform:uppercase;}
+
+  /* CAPA */
+  .cover{background:linear-gradient(135deg,#0D0D0D 0%,#111520 100%);color:white;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;position:relative;overflow:hidden;}
+  .cover-bg{position:absolute;inset:0;opacity:0.05;}
+  .cover-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:28px;padding-top:60px;}
+  .cover-badge-top{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:5px;color:#2E86CC;font-weight:bold;}
+  .cover-title{font-family:Georgia,serif;font-size:58px;font-weight:bold;color:white;line-height:0.95;letter-spacing:-1px;}
+  .cover-title .blue{color:#2E86CC;display:block;}
+  .cover-line{width:80px;height:3px;background:#1A4A7A;margin:10px auto;}
+  .cover-sub{font-family:Georgia,serif;font-style:italic;font-size:16px;color:#7A9ABB;max-width:500px;line-height:1.6;}
+  .cover-bottom{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;padding-bottom:30px;}
+  .cover-bottom-text{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:5px;color:#1A4A7A;font-weight:bold;}
+
+  /* SUMARIO */
+  .toc-list{margin-top:30px;}
+  .toc-item{display:flex;align-items:center;padding:13px 0;border-bottom:1px dashed #D0D5DD;}
+  .toc-num{flex-shrink:0;width:32px;height:32px;background:#1A4A7A;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:bold;font-size:14px;margin-right:18px;}
+  .toc-title{flex-grow:1;font-family:Arial,sans-serif;font-size:14px;color:#0D0D0D;font-weight:bold;}
+  .toc-sub{font-family:Arial,sans-serif;font-size:12px;color:#7A8A9A;margin-top:2px;}
+  .toc-page{font-family:Arial,sans-serif;font-size:14px;color:#1A4A7A;font-weight:bold;}
+
+  @media print {
+    body{background:white;}
+    .page{page-break-after:always;margin:0;box-shadow:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== PAGE 1: CAPA ============== -->
+<section class="page cover">
+  <svg class="cover-bg" viewBox="0 0 794 1123" preserveAspectRatio="none">
+    <defs>
+      <pattern id="grid" patternUnits="userSpaceOnUse" width="40" height="40">
+        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1A4A7A" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="794" height="1123" fill="url(#grid)"/>
+  </svg>
+
+  <div class="cover-content">
+    <div class="cover-badge-top">Guia Prático · 2026</div>
+
+    <svg width="160" height="160" viewBox="0 0 160 160">
+      <rect x="20" y="30" width="120" height="90" rx="6" fill="none" stroke="#1A4A7A" stroke-width="1.5" opacity="0.5"/>
+      <line x1="20" y1="50" x2="140" y2="50" stroke="#2E86CC" stroke-width="1" opacity="0.6"/>
+      <line x1="20" y1="70" x2="140" y2="70" stroke="#1A4A7A" stroke-width="0.5" opacity="0.4"/>
+      <line x1="20" y1="90" x2="140" y2="90" stroke="#1A4A7A" stroke-width="0.5" opacity="0.4"/>
+      <line x1="20" y1="110" x2="140" y2="110" stroke="#1A4A7A" stroke-width="0.5" opacity="0.4"/>
+      <line x1="60" y1="30" x2="60" y2="120" stroke="#1A4A7A" stroke-width="0.5" opacity="0.4"/>
+      <line x1="100" y1="30" x2="100" y2="120" stroke="#1A4A7A" stroke-width="0.5" opacity="0.4"/>
+      <rect x="25" y="55" width="30" height="10" rx="2" fill="#2E86CC" opacity="0.7"/>
+      <rect x="65" y="55" width="30" height="10" rx="2" fill="#1A4A7A" opacity="0.5"/>
+      <rect x="105" y="55" width="30" height="10" rx="2" fill="#2E86CC" opacity="0.4"/>
+      <rect x="25" y="75" width="30" height="10" rx="2" fill="#1A4A7A" opacity="0.4"/>
+      <rect x="65" y="75" width="30" height="10" rx="2" fill="#2E86CC" opacity="0.6"/>
+      <rect x="105" y="75" width="30" height="10" rx="2" fill="#1A4A7A" opacity="0.3"/>
+      <circle cx="80" cy="140" r="14" fill="none" stroke="#2E86CC" stroke-width="1.5" opacity="0.6"/>
+      <text x="80" y="145" text-anchor="middle" fill="#2E86CC" font-size="14" font-family="Georgia" opacity="0.8">AI</text>
+      <line x1="80" y1="120" x2="80" y2="126" stroke="#2E86CC" stroke-width="1.5" opacity="0.5"/>
+    </svg>
+
+    <div>
+      <div class="cover-title">Claude Code<span class="blue">na Prática</span></div>
+      <div class="cover-line"></div>
+      <div class="cover-sub">Otimize e Substitua Suas Planilhas com Inteligência Artificial</div>
+    </div>
+
+    <div style="background:rgba(26,74,122,0.3);border:1px solid rgba(46,134,204,0.4);border-radius:8px;padding:16px 32px;margin-top:10px;">
+      <div style="font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:3px;color:#7AABCC;margin-bottom:8px;">Cenários cobertos</div>
+      <div style="font-family:Arial,sans-serif;font-size:13px;color:#AACCEE;line-height:1.8;">Financeiro · Vendas · Estoque · RH · Operações</div>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div style="width:60px;height:1px;background:rgba(46,134,204,0.4);"></div>
+    <div class="cover-bottom-text">Para profissionais que usam planilhas no dia a dia</div>
+  </div>
+</section>
+
+<!-- ============== PAGE 2: SUMÁRIO ============== -->
+<section class="page">
+  <div style="padding-top:40px;">
+    <div class="label">Sumário</div>
+    <h1 class="chapter-title" style="margin-top:12px;font-size:28px;">O que você vai encontrar neste guia</h1>
+    <div class="deco-line"></div>
+
+    <div class="toc-list">
+      <div class="toc-item">
+        <div class="toc-num" style="background:#3A3E4A;font-size:12px;">Intro</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Introdução</div>
+          <div class="toc-sub">Por que planilhas travam o crescimento e o que o Claude Code muda</div>
+        </div>
+        <div class="toc-page">3</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">1</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Como o Claude Code lida com planilhas</div>
+          <div class="toc-sub">Enviar arquivos, descrever problemas, pedir diagnóstico</div>
+        </div>
+        <div class="toc-page">4</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">2</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Google Colab, seu laboratório de automação</div>
+          <div class="toc-sub">Do zero: abrir, colar script, rodar, baixar resultado</div>
+        </div>
+        <div class="toc-page">6</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">3</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Planilhas bagunçadas, o ponto de partida real</div>
+          <div class="toc-sub">Limpeza, reorganização e quando reconstruir do zero</div>
+        </div>
+        <div class="toc-page">8</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">4</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Cenários financeiros</div>
+          <div class="toc-sub">Fluxo de caixa, contas a pagar/receber, DRE, conciliação</div>
+        </div>
+        <div class="toc-page">10</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">5</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Cenários de vendas</div>
+          <div class="toc-sub">Pipeline, comissões, metas, histórico de clientes</div>
+        </div>
+        <div class="toc-page">13</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">6</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Cenários de estoque</div>
+          <div class="toc-sub">Entradas/saídas, reposição, inventário, custo médio</div>
+        </div>
+        <div class="toc-page">16</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">7</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Cenários de RH</div>
+          <div class="toc-sub">Ponto, férias, onboarding, indicadores</div>
+        </div>
+        <div class="toc-page">18</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">8</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Cenários operacionais</div>
+          <div class="toc-sub">Projetos, checklists, relatórios recorrentes, consolidação</div>
+        </div>
+        <div class="toc-page">21</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">9</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Quando substituir a planilha por uma aplicação web</div>
+          <div class="toc-sub">Sinais de limite, Next.js + SQLite, migração de dados</div>
+        </div>
+        <div class="toc-page">24</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num">10</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Boas práticas e erros comuns</div>
+          <div class="toc-sub">Organização, backup, como descrever problemas, dados sensíveis</div>
+        </div>
+        <div class="toc-page">27</div>
+      </div>
+      <div class="toc-item">
+        <div class="toc-num" style="background:#3A3E4A;font-size:12px;">Fin</div>
+        <div style="flex-grow:1;">
+          <div class="toc-title">Conclusão</div>
+          <div class="toc-sub">O que você agora é capaz de fazer e como continuar evoluindo</div>
+        </div>
+        <div class="toc-page">29</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Sumário</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 3: INTRODUÇÃO ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-label">Introdução</span>
+    <h1 class="chapter-title" style="margin-top:12px;">Por que a planilha parou de ser suficiente</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <p>A planilha foi uma das invenções mais úteis da história do trabalho de escritório. Em 1979, quando o VisiCalc apareceu no Apple II, ele substituiu horas de cálculo manual por segundos de processamento automático. Décadas depois, o Excel e o Google Sheets ainda dominam o dia a dia de empresas de todos os tamanhos. O problema não é a ferramenta em si: é o que as empresas passaram a exigir dela.</p>
+
+  <p>Uma planilha foi projetada para organizar dados em linhas e colunas e fazer cálculos sobre eles. Ela não foi projetada para ser um sistema de controle de estoque, um CRM, um sistema de folha de pagamento ou um painel de indicadores em tempo real. Quando uma empresa usa a planilha para tudo isso ao mesmo tempo, surgem os problemas conhecidos: arquivos que travam, fórmulas que quebram sem aviso, dados duplicados em abas diferentes, versões conflitantes circulando por e-mail e erros que só aparecem semanas depois, quando o prejuízo já aconteceu.</p>
+
+  <p>O Claude Code muda essa equação de uma forma que não exige que você aprenda programação. Ele é uma ferramenta de inteligência artificial que entende o que você descreve em português, gera o código necessário para resolver o problema e explica o que cada parte faz. Você não precisa entender o código. Você precisa entender o problema, descrevê-lo com clareza e saber onde rodar o resultado.</p>
+
+  <h2>O que este guia cobre</h2>
+
+  <p>Este guia ensina como usar o Claude Code para três coisas distintas: melhorar planilhas que já existem, automatizar tarefas que hoje são feitas manualmente e, quando fizer sentido, substituir a planilha por uma aplicação web simples que roda no seu próprio computador.</p>
+
+  <p>Os cenários cobertos são os mais comuns no ambiente empresarial: financeiro, vendas, estoque, recursos humanos e operações. Para cada um, você vai encontrar uma descrição do que o Claude Code consegue fazer, como pedir isso a ele e quando a planilha chegou no limite e precisa ser substituída por algo mais robusto.</p>
+
+  <p>O fluxo técnico é sempre o mesmo: você abre o Claude Code, descreve o problema ou envia a planilha, ele gera um script em Python, você abre o Google Colab (ensinado do zero no Capítulo 2), cola o script, roda e obtém o resultado. Nenhuma instalação de Python, nenhuma configuração de ambiente, nenhum conhecimento técnico prévio além do básico de usar o Claude Code.</p>
+
+  <h2>O que está fora do escopo</h2>
+
+  <p>Este guia dá direcionamento, não tutoriais exaustivos para cada cenário possível. Cada empresa tem suas particularidades, e o objetivo aqui é que você saia sabendo o que pedir ao Claude Code em cada situação, não que você receba um script pronto para copiar sem pensar. Os exemplos de instrução mostrados ao longo do texto são pontos de partida: você vai adaptá-los à sua realidade.</p>
+
+  <p>O pré-requisito é simples: ter o Claude Code instalado e saber o básico de como usá-lo, ou seja, abrir o terminal, digitar uma instrução e ler a resposta. Se você ainda não chegou nesse ponto, instale o Claude Code seguindo a documentação oficial antes de continuar.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Introdução</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 4: CAPÍTULO 1 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">1</span>
+    <span class="chapter-label">Capítulo 1</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Como o Claude Code lida com planilhas</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">Antes de pedir qualquer automação, vale entender o que o Claude Code consegue enxergar em uma planilha e como descrever o problema de forma que ele entenda sem ambiguidade.</div>
+
+  <h2>Como enviar uma planilha para análise</h2>
+
+  <p>O Claude Code aceita arquivos diretamente. Você pode arrastar o arquivo para a janela do terminal onde o Claude Code está rodando, ou usar o comando de upload disponível na interface. Formatos aceitos incluem <strong>.xlsx</strong>, <strong>.xls</strong> e <strong>.csv</strong>. Arquivos do Google Sheets precisam ser exportados primeiro: no Google Sheets, vá em Arquivo, depois Fazer download, e escolha Microsoft Excel ou CSV.</p>
+
+  <p>Quando você envia um arquivo, o Claude Code lê a estrutura: quantas abas existem, quais são os nomes das colunas, quantas linhas de dados há, quais células têm fórmulas e quais têm valores fixos. Ele não executa o arquivo, apenas lê o conteúdo. Por isso, planilhas com macros complexas do VBA não têm as macros analisadas, apenas os dados e a estrutura.</p>
+
+  <h2>O que o Claude Code enxerga em uma planilha bagunçada</h2>
+
+  <p>Uma planilha bagunçada costuma ter alguns padrões reconhecíveis: cabeçalhos misturados com dados, células mescladas que dificultam a leitura por código, colunas com tipos de dados inconsistentes (datas escritas como texto, valores com símbolo de moeda embutido), linhas em branco no meio dos dados e fórmulas que referenciam células de outras abas sem documentação.</p>
+
+  <p>O Claude Code identifica esses padrões quando você pede um diagnóstico. Ele não vai simplesmente corrigir tudo de uma vez sem avisar: se você pedir um diagnóstico antes de qualquer ação, ele vai listar o que encontrou e perguntar como você quer proceder. Esse passo é importante porque algumas "bagunças" são intencionais, como células mescladas usadas para formatação visual em relatórios impressos.</p>
+
+  <h2>Como descrever o problema com clareza</h2>
+
+  <p>A qualidade da instrução determina a qualidade do resultado. Instruções vagas geram scripts que resolvem o problema errado. Instruções específicas geram scripts que resolvem exatamente o que você precisa.</p>
+
+  <p>Uma instrução vaga seria: "arruma minha planilha de vendas". Uma instrução específica seria: "tenho uma planilha de vendas com as colunas Data, Vendedor, Produto, Quantidade e Valor. A coluna Data tem datas em formatos diferentes: algumas no formato DD/MM/AAAA e outras no formato MM-DD-AAAA. Quero que todas fiquem no formato DD/MM/AAAA e que a planilha seja ordenada por data, da mais antiga para a mais recente."</p>
+
+  <p>A diferença é que a instrução específica diz: o que existe, onde está o problema e qual é o resultado esperado. Quando você inclui esses três elementos, o Claude Code gera um script que faz exatamente o que você pediu.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 1</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 5: CAPÍTULO 1 (continuação) ============== -->
+<section class="page">
+  <h2>O conceito de diagnóstico: antes de otimizar, entender o que está errado</h2>
+
+  <p>Antes de pedir qualquer transformação, peça um diagnóstico. O diagnóstico é uma análise sem modificações: o Claude Code lê a planilha e descreve o que encontrou, sem alterar nada. Isso serve para dois propósitos: você confirma que ele entendeu a estrutura corretamente, e você descobre problemas que não sabia que existiam.</p>
+
+  <p>É comum que um diagnóstico revele, por exemplo, que uma coluna de valores tem 12% das células com texto em vez de número, o que quebraria qualquer cálculo automático. Saber disso antes de pedir a automação evita que o script gere resultados errados silenciosamente.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução de diagnóstico para o Claude Code</span>
+    <p>Analise o arquivo "vendas_2025.xlsx" que estou enviando e me dê um diagnóstico completo da estrutura. Liste: quantas abas existem e o que cada uma contém, quais são as colunas de cada aba, se há células mescladas, se há linhas ou colunas em branco no meio dos dados, se há inconsistências de tipo nas colunas (por exemplo, datas escritas como texto ou valores com letras misturadas), e se há fórmulas que podem estar quebradas. Não modifique nada ainda. Apenas descreva o que encontrou.</p>
+  </div>
+
+  <h2>Como pedir sugestões antes de qualquer mudança</h2>
+
+  <p>Depois do diagnóstico, o próximo passo é pedir sugestões. Você não precisa saber o que precisa ser feito: o Claude Code pode propor um plano de ação com base no que encontrou. Você aprova, rejeita ou ajusta cada item antes de qualquer script ser gerado.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para sugestões de melhoria</span>
+    <p>Com base no diagnóstico que você fez da planilha "vendas_2025.xlsx", liste as melhorias que você recomenda fazer, em ordem de prioridade. Para cada melhoria, explique em uma frase o que ela resolve e qual seria o impacto se não for feita. Não gere nenhum código ainda.</p>
+  </div>
+
+  <h2>O papel do Claude Code, do Google Colab e do leitor</h2>
+
+  <p>É útil ter clareza sobre quem faz o quê nesse fluxo. O Claude Code entende o problema, gera o código e explica o que ele faz. O Google Colab é o ambiente onde o código roda: você cola o script lá, aperta um botão e o resultado aparece. O seu papel é descrever o problema com precisão, revisar o resultado e decidir se está correto.</p>
+
+  <p>Nenhuma dessas três partes substitui as outras. O Claude Code não roda o código por conta própria. O Google Colab não entende o problema. Você não precisa escrever o código. Cada um faz o que sabe fazer melhor.</p>
+
+  <div class="info-box">
+    <span class="lbl">Resumo do fluxo</span>
+    <p><strong>1. Você descreve o problema</strong> ao Claude Code com precisão: o que existe, o que está errado, o que você quer como resultado.</p>
+    <p><strong>2. O Claude Code gera um script Python</strong> que resolve o problema descrito.</p>
+    <p><strong>3. Você abre o Google Colab</strong>, cola o script em uma célula e roda.</p>
+    <p><strong>4. O resultado aparece</strong> como um arquivo para download ou como uma tabela na tela.</p>
+    <p><strong>5. Se algo estiver errado</strong>, você descreve o erro ao Claude Code e ele corrige o script.</p>
+  </div>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 1</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 6: CAPÍTULO 2 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">2</span>
+    <span class="chapter-label">Capítulo 2</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Google Colab, seu laboratório de automação</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">Você não precisa instalar Python, configurar ambiente ou entender nada de programação para rodar os scripts gerados pelo Claude Code. O Google Colab faz tudo isso por você, direto no navegador.</div>
+
+  <h2>O que é o Google Colab</h2>
+
+  <p>O Google Colab (nome completo: Google Colaboratory) é um serviço gratuito do Google que permite rodar código Python diretamente no navegador, sem instalar nada no computador. Pense nele como um caderno online: você escreve (ou cola) o código em células, aperta um botão e o código roda em servidores do Google. O resultado aparece logo abaixo da célula.</p>
+
+  <p>Para usar o Google Colab, você precisa apenas de uma conta Google (a mesma do Gmail) e de um navegador. Não há instalação, não há configuração de versão de Python, não há gerenciamento de bibliotecas na maioria dos casos. As bibliotecas mais comuns para trabalhar com planilhas, como pandas e openpyxl, já estão disponíveis no Colab por padrão.</p>
+
+  <h2>Por que usar o Google Colab e não instalar Python no computador</h2>
+
+  <p>Instalar Python localmente envolve escolher a versão correta, configurar variáveis de ambiente, instalar um gerenciador de pacotes e resolver conflitos de dependência. Para quem não é programador, esse processo pode levar horas e resultar em erros difíceis de diagnosticar.</p>
+
+  <p>O Google Colab elimina tudo isso. O ambiente já está configurado. Quando um script precisa de uma biblioteca que não está disponível por padrão, basta adicionar uma linha no início do script (o Claude Code faz isso automaticamente) e o Colab instala na hora. Quando você fecha o Colab, o ambiente é descartado. Na próxima vez que abrir, começa limpo.</p>
+
+  <h2>Como abrir o Google Colab pela primeira vez</h2>
+
+  <div class="step-box">
+    <span class="lbl">Passo a passo para abrir o Colab</span>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Abra o navegador e acesse <strong>colab.research.google.com</strong></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Se aparecer uma tela de login, entre com sua conta Google.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">Clique em <strong>"Novo notebook"</strong> no canto inferior esquerdo, ou em <strong>"Arquivo" &gt; "Novo notebook"</strong> no menu superior.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">Um notebook em branco vai abrir com uma célula vazia de fundo cinza. Essa é a célula de código.</div>
+    </div>
+  </div>
+
+  <h2>Como colar e rodar um script gerado pelo Claude Code</h2>
+
+  <div class="step-box">
+    <span class="lbl">Rodando seu primeiro script</span>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Copie o script completo que o Claude Code gerou (selecione tudo e use Ctrl+C ou Cmd+C).</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Clique dentro da célula de código no Colab e cole o script com Ctrl+V ou Cmd+V.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">Se o script trabalha com um arquivo de planilha, faça o upload: clique no ícone de pasta no painel esquerdo, depois no ícone de upload (seta para cima) e selecione o arquivo.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">Clique no botão de play (triângulo) à esquerda da célula, ou pressione <strong>Shift+Enter</strong>.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-text">O resultado aparece abaixo da célula: pode ser uma tabela, uma mensagem de confirmação ou um arquivo gerado para download.</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 2</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 7: CAPÍTULO 2 (continuação) ============== -->
+<section class="page">
+
+  <h2>Como baixar o arquivo gerado</h2>
+
+  <p>Quando o script gera um arquivo de saída, o arquivo fica salvo no ambiente temporário do Colab. Para baixá-lo, há duas formas. A primeira: o próprio script pode incluir um comando de download automático. O Claude Code costuma incluir isso quando você pede explicitamente. O arquivo vai aparecer na pasta de downloads do seu navegador como qualquer outro download. A segunda: você pode baixar manualmente pelo painel de arquivos. Clique no ícone de pasta no painel esquerdo, localize o arquivo gerado, clique com o botão direito sobre ele e escolha "Fazer download".</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: o ambiente do Colab é temporário</span>
+    <p>Os arquivos que você faz upload e os arquivos gerados pelo script existem apenas enquanto a sessão do Colab está ativa. Se você fechar o navegador ou a sessão expirar (geralmente após 90 minutos de inatividade), tudo é apagado. Sempre baixe o arquivo gerado antes de fechar.</p>
+  </div>
+
+  <h2>Erros comuns ao rodar scripts no Colab</h2>
+
+  <p>Mesmo sem entender Python, você vai encontrar erros eventualmente. A boa notícia é que você não precisa entender o erro para corrigi-lo: basta copiar a mensagem de erro e enviar ao Claude Code pedindo correção.</p>
+
+  <p>Os erros mais comuns têm causas simples. O erro <strong>FileNotFoundError</strong> significa que o script está procurando um arquivo com um nome específico e não encontrou: verifique se o nome do arquivo que você fez upload é exatamente igual ao nome que aparece no script. O erro <strong>ModuleNotFoundError</strong> significa que uma biblioteca não está instalada: o Claude Code vai adicionar o comando de instalação quando você reportar o erro. O erro <strong>KeyError</strong> geralmente significa que o script está procurando uma coluna com um nome que não existe na sua planilha: verifique se os nomes das colunas no script correspondem exatamente aos nomes na sua planilha, incluindo maiúsculas, minúsculas e espaços.</p>
+
+  <div class="code-box">
+    <span class="lbl">Como reportar um erro ao Claude Code</span>
+    <p>O script que você gerou para limpar a planilha de vendas deu o seguinte erro ao rodar no Google Colab:</p>
+    <p>[cole aqui a mensagem de erro completa]</p>
+    <p>O arquivo que fiz upload se chama "vendas_janeiro.xlsx" e tem as colunas: Data, Vendedor, Produto, Qtd, Valor Total. Corrija o script para resolver esse erro.</p>
+  </div>
+
+  <h2>Quando o resultado não é o esperado</h2>
+
+  <p>Às vezes o script roda sem erros, mas o resultado não é o que você queria. Talvez as datas estejam em formato errado, os valores estejam sem casas decimais ou uma coluna esteja faltando. Nesses casos, descreva ao Claude Code o que você esperava e o que recebeu, e peça ajuste.</p>
+
+  <div class="code-box">
+    <span class="lbl">Como pedir ajuste no resultado</span>
+    <p>O script rodou sem erros, mas o arquivo gerado tem um problema: a coluna "Valor Total" está mostrando os números sem casas decimais (por exemplo, 1500 em vez de 1500,00). Quero que os valores apareçam com duas casas decimais e com vírgula como separador decimal, no padrão brasileiro. Ajuste o script.</p>
+  </div>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 2</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 8: CAPÍTULO 3 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">3</span>
+    <span class="chapter-label">Capítulo 3</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Planilhas bagunçadas, o ponto de partida real</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">A maioria das planilhas empresariais não foi planejada: foi crescendo. Alguém criou uma aba, outra pessoa adicionou colunas, um terceiro copiou dados de outro sistema e colou sem padronizar. O resultado é uma estrutura que funciona na cabeça de quem criou, mas quebra quando qualquer automação tenta processá-la.</div>
+
+  <h2>Por que a maioria das planilhas empresariais está mal estruturada</h2>
+
+  <p>Planilhas crescem organicamente. Ninguém senta para projetar uma planilha do zero com regras claras de estrutura. O que acontece na prática é que alguém cria uma aba para controlar algo, outra pessoa adiciona uma coluna para registrar uma informação nova, um terceiro copia dados de um sistema externo e cola sem padronizar o formato. Com o tempo, a planilha acumula camadas de decisões diferentes, feitas por pessoas diferentes, sem documentação.</p>
+
+  <p>Isso não é negligência: é a natureza das ferramentas flexíveis. A planilha aceita qualquer coisa em qualquer célula, o que é sua maior vantagem e seu maior problema ao mesmo tempo. Quando você precisa automatizar algo, essa flexibilidade vira obstáculo.</p>
+
+  <h2>Os problemas mais comuns</h2>
+
+  <p><strong>Dados misturados com formatação.</strong> Células que contêm tanto o valor quanto a unidade de medida (por exemplo, "150 kg" em vez de 150 na célula e "kg" no cabeçalho da coluna). Isso impede qualquer cálculo automático.</p>
+
+  <p><strong>Formatação inconsistente.</strong> Datas em formatos diferentes na mesma coluna, valores com e sem símbolo de moeda, nomes de produtos com grafias diferentes ("Produto A", "produto a", "PRODUTO A" tratados como itens distintos).</p>
+
+  <p><strong>Fórmulas quebradas.</strong> Referências a células que foram movidas ou deletadas, resultando em erros como #REF! ou #VALOR! que se propagam silenciosamente por outras fórmulas.</p>
+
+  <p><strong>Abas duplicadas.</strong> Versões diferentes do mesmo dado em abas diferentes, sem clareza sobre qual é a fonte de verdade.</p>
+
+  <p><strong>Células mescladas.</strong> Usadas para deixar o relatório bonito visualmente, mas que impedem que o código leia os dados corretamente, porque a mesclagem quebra a estrutura de linhas e colunas.</p>
+
+  <p><strong>Linhas de totais no meio dos dados.</strong> Subtotais inseridos entre as linhas de detalhe, misturando dados brutos com dados calculados na mesma coluna.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 3</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 9: CAPÍTULO 3 (continuação) ============== -->
+<section class="page">
+
+  <h2>Como pedir ao Claude Code para limpar e reorganizar sem perder dados</h2>
+
+  <p>A instrução de limpeza precisa ser específica sobre o que preservar e o que transformar. O Claude Code não vai apagar dados sem que você peça explicitamente. Mas é importante deixar claro o que você quer como resultado final.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução de limpeza de planilha</span>
+    <p>Tenho uma planilha "estoque.xlsx" com uma aba chamada "Movimentações". Os problemas que identifiquei são: (1) a coluna "Quantidade" tem valores como "50 un", "30 un" e "20 peças" misturando número e unidade na mesma célula; (2) a coluna "Data" tem datas em três formatos diferentes: DD/MM/AAAA, MM/DD/AAAA e por extenso como "15 de março de 2025"; (3) há linhas em branco a cada 10 linhas que parecem ser separadores visuais. Gere um script Python que: remova as linhas em branco, padronize a coluna Data para DD/MM/AAAA, separe a coluna Quantidade em duas colunas (Quantidade_Numero e Unidade), e salve o resultado em um novo arquivo chamado "estoque_limpo.xlsx" sem modificar o arquivo original.</p>
+  </div>
+
+  <h2>O que uma planilha bem estruturada parece</h2>
+
+  <p>Uma planilha bem estruturada para processamento automático segue algumas regras simples. A primeira linha é sempre o cabeçalho, com um nome único por coluna. Cada linha seguinte é um registro de dado. Não há linhas em branco no meio dos dados. Não há células mescladas. Cada coluna tem um único tipo de dado: datas são sempre datas, números são sempre números, texto é sempre texto. Não há subtotais misturados com os dados brutos: se você precisa de totais, eles ficam em uma aba separada ou são calculados pelo script.</p>
+
+  <p>Essa estrutura é chamada de "tabela plana" ou, em inglês, <em>flat table</em>. É o formato que qualquer ferramenta de análise de dados espera receber. Quando sua planilha está nesse formato, qualquer automação funciona sem surpresas.</p>
+
+  <h2>Como validar o resultado sem entender o código</h2>
+
+  <p>Depois de rodar o script de limpeza, você precisa verificar se o resultado está correto. Você não precisa entender o código para fazer isso: basta abrir o arquivo gerado e checar visualmente os pontos que você pediu para corrigir. Se você pediu para padronizar datas, abra a coluna de datas e verifique se todas estão no mesmo formato. Se você pediu para remover linhas em branco, role a planilha e veja se ainda há linhas vazias no meio.</p>
+
+  <p>Além da verificação visual, peça ao Claude Code para gerar um relatório de validação junto com o script de limpeza. Esse relatório mostra quantas linhas foram processadas, quantas transformações foram feitas e se houve algum dado que não pôde ser convertido.</p>
+
+  <h2>Quando a planilha está tão bagunçada que o melhor caminho é reconstruir do zero</h2>
+
+  <p>Às vezes a limpeza custa mais do que a reconstrução. Isso acontece quando a estrutura original é tão inconsistente que qualquer tentativa de padronização automática vai gerar mais erros do que corrigir. Os sinais são: mais de 30% das células com dados em formato incorreto, múltiplas abas com dados sobrepostos sem critério claro, fórmulas que referenciam outras fórmulas em cadeia de mais de cinco níveis.</p>
+
+  <p>Nesse caso, o caminho mais eficiente é pedir ao Claude Code para criar uma planilha nova com a estrutura correta e, em seguida, gerar um script que extrai os dados aproveitáveis da planilha antiga e os insere na nova estrutura. Você perde a formatação visual, mas ganha uma base sólida para trabalhar.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para reconstrução de planilha</span>
+    <p>A planilha "controle_financeiro_antigo.xlsx" está muito bagunçada para limpar diretamente. Com base no diagnóstico que você fez, crie uma nova planilha com estrutura correta para controle financeiro, com as colunas: Data (formato DD/MM/AAAA), Tipo (Receita ou Despesa), Categoria, Descrição, Valor (número sem símbolo de moeda), Centro_de_Custo. Depois, gere um script separado que tenta extrair os dados da planilha antiga e os insere na nova estrutura, marcando com "REVISAR" qualquer linha onde a conversão não foi possível com certeza.</p>
+  </div>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 3</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 10: CAPÍTULO 4 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">4</span>
+    <span class="chapter-label">Capítulo 4</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Cenários financeiros</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">O setor financeiro é onde planilhas mal estruturadas causam mais dano. Um erro de fórmula em um fluxo de caixa pode levar a decisões erradas sobre pagamentos e investimentos. O Claude Code não elimina o risco humano de inserir dados errados, mas elimina o risco de fórmulas quebradas e cálculos manuais incorretos.</div>
+
+  <h2>Fluxo de caixa</h2>
+
+  <p>O fluxo de caixa é o controle de todas as entradas e saídas de dinheiro da empresa em um período. Na planilha, o problema mais comum é que os dados ficam espalhados: receitas em uma aba, despesas em outra, transferências em uma terceira, e o resumo mensal é feito manualmente copiando e colando valores. Quando um lançamento é esquecido ou duplicado, o saldo fica errado e ninguém percebe até o extrato bancário chegar.</p>
+
+  <p>O Claude Code pode consolidar todas as abas em uma única tabela de lançamentos, calcular o saldo acumulado dia a dia, identificar os meses com maior concentração de saídas e gerar um resumo mensal automático com totais por categoria.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para fluxo de caixa</span>
+    <p>Tenho uma planilha "fluxo_caixa.xlsx" com três abas: "Receitas" (colunas: Data, Descrição, Valor, Categoria), "Despesas" (colunas: Data, Descrição, Valor, Categoria, Fornecedor) e "Transferências" (colunas: Data, Origem, Destino, Valor). Gere um script Python que: (1) consolide as três abas em uma única tabela com as colunas Data, Tipo (Receita/Despesa/Transferência), Descrição, Valor, Categoria; (2) ordene por data; (3) calcule uma coluna de Saldo_Acumulado; (4) gere uma segunda aba chamada "Resumo_Mensal" com o total de receitas, total de despesas e saldo líquido por mês; (5) salve tudo em "fluxo_consolidado.xlsx".</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando mais de duas pessoas precisam lançar dados ao mesmo tempo, ou quando o volume de lançamentos diários ultrapassa 50 registros e a planilha começa a ficar lenta.</p>
+
+  <h2>Contas a pagar e receber</h2>
+
+  <p>O controle de contas a pagar e receber em planilha tem um problema estrutural: a planilha não avisa quando um vencimento está chegando. Você precisa abrir o arquivo, olhar as datas e identificar manualmente o que está vencendo. Com o Claude Code, você pode gerar um relatório de vencimentos automaticamente, com destaque para o que já venceu e o que vence nos próximos sete dias.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para contas a pagar e receber</span>
+    <p>Tenho uma planilha "contas.xlsx" com duas abas: "A_Pagar" e "A_Receber". Cada aba tem as colunas: Fornecedor_ou_Cliente, Descrição, Valor, Data_Vencimento, Status (Pendente/Pago/Recebido). Gere um script Python que: (1) filtre apenas os registros com Status "Pendente"; (2) calcule quantos dias faltam para o vencimento de cada um (usando a data de hoje como referência); (3) classifique em três grupos: "Vencido" (dias negativos), "Vence em até 7 dias" e "Vence depois de 7 dias"; (4) gere um arquivo "alertas_vencimento.xlsx" com uma aba para cada grupo, ordenada por data de vencimento; (5) calcule o total em aberto por grupo.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando você precisa que a equipe financeira acesse os alertas sem precisar rodar o script manualmente toda manhã.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 4</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 11: CAPÍTULO 4 (continuação) ============== -->
+<section class="page">
+
+  <h2>DRE simplificado</h2>
+
+  <p>A Demonstração do Resultado do Exercício (DRE) é um relatório que mostra se a empresa teve lucro ou prejuízo em um período. Na versão simplificada para pequenas e médias empresas, ela organiza receitas brutas, deduções, custos, despesas operacionais e resultado líquido em um formato padronizado. O problema é que montar esse relatório a partir de uma planilha de lançamentos exige classificar cada lançamento na categoria correta da DRE, o que é feito manualmente e está sujeito a erros de classificação.</p>
+
+  <p>O Claude Code pode ler uma planilha de lançamentos já categorizada e gerar automaticamente a estrutura da DRE, desde que as categorias dos lançamentos estejam mapeadas para as linhas da DRE. Você define o mapeamento uma vez e o script aplica para qualquer período.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para DRE simplificado</span>
+    <p>Tenho uma planilha "lancamentos_2025.xlsx" com as colunas: Data, Tipo (Receita/Despesa), Categoria, Valor. As categorias de receita são: "Venda de Produtos", "Prestação de Serviços", "Outras Receitas". As categorias de despesa são: "Custo de Mercadoria Vendida", "Salários", "Aluguel", "Marketing", "Impostos", "Outras Despesas". Gere um script Python que: (1) agrupe os lançamentos por categoria e some os valores; (2) monte uma DRE simplificada com a estrutura: Receita Bruta, (-) Deduções (Impostos), Receita Líquida, (-) CMV, Lucro Bruto, (-) Despesas Operacionais (Salários + Aluguel + Marketing + Outras Despesas), Resultado Operacional; (3) permita filtrar por mês ou por período completo; (4) salve em "dre_2025.xlsx" com formatação de moeda brasileira.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando o contador e o gestor precisam acessar a DRE atualizada sem depender de alguém rodar o script.</p>
+
+  <h2>Conciliação bancária</h2>
+
+  <p>A conciliação bancária é a comparação entre o extrato bancário e os lançamentos registrados na planilha interna. O objetivo é identificar lançamentos que estão no extrato mas não na planilha (esquecidos de registrar) e lançamentos que estão na planilha mas não no extrato (registrados errado ou ainda não compensados).</p>
+
+  <p>Fazer isso manualmente é tedioso e propenso a erros: você precisa comparar linha por linha dois arquivos com formatos diferentes. O Claude Code pode automatizar a comparação inteira e gerar um relatório de divergências.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para conciliação bancária</span>
+    <p>Tenho dois arquivos: "extrato_banco_maio.xlsx" com as colunas Data, Descrição, Valor (positivo para crédito, negativo para débito) e "lancamentos_internos_maio.xlsx" com as colunas Data, Descrição, Valor, Status. Gere um script Python que: (1) compare os dois arquivos buscando correspondências por data e valor; (2) liste os lançamentos que estão no extrato mas não nos lançamentos internos; (3) liste os lançamentos que estão nos lançamentos internos mas não no extrato; (4) liste os lançamentos que aparecem nos dois com data ou valor ligeiramente diferente (tolerância de 1 dia na data e R$ 0,01 no valor); (5) gere um relatório "conciliacao_maio.xlsx" com uma aba para cada grupo.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando a conciliação precisa ser feita diariamente e o volume de transações torna o processo manual inviável mesmo com o script.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 4</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 12: CAPÍTULO 5 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">5</span>
+    <span class="chapter-label">Capítulo 5</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Cenários de vendas</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">Planilhas de vendas acumulam um problema específico: são atualizadas por múltiplas pessoas com critérios diferentes. Um vendedor registra o lead de um jeito, outro registra de outro. Com o tempo, a planilha vira um arquivo que ninguém confia completamente, mas todo mundo usa porque não há alternativa.</div>
+
+  <h2>Pipeline de vendas</h2>
+
+  <p>O pipeline de vendas é o controle de todos os negócios em andamento, organizados por etapa do processo comercial: prospecção, qualificação, proposta enviada, negociação, fechado ganho, fechado perdido. O problema da planilha é que ela não calcula automaticamente a taxa de conversão entre etapas nem identifica onde os negócios estão travando.</p>
+
+  <p>O Claude Code pode ler uma planilha de pipeline e gerar um relatório com: quantos negócios estão em cada etapa, o valor total em cada etapa, a taxa de conversão de uma etapa para a próxima, o tempo médio que um negócio fica em cada etapa e quais negócios estão parados há mais de X dias sem atualização.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para análise de pipeline</span>
+    <p>Tenho uma planilha "pipeline.xlsx" com as colunas: ID, Cliente, Vendedor, Etapa (Prospecção/Qualificação/Proposta/Negociação/Ganho/Perdido), Valor_Estimado, Data_Entrada_Etapa, Data_Ultimo_Contato. Gere um script Python que: (1) conte quantos negócios e qual o valor total em cada etapa; (2) calcule a taxa de conversão entre etapas consecutivas; (3) identifique negócios com Data_Ultimo_Contato há mais de 14 dias que não estão em Ganho ou Perdido; (4) calcule o tempo médio em dias que os negócios ficam em cada etapa; (5) gere um relatório "analise_pipeline.xlsx" com uma aba para cada análise.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando a equipe de vendas tem mais de três pessoas e a atualização simultânea da planilha gera conflitos de versão.</p>
+
+  <h2>Comissões</h2>
+
+  <p>O cálculo de comissões é uma das tarefas mais sensíveis do setor comercial. Erros geram desconfiança e conflitos. Planilhas de comissão costumam ter regras complexas: percentuais diferentes por produto, por faixa de atingimento de meta, por tipo de cliente ou por canal de venda. Manter essas regras em fórmulas de planilha é frágil: qualquer alteração pode quebrar o cálculo de linhas anteriores sem que ninguém perceba.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para cálculo de comissões</span>
+    <p>Tenho uma planilha "vendas_maio.xlsx" com as colunas: Vendedor, Produto, Categoria (A/B/C), Valor_Venda, Tipo_Cliente (Novo/Recorrente). As regras de comissão são: Categoria A paga 5% para clientes novos e 3% para recorrentes; Categoria B paga 4% para novos e 2,5% para recorrentes; Categoria C paga 3% para novos e 2% para recorrentes. Vendedores que atingirem mais de R$ 50.000 em vendas no mês recebem um bônus adicional de 1% sobre o total. Gere um script Python que: (1) calcule a comissão de cada venda individualmente mostrando qual regra foi aplicada; (2) some as comissões por vendedor; (3) aplique o bônus quando aplicável; (4) gere um relatório "comissoes_maio.xlsx" com uma aba de detalhe por venda e uma aba de resumo por vendedor.</p>
+  </div>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 5</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 13: CAPÍTULO 5 (continuação) ============== -->
+<section class="page">
+
+  <h2>Metas e desempenho</h2>
+
+  <p>Comparar realizado versus meta parece simples, mas planilhas de desempenho costumam ter um problema: as metas ficam em uma aba, os resultados em outra, e o cruzamento é feito manualmente toda semana. Quando um vendedor muda de equipe ou uma meta é revisada no meio do mês, a planilha fica inconsistente.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para análise de metas</span>
+    <p>Tenho duas planilhas: "metas_2025.xlsx" com as colunas Vendedor, Mes, Meta_Valor e "resultados_2025.xlsx" com as colunas Vendedor, Mes, Realizado_Valor. Gere um script Python que: (1) cruze as duas planilhas por Vendedor e Mes; (2) calcule o percentual de atingimento (Realizado / Meta * 100); (3) classifique em: "Abaixo de 80%", "Entre 80% e 100%", "Acima de 100%"; (4) gere um ranking de vendedores por atingimento acumulado no ano; (5) destaque em vermelho os vendedores abaixo de 80% por dois meses consecutivos; (6) salve em "desempenho_2025.xlsx".</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando o gestor precisa acompanhar o desempenho em tempo real durante o mês, não apenas no fechamento.</p>
+
+  <h2>Histórico de clientes</h2>
+
+  <p>O histórico de compras por cliente é a base para identificar quem são os clientes mais valiosos, quais estão em risco de parar de comprar e quais têm potencial para comprar mais. Planilhas de histórico costumam ter os dados, mas não a análise: você sabe o que cada cliente comprou, mas não sabe quem comprou mais, quem não compra há mais tempo ou qual é o ticket médio por cliente.</p>
+
+  <p>A análise de recência, frequência e valor (conhecida pela sigla RFV) é um dos métodos mais usados para classificar clientes. O Claude Code pode calcular os três indicadores automaticamente a partir de uma planilha de histórico de vendas.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para análise de clientes</span>
+    <p>Tenho uma planilha "historico_vendas.xlsx" com as colunas: Data, Cliente, Produto, Valor. Gere um script Python que: (1) calcule por cliente: total comprado no período, número de compras, ticket médio, data da primeira compra, data da última compra e quantos dias se passaram desde a última compra; (2) classifique os clientes em: "Ativo" (comprou nos últimos 90 dias), "Em risco" (entre 91 e 180 dias sem comprar) e "Inativo" (mais de 180 dias); (3) gere um ranking dos 20 clientes com maior valor total; (4) salve em "analise_clientes.xlsx" com uma aba de detalhe e uma aba de ranking.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando a equipe comercial precisa consultar o histórico de um cliente específico durante uma ligação, sem precisar abrir e filtrar a planilha manualmente.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 5</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 14: CAPÍTULO 6 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">6</span>
+    <span class="chapter-label">Capítulo 6</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Cenários de estoque</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">Controle de estoque em planilha funciona até o momento em que o volume de movimentações cresce além do que uma pessoa consegue atualizar manualmente. A partir daí, o saldo na planilha e o saldo físico começam a divergir, e a empresa passa a tomar decisões com base em dados desatualizados.</div>
+
+  <h2>Controle de entradas e saídas</h2>
+
+  <p>O controle básico de estoque registra cada entrada (compra ou devolução de cliente) e cada saída (venda ou devolução para fornecedor) com data, produto, quantidade e responsável. O saldo atual de cada produto é calculado somando todas as entradas e subtraindo todas as saídas desde o início do registro.</p>
+
+  <p>O problema mais comum em planilhas de estoque é que o saldo é calculado por fórmulas que dependem da ordem das linhas. Quando alguém insere uma linha no meio da planilha ou apaga uma linha por engano, as fórmulas quebram e o saldo fica errado sem aviso visual claro.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para controle de entradas e saídas</span>
+    <p>Tenho uma planilha "movimentacoes_estoque.xlsx" com as colunas: Data, Produto, Codigo, Tipo (Entrada/Saída), Quantidade, Responsavel. Gere um script Python que: (1) calcule o saldo atual de cada produto somando entradas e subtraindo saídas; (2) gere um relatório de saldo atual com as colunas: Codigo, Produto, Total_Entradas, Total_Saidas, Saldo_Atual; (3) identifique produtos com saldo negativo (o que indica erro de lançamento); (4) gere um histórico de movimentações por produto, ordenado por data; (5) salve em "saldo_estoque.xlsx" com uma aba de saldo atual e uma aba de histórico.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando mais de uma pessoa registra movimentações ao mesmo tempo, ou quando o estoque tem mais de 200 produtos ativos.</p>
+
+  <h2>Ponto de reposição</h2>
+
+  <p>O ponto de reposição é o nível mínimo de estoque que, quando atingido, dispara a necessidade de compra. Manter esse controle em planilha exige que alguém verifique manualmente o saldo de cada produto e compare com o estoque mínimo definido. Com o Claude Code, você automatiza essa verificação e gera uma lista de compras pronta.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para ponto de reposição</span>
+    <p>Tenho duas planilhas: "saldo_atual.xlsx" com as colunas Codigo, Produto, Saldo_Atual e "parametros_estoque.xlsx" com as colunas Codigo, Produto, Estoque_Minimo, Quantidade_Reposicao, Fornecedor_Preferencial. Gere um script Python que: (1) cruze as duas planilhas pelo Codigo; (2) identifique todos os produtos onde Saldo_Atual é menor ou igual a Estoque_Minimo; (3) para cada produto identificado, calcule a quantidade a pedir (Quantidade_Reposicao menos Saldo_Atual); (4) gere uma lista de compras "lista_reposicao.xlsx" agrupada por Fornecedor_Preferencial, com o total de itens e valor estimado se houver coluna de custo unitário.</p>
+  </div>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 6</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 15: CAPÍTULO 6 (continuação) ============== -->
+<section class="page">
+
+  <h2>Inventário</h2>
+
+  <p>O inventário é a contagem física do estoque para comparar com o que está registrado no sistema. Em empresas que usam planilha, o processo costuma ser: imprimir a planilha de saldo, contar fisicamente, anotar no papel e depois digitar as diferenças. Esse processo é lento e introduz erros de digitação.</p>
+
+  <p>O Claude Code pode automatizar a parte de comparação: você fornece a planilha de saldo do sistema e a planilha com a contagem física, e ele gera um relatório de divergências com a diferença em quantidade e em valor para cada produto.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para inventário</span>
+    <p>Tenho duas planilhas: "saldo_sistema.xlsx" com as colunas Codigo, Produto, Saldo_Sistema, Custo_Unitario e "contagem_fisica.xlsx" com as colunas Codigo, Produto, Quantidade_Contada. Gere um script Python que: (1) cruze as duas planilhas pelo Codigo; (2) calcule a diferença entre Quantidade_Contada e Saldo_Sistema para cada produto; (3) calcule o impacto financeiro da diferença (diferença * Custo_Unitario); (4) classifique as divergências em: "Sobra" (contagem maior que sistema), "Falta" (contagem menor que sistema) e "OK" (sem diferença); (5) gere um relatório "resultado_inventario.xlsx" ordenado pelo maior impacto financeiro absoluto.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando o inventário é feito com coletores de dados ou celulares e você precisa que a contagem seja registrada diretamente no sistema, sem passar por papel.</p>
+
+  <h2>Custo médio</h2>
+
+  <p>O custo médio ponderado é o método mais comum para calcular o custo de estoque no Brasil. A cada nova entrada de mercadoria, o custo médio é recalculado considerando o saldo anterior e o custo da nova entrada. Manter esse cálculo em planilha é trabalhoso porque cada nova linha de entrada precisa referenciar o saldo e o custo médio da linha anterior.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para custo médio ponderado</span>
+    <p>Tenho uma planilha "movimentacoes.xlsx" com as colunas: Data, Produto, Tipo (Entrada/Saída), Quantidade, Custo_Unitario (preenchido apenas nas entradas). Gere um script Python que: (1) processe as movimentações em ordem cronológica por produto; (2) a cada entrada, recalcule o custo médio ponderado: (Saldo_Anterior * Custo_Medio_Anterior + Quantidade_Entrada * Custo_Unitario) / (Saldo_Anterior + Quantidade_Entrada); (3) a cada saída, registre o custo médio vigente como custo da saída; (4) gere uma planilha "custo_medio.xlsx" com o histórico completo de custo médio por produto e o custo médio atual de cada produto.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando o volume de entradas diárias é alto e o custo médio precisa estar sempre atualizado para precificação em tempo real.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 6</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 16: CAPÍTULO 7 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">7</span>
+    <span class="chapter-label">Capítulo 7</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Cenários de RH</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">Planilhas de RH lidam com dados sensíveis: salários, documentos pessoais, histórico de faltas, informações de saúde. Antes de qualquer automação nessa área, é preciso ter clareza sobre o que pode ser enviado ao Claude Code e o que deve ficar restrito ao ambiente interno da empresa.</div>
+
+  <div class="warn-box">
+    <span class="lbl">Cuidado com dados sensíveis</span>
+    <p>Antes de enviar qualquer planilha de RH ao Claude Code, remova ou substitua por dados fictícios: CPF, RG, data de nascimento, endereço, salário nominal, informações de saúde e qualquer dado que identifique individualmente um colaborador. Use um identificador interno (como um número de matrícula) no lugar do nome quando possível. O Claude Code não armazena os dados enviados, mas a precaução é uma boa prática independente da ferramenta usada.</p>
+  </div>
+
+  <h2>Controle de ponto</h2>
+
+  <p>O controle de ponto em planilha costuma ter um problema de estrutura: cada colaborador tem uma aba, ou cada mês tem uma aba, e o cálculo de horas extras e faltas é feito por fórmulas que variam de célula para célula. Quando a jornada de trabalho muda ou um colaborador tem um regime diferente, as fórmulas precisam ser ajustadas manualmente.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para controle de ponto</span>
+    <p>Tenho uma planilha "ponto_maio.xlsx" com as colunas: Matricula, Data, Hora_Entrada, Hora_Saida, Hora_Intervalo_Inicio, Hora_Intervalo_Fim. A jornada padrão é de 8 horas diárias com 1 hora de intervalo. Horas acima de 8h diárias são horas extras. Gere um script Python que: (1) calcule as horas trabalhadas por dia (Hora_Saida - Hora_Entrada - tempo de intervalo); (2) identifique dias com menos de 8h como falta parcial e dias sem registro como falta total; (3) calcule o total de horas extras por colaborador no mês; (4) gere um relatório "resumo_ponto_maio.xlsx" com uma linha por colaborador mostrando: dias trabalhados, dias de falta, horas extras totais e horas trabalhadas totais.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando a empresa tem mais de 20 colaboradores e o registro de ponto precisa ser feito pelo próprio colaborador via navegador.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 7</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 17: CAPÍTULO 7 (continuação) ============== -->
+<section class="page">
+
+  <h2>Férias e ausências</h2>
+
+  <p>O controle de férias em planilha tem dois problemas recorrentes: o saldo de dias disponíveis por colaborador é calculado manualmente e os vencimentos de período aquisitivo não geram alertas automáticos. O resultado é que colaboradores chegam ao vencimento do período sem que o RH tenha planejado a escala de férias.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para controle de férias</span>
+    <p>Tenho uma planilha "ferias.xlsx" com as colunas: Matricula, Nome, Data_Admissao, Ferias_Gozadas (lista de períodos no formato "DD/MM/AAAA a DD/MM/AAAA" separados por ponto e vírgula). Gere um script Python que: (1) calcule o período aquisitivo atual de cada colaborador (cada 12 meses de trabalho gera 30 dias de férias); (2) calcule o saldo de dias disponíveis (dias adquiridos menos dias já gozados); (3) identifique colaboradores cujo período aquisitivo vence nos próximos 60 dias; (4) identifique colaboradores com saldo negativo (gozaram mais do que adquiriram); (5) gere um relatório "situacao_ferias.xlsx" com alertas destacados.</p>
+  </div>
+
+  <h2>Onboarding e offboarding</h2>
+
+  <p>Checklists de onboarding e offboarding em planilha costumam ser estáticos: uma lista de tarefas que alguém marca manualmente. O problema é que não há rastreabilidade de quem fez o quê e quando, e quando um colaborador entra ou sai, alguém precisa lembrar de criar uma nova linha ou copiar o checklist.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para checklist de onboarding</span>
+    <p>Tenho uma planilha "onboarding_template.xlsx" com uma aba "Tarefas" contendo as colunas: Tarefa, Responsavel, Prazo_Dias_Apos_Admissao, Departamento. Tenho também uma aba "Colaboradores_Novos" com as colunas: Matricula, Nome, Data_Admissao, Cargo. Gere um script Python que: (1) para cada colaborador novo, crie uma aba com o nome da matrícula; (2) copie todas as tarefas do template para essa aba; (3) calcule a data limite de cada tarefa somando Prazo_Dias_Apos_Admissao à Data_Admissao; (4) adicione uma coluna "Status" com valor "Pendente" para todas as tarefas; (5) salve em "onboarding_ativo.xlsx".</p>
+  </div>
+
+  <h2>Indicadores de RH</h2>
+
+  <p>Turnover, absenteísmo e headcount são os três indicadores básicos de RH que toda empresa deveria acompanhar mensalmente. Calculá-los a partir de dados brutos em planilha é possível, mas exige fórmulas complexas que poucas pessoas sabem manter.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para indicadores de RH</span>
+    <p>Tenho uma planilha "dados_rh.xlsx" com três abas: "Colaboradores" (Matricula, Nome, Data_Admissao, Data_Demissao se aplicável, Departamento, Cargo), "Faltas" (Matricula, Data, Tipo_Ausencia) e "Headcount_Historico" (Mes, Total_Colaboradores). Gere um script Python que calcule para cada mês do último ano: (1) Turnover mensal: (admissões + demissões) / 2 / headcount médio * 100; (2) Absenteísmo: total de dias de falta / (headcount * dias úteis do mês) * 100; (3) Headcount no final de cada mês; (4) gere um relatório "indicadores_rh.xlsx" com uma linha por mês e gráficos de evolução se possível.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando o RH precisa que gestores de departamento atualizem dados de suas equipes sem ter acesso à planilha principal.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 7</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 18: CAPÍTULO 8 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">8</span>
+    <span class="chapter-label">Capítulo 8</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Cenários operacionais</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">Operações é a área onde mais se usa planilha para coisas que a planilha não foi feita para fazer: gerenciar projetos, rastrear processos, consolidar dados de múltiplas fontes. O resultado costuma ser um conjunto de arquivos que ninguém consegue manter atualizado ao mesmo tempo.</div>
+
+  <h2>Cronograma de projetos</h2>
+
+  <p>Cronogramas de projeto em planilha têm um problema fundamental: eles não calculam automaticamente o impacto de um atraso em cascata. Se uma tarefa atrasa três dias, todas as tarefas que dependem dela também atrasam, mas a planilha não atualiza as datas automaticamente. Alguém precisa fazer isso manualmente, e geralmente não faz.</p>
+
+  <p>O Claude Code pode analisar um cronograma e identificar quais tarefas estão atrasadas, qual é o impacto no prazo final do projeto e quais tarefas estão no caminho crítico (ou seja, qualquer atraso nelas atrasa o projeto inteiro).</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para análise de cronograma</span>
+    <p>Tenho uma planilha "cronograma.xlsx" com as colunas: ID_Tarefa, Nome_Tarefa, Responsavel, Data_Inicio_Planejada, Data_Fim_Planejada, Data_Inicio_Real, Data_Fim_Real, Status (Não iniciada/Em andamento/Concluída/Atrasada), Dependencias (lista de IDs separados por vírgula). Gere um script Python que: (1) identifique todas as tarefas com Status "Atrasada" ou com Data_Fim_Real posterior à Data_Fim_Planejada; (2) calcule o atraso em dias de cada tarefa; (3) identifique quais tarefas dependentes foram impactadas pelo atraso; (4) calcule o atraso projetado no prazo final do projeto; (5) gere um relatório "status_projeto.xlsx" com as tarefas críticas destacadas.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando o projeto tem mais de 50 tarefas e múltiplos responsáveis precisam atualizar o status das suas tarefas sem editar a planilha diretamente.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 8</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 19: CAPÍTULO 8 (continuação) ============== -->
+<section class="page">
+
+  <h2>Checklist de processos</h2>
+
+  <p>Checklists manuais em papel ou em planilhas sem estrutura têm o mesmo problema: não há rastreabilidade. Você sabe que o checklist foi preenchido, mas não sabe quando, por quem, e se algum item foi pulado. Transformar um checklist manual em uma planilha estruturada é o primeiro passo para ter controle real sobre a execução de processos.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para estruturar checklist de processo</span>
+    <p>Tenho um checklist de processo de abertura de loja que hoje é feito em papel. Os itens são: [liste aqui os itens do seu checklist]. Gere um script Python que crie uma planilha "checklist_abertura.xlsx" com a estrutura: Data, Responsavel, Item, Concluido (Sim/Não), Hora_Conclusao, Observacao. A planilha deve ter uma aba "Template" com todos os itens e uma aba "Registros" onde cada execução do checklist é registrada como um bloco de linhas com a mesma Data e Responsavel. Inclua também uma aba "Resumo" que mostra, por data, quantos itens foram concluídos e quantos ficaram pendentes.</p>
+  </div>
+
+  <h2>Relatórios recorrentes</h2>
+
+  <p>Relatórios semanais ou mensais que são feitos manualmente toda vez representam um custo de tempo que se acumula. Se você passa duas horas toda segunda-feira consolidando dados de três planilhas para gerar um relatório de vendas, isso são mais de 100 horas por ano em uma tarefa que pode ser automatizada.</p>
+
+  <p>O Claude Code pode gerar um script que lê as planilhas de origem, aplica os cálculos e formata o relatório final automaticamente. Você roda o script uma vez por semana e o relatório está pronto em segundos.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para automatizar relatório recorrente</span>
+    <p>Todo mês eu gero manualmente um relatório de desempenho operacional que consolida dados de três planilhas: "vendas_mes.xlsx" (colunas: Data, Produto, Quantidade, Valor), "custos_mes.xlsx" (colunas: Data, Categoria, Valor) e "metas_mes.xlsx" (colunas: Indicador, Meta, Unidade). O relatório final tem: total de vendas do mês, total de custos, margem bruta, comparação com a meta de vendas e os 5 produtos mais vendidos. Gere um script Python que leia os três arquivos e gere automaticamente o relatório "relatorio_operacional_[mes_ano].xlsx" com essa estrutura, formatado com totais em negrito e percentuais com duas casas decimais.</p>
+  </div>
+
+  <h2>Consolidação de múltiplas planilhas</h2>
+
+  <p>Consolidar dados de várias planilhas em um único relatório é uma das tarefas mais comuns e mais tediosas do trabalho com planilhas. Cada filial envia sua planilha mensal, cada departamento tem seu arquivo, cada vendedor registra em um arquivo separado. Juntar tudo manualmente leva horas e introduz erros de cópia.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para consolidação de planilhas</span>
+    <p>Tenho uma pasta com 12 arquivos Excel, um por mês do ano, todos com o mesmo formato: colunas Data, Filial, Produto, Quantidade, Valor. Os arquivos se chamam "vendas_jan.xlsx", "vendas_fev.xlsx", etc. Gere um script Python que: (1) leia todos os arquivos da pasta que seguem o padrão "vendas_*.xlsx"; (2) consolide todos em uma única tabela adicionando uma coluna "Arquivo_Origem" para rastreabilidade; (3) verifique se todos os arquivos têm as mesmas colunas e avise se algum tiver estrutura diferente; (4) gere um resumo por Filial e por Produto com totais anuais; (5) salve em "consolidado_anual.xlsx" com uma aba de dados brutos e uma aba de resumo.</p>
+  </div>
+
+  <p><strong>Quando substituir por aplicação web:</strong> quando as filiais ou departamentos precisam inserir os dados diretamente em um sistema central, eliminando o processo de envio e consolidação de arquivos.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 8</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 20: CAPÍTULO 9 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">9</span>
+    <span class="chapter-label">Capítulo 9</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Quando substituir a planilha por uma aplicação web</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">Automatizar uma planilha com scripts resolve muitos problemas, mas não todos. Há um ponto em que a planilha, mesmo bem estruturada e com automações, não consegue mais atender ao que a empresa precisa. Reconhecer esse ponto antes que os problemas se acumulem é o que separa uma decisão planejada de uma crise.</div>
+
+  <h2>Os sinais de que a planilha chegou no limite</h2>
+
+  <p><strong>Múltiplos usuários editando ao mesmo tempo.</strong> O Google Sheets permite edição simultânea, mas sem controle de acesso por campo: qualquer pessoa pode editar qualquer célula. Quando duas pessoas editam a mesma célula ao mesmo tempo, uma sobrescreve a outra sem aviso. O Excel compartilhado tem problemas ainda maiores de conflito de versão.</p>
+
+  <p><strong>Dados perdidos ou sobrescritos sem rastreabilidade.</strong> Planilhas não têm histórico de alterações por célula de forma nativa. Quando um dado importante é apagado ou alterado por engano, não há como saber quem fez, quando fez ou qual era o valor anterior.</p>
+
+  <p><strong>Fórmulas quebrando com frequência.</strong> Quando a planilha tem muitas fórmulas interdependentes e qualquer inserção ou exclusão de linha quebra o cálculo, o custo de manutenção começa a superar o benefício de usar a planilha.</p>
+
+  <p><strong>Arquivo pesado demais.</strong> Planilhas com mais de 50 mil linhas ou com muitas fórmulas complexas ficam lentas para abrir, salvar e calcular. Isso é um sinal de que o volume de dados cresceu além do que a ferramenta foi projetada para suportar.</p>
+
+  <p><strong>Necessidade de acesso por dispositivos móveis.</strong> Planilhas não funcionam bem em celulares. Se a equipe precisa registrar ou consultar dados em campo, a planilha vira um obstáculo.</p>
+
+  <h2>O que uma aplicação web local oferece que a planilha não oferece</h2>
+
+  <p>Uma aplicação web simples rodando no seu computador (acessada pelo navegador via endereço local, sem precisar de internet) oferece: controle de acesso por usuário, histórico de todas as alterações, formulários que validam os dados antes de salvar, relatórios gerados automaticamente e acesso simultâneo por múltiplos usuários sem conflito.</p>
+
+  <p>O padrão técnico usado neste guia é: Next.js para a interface web, SQLite para o banco de dados e execução local via terminal. Você acessa pelo navegador no endereço <strong>localhost:3000</strong>. Não há servidor externo, não há mensalidade, não há dependência de internet. Os dados ficam no seu computador.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 9</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 21: CAPÍTULO 9 (continuação) ============== -->
+<section class="page">
+
+  <h2>Como pedir ao Claude Code para criar uma aplicação web</h2>
+
+  <p>O Claude Code configura tudo: cria a estrutura de pastas, instala as dependências, cria o banco de dados e gera o código da interface. Você só precisa descrever o que a aplicação precisa fazer. A instrução precisa cobrir: quais dados serão registrados, quais operações serão possíveis (cadastrar, editar, excluir, consultar) e quais relatórios ou visualizações são necessários.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para criar aplicação web de controle de estoque</span>
+    <p>Crie uma aplicação web local usando Next.js e SQLite para substituir minha planilha de controle de estoque. A aplicação precisa: (1) cadastrar produtos com os campos: Codigo, Nome, Categoria, Estoque_Minimo, Custo_Unitario; (2) registrar movimentações de entrada e saída com os campos: Data, Produto, Tipo (Entrada/Saída), Quantidade, Responsavel, Observacao; (3) mostrar o saldo atual de cada produto calculado automaticamente; (4) destacar em vermelho os produtos abaixo do estoque mínimo; (5) ter uma tela de relatório com o histórico de movimentações filtrado por produto e por período; (6) rodar localmente via localhost:3000 sem precisar de internet. Configure tudo para que eu possa rodar com "npm run dev" no terminal.</p>
+  </div>
+
+  <h2>Como migrar os dados da planilha para a aplicação</h2>
+
+  <p>Depois que a aplicação está rodando, você precisa migrar os dados históricos da planilha para o banco de dados da aplicação. O Claude Code pode gerar um script de migração que lê a planilha e insere os dados no banco SQLite da aplicação.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para migração de dados</span>
+    <p>A aplicação de controle de estoque que você criou está rodando. Agora preciso migrar os dados históricos da planilha "estoque_historico.xlsx" para o banco de dados SQLite da aplicação. A planilha tem as colunas: Data, Produto, Codigo, Tipo, Quantidade, Responsavel. Gere um script Python que: (1) leia a planilha; (2) conecte ao banco de dados SQLite da aplicação (o arquivo está em "database.db" na raiz do projeto); (3) insira cada linha como uma movimentação na tabela correspondente; (4) verifique se o produto já existe no cadastro antes de inserir a movimentação, e crie o produto com dados básicos se não existir; (5) gere um log de quantos registros foram migrados e quantos tiveram erro.</p>
+  </div>
+
+  <h2>O que esperar do processo</h2>
+
+  <p>Criar uma aplicação web simples com o Claude Code leva entre 30 minutos e 2 horas, dependendo da complexidade. O Claude Code vai gerar o código, você vai rodar no terminal e testar no navegador. É provável que alguns ajustes sejam necessários: um campo que ficou faltando, um relatório que precisa de um filtro adicional, uma validação que não está funcionando como esperado. Cada ajuste é uma nova instrução ao Claude Code.</p>
+
+  <p>O que pode dar errado: dependências que não instalam corretamente no seu sistema operacional, conflitos de versão do Node.js, ou erros de configuração do banco de dados. Esses problemas têm solução, mas exigem que você descreva o erro ao Claude Code com precisão, incluindo a mensagem de erro completa e o sistema operacional que você usa.</p>
+
+  <h2>Quando a aplicação web também não é a resposta certa</h2>
+
+  <p>Uma aplicação web local resolve o problema de múltiplos usuários e rastreabilidade, mas cria uma nova responsabilidade: manutenção técnica. Se o computador onde a aplicação roda for formatado, os dados podem ser perdidos se não houver backup. Se o Node.js for atualizado e quebrar a compatibilidade, alguém precisa corrigir.</p>
+
+  <p>Para empresas com mais de 20 usuários simultâneos ou com necessidade de acesso remoto por múltiplas localidades, a solução correta é um sistema hospedado em servidor, o que está além do escopo deste guia. Nesse caso, o Claude Code pode ajudar a especificar os requisitos para contratar um sistema adequado ou para desenvolver uma solução mais robusta com um desenvolvedor.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 9</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 22: CAPÍTULO 10 ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">10</span>
+    <span class="chapter-label">Capítulo 10</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Boas práticas e erros comuns</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <div class="opening">A maioria dos problemas ao usar o Claude Code com planilhas não vem do Claude Code: vem de instruções imprecisas, arquivos mal organizados ou da ausência de backup antes de qualquer automação. Este capítulo cobre os erros mais comuns e como evitá-los.</div>
+
+  <h2>Como organizar os arquivos antes de enviar ao Claude Code</h2>
+
+  <p>Antes de enviar qualquer planilha para análise ou automação, faça uma verificação rápida. Primeiro, certifique-se de que o arquivo tem um nome descritivo que inclua o conteúdo e o período: "vendas_janeiro_2025.xlsx" é melhor do que "planilha1.xlsx". Segundo, verifique se o arquivo abre sem erros no Excel ou Google Sheets. Terceiro, se a planilha tem múltiplas abas, saiba o nome de cada aba e o que ela contém antes de descrever o problema ao Claude Code.</p>
+
+  <p>Arquivos com senhas precisam ter a senha removida antes do envio. O Claude Code não consegue abrir arquivos protegidos por senha.</p>
+
+  <h2>A importância do backup antes de qualquer automação</h2>
+
+  <p>Antes de rodar qualquer script que modifica uma planilha, faça uma cópia do arquivo original. Renomeie a cópia com o sufixo "_backup_[data]" e guarde em uma pasta separada. Isso leva 30 segundos e pode salvar horas de retrabalho se o script gerar um resultado inesperado.</p>
+
+  <p>Uma boa prática é pedir ao Claude Code que o script sempre salve o resultado em um arquivo novo, sem modificar o arquivo original. A instrução "salve o resultado em um novo arquivo sem modificar o arquivo original" deve estar em toda instrução de transformação de planilha.</p>
+
+  <div class="checklist">
+    <span class="lbl">Checklist antes de rodar qualquer script</span>
+    <div class="item"><div class="check"></div>Fiz uma cópia do arquivo original com sufixo "_backup_[data]"</div>
+    <div class="item"><div class="check"></div>O arquivo abre sem erros no Excel ou Google Sheets</div>
+    <div class="item"><div class="check"></div>Sei o nome de todas as abas e o que cada uma contém</div>
+    <div class="item"><div class="check"></div>Sei os nomes exatos de todas as colunas relevantes</div>
+    <div class="item"><div class="check"></div>A instrução ao Claude Code inclui "salve em novo arquivo sem modificar o original"</div>
+    <div class="item"><div class="check"></div>Fiz upload do arquivo correto no Google Colab</div>
+  </div>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 10</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 23: CAPÍTULO 10 (continuação) ============== -->
+<section class="page">
+
+  <h2>Como descrever um problema sem ambiguidade</h2>
+
+  <p>A instrução ideal ao Claude Code tem três partes: o que existe (estrutura atual da planilha), o que está errado ou o que você quer fazer, e o que você quer como resultado. Quando uma dessas partes está faltando, o Claude Code vai fazer suposições que podem não corresponder à sua realidade.</p>
+
+  <p>Evite instruções abertas como "analise minha planilha e melhore o que precisar". Isso gera um resultado genérico que pode não resolver o seu problema específico. Prefira instruções fechadas: "a planilha tem o problema X, quero que o resultado seja Y, o arquivo se chama Z e tem as colunas A, B e C".</p>
+
+  <p>Quando você não sabe exatamente o que está errado, use o diagnóstico primeiro (descrito no Capítulo 1) para que o Claude Code identifique os problemas. Depois, com a lista de problemas em mãos, você pode dar instruções específicas para cada um.</p>
+
+  <h2>Os erros mais comuns e como evitá-los</h2>
+
+  <p><strong>Nomes de colunas diferentes entre a instrução e a planilha.</strong> Se você diz "a coluna se chama Valor_Total" mas na planilha ela se chama "Valor Total" (com espaço em vez de underscore), o script vai dar erro. Sempre copie os nomes das colunas diretamente da planilha para a instrução.</p>
+
+  <p><strong>Não especificar o formato de data esperado.</strong> Python lida com datas de forma diferente do Excel. Se você não especificar o formato de saída, o script pode gerar datas no formato americano (MM/DD/AAAA) em vez do brasileiro (DD/MM/AAAA). Sempre inclua o formato de data desejado na instrução.</p>
+
+  <p><strong>Esquecer de fazer upload do arquivo no Colab.</strong> O script roda, mas dá FileNotFoundError porque o arquivo não foi carregado. Verifique sempre se o arquivo aparece no painel de arquivos do Colab antes de rodar o script.</p>
+
+  <p><strong>Pedir tudo de uma vez em uma instrução muito longa.</strong> Instruções com muitos requisitos simultâneos aumentam a chance de o script ter erros. Prefira dividir em etapas: primeiro limpe os dados, depois faça os cálculos, depois formate o relatório.</p>
+
+  <h2>Como iterar: pedir, ver o resultado, corrigir, pedir de novo</h2>
+
+  <p>O fluxo de trabalho com o Claude Code não é linear. Você pede, roda, vê o resultado, identifica o que não está certo e pede a correção. Cada iteração melhora o resultado. Não tente acertar tudo na primeira instrução: é mais eficiente começar com uma instrução simples, verificar o resultado e adicionar requisitos gradualmente.</p>
+
+  <p>Quando o resultado está quase certo mas tem um detalhe errado, descreva apenas o detalhe que precisa mudar. Não repita toda a instrução original: o Claude Code mantém o contexto da conversa e sabe o que foi pedido antes.</p>
+
+  <h2>Cuidados com dados sensíveis</h2>
+
+  <p>Não envie ao Claude Code planilhas que contenham: CPF, RG, número de passaporte, dados bancários (número de conta, agência, chave PIX), senhas, informações de saúde, salários nominais ou qualquer dado que possa identificar individualmente uma pessoa física.</p>
+
+  <p>Se você precisa automatizar uma planilha que contém esses dados, há duas opções. A primeira: substitua os dados sensíveis por dados fictícios antes de enviar, peça ao Claude Code para gerar o script com base nos dados fictícios e depois aplique o script na planilha real localmente. A segunda: descreva a estrutura da planilha ao Claude Code sem enviar o arquivo, e peça que ele gere o script com base na descrição.</p>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Capítulo 10</span>
+  </div>
+</section>
+
+<!-- ============== PAGE 24: CONCLUSÃO ============== -->
+<section class="page">
+  <div class="chapter-header">
+    <span class="chapter-label">Conclusão</span>
+    <h1 class="chapter-title" style="margin-top:12px;">O que você agora é capaz de fazer</h1>
+    <div class="deco-line"></div>
+  </div>
+
+  <p>Você chegou ao final deste guia com um conjunto de ferramentas concretas para lidar com os problemas mais comuns de planilhas no ambiente empresarial. Não é um conjunto de scripts prontos para copiar: é um conjunto de padrões de instrução que você adapta à sua realidade específica.</p>
+
+  <p>Você sabe como pedir um diagnóstico antes de qualquer automação, o que evita que scripts gerem resultados errados silenciosamente. Você sabe como usar o Google Colab para rodar scripts sem instalar nada no computador. Você sabe como descrever problemas de planilha com precisão suficiente para que o Claude Code gere scripts que resolvem o problema certo. E você sabe reconhecer quando a planilha chegou no limite e quando faz sentido substituí-la por uma aplicação web simples.</p>
+
+  <h2>Como aplicar o que aprendeu</h2>
+
+  <p>O próximo passo é identificar, no seu trabalho atual, qual é a planilha que mais consome tempo ou que mais gera erros. Não tente automatizar tudo de uma vez. Escolha um problema específico, aplique o fluxo descrito neste guia e veja o resultado. Quando esse primeiro problema estiver resolvido, passe para o próximo.</p>
+
+  <p>Use os capítulos de cenário como referência quando tiver um problema específico. Você não precisa ler o guia do início ao fim toda vez: vá direto ao capítulo que corresponde ao seu cenário, leia a instrução de exemplo e adapte para a sua planilha.</p>
+
+  <p>A iteração é parte do processo. A primeira instrução raramente gera o resultado perfeito. Isso não é falha sua nem do Claude Code: é a natureza de trabalhar com dados reais que têm particularidades que nenhuma instrução genérica consegue antecipar completamente. Cada correção que você pede ensina o Claude Code mais sobre o seu contexto específico.</p>
+
+  <h2>Como continuar evoluindo</h2>
+
+  <p>O Claude Code faz muito mais do que trabalhar com planilhas. Depois de dominar os cenários deste guia, você pode explorar: análise de dados com visualizações gráficas, integração com APIs de sistemas que sua empresa já usa, automação de e-mails e notificações baseadas em dados das planilhas, e construção de aplicações web mais complexas para substituir processos inteiros.</p>
+
+  <p>A documentação oficial do Claude Code em docs.anthropic.com é o melhor lugar para descobrir o que mais é possível fazer. A comunidade de usuários em fóruns e redes sociais compartilha casos de uso reais que podem dar ideias para problemas que você ainda não pensou em resolver com automação.</p>
+
+  <p>O que muda com o tempo não é a ferramenta: é a sua capacidade de descrever problemas com precisão. Quanto mais você usa o Claude Code, mais você aprende a formular instruções que geram resultados úteis na primeira tentativa. Essa habilidade de descrever problemas com clareza é transferível para qualquer ferramenta de inteligência artificial que você venha a usar no futuro.</p>
+
+  <div class="quote-box">
+    <p>A planilha não é o problema. O problema é usar a planilha para resolver problemas que ela não foi projetada para resolver. O Claude Code não elimina a planilha: ele a coloca no lugar certo e automatiza o que não precisa ser feito manualmente.</p>
+  </div>
+
+  <div class="footer">
+    <span>Claude Code na Prática</span>
+    <span>Conclusão</span>
+  </div>
+</section>
+
+</body>
+</html>
+</html>

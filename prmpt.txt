@@ -1,0 +1,186 @@
+ Você é um escritor técnico especializado em tecnologia acessível. Sua tarefa é criar um ebook completo em português brasileiro: um tutorial do início ao fim para criar um sistema de agendamento
+  simples, rodando localmente, usando o Claude Code. O leitor tem conhecimento técnico mínimo do Claude Code mas não sabe programar.                                                                
+  
+  REGRA ABSOLUTA: Nunca use o caractere "—" (travessão) em nenhuma parte do texto. Use vírgula, ponto e vírgula, dois pontos ou reescreva a frase.
+
+  Pesquisa obrigatória antes de escrever
+
+  Pesquise ativamente as seguintes fontes para enriquecer o tutorial com boas práticas reais:
+
+  - docs.anthropic.com/claude-code (documentação oficial do Claude Code)
+  - Perfis no Twitter/X: @bcherny, @0xCVYH, @jeffecom, @karpathy, @elder_plinius, @alexalbert__, @AnthropicAI
+  - Busque por "Claude Code tutorial", "Claude Code SQLite", "Claude Code local app", "Claude Code skills frontend"
+  - Artigos recentes no Medium, Substack, Reddit (r/ClaudeAI) sobre fluxos de trabalho com Claude Code
+
+  Filtro obrigatório: Ignore ferramentas pagas, anúncios e afiliados. Extraia apenas insights genuínos e práticos. Integre o conhecimento no texto de forma natural, sem citar fontes
+  explicitamente.
+
+  Sobre o ebook
+
+  Título: Claude Code na Prática: Crie Seu Sistema de Agendamento do Zero
+
+  cores: cores do claude code
+
+  Objetivo declarado no ebook: Este é um tutorial completo e linear para criar, do absoluto zero, um sistema de agendamento para uso pessoal e local. O sistema é feito para rodar no próprio       
+  computador do dono do negócio, sem precisar de internet, servidor externo ou infraestrutura complexa. Serve para barbearias, consultórios, estúdios, ou qualquer pessoa que precise organizar     
+  horários. Não há autenticação de usuários: o sistema é de uso exclusivo do dono, que gerencia tudo. Este ebook cobre apenas a versão inicial do sistema. Evoluções e novas funcionalidades ficam  
+  fora do escopo.
+
+  Público-alvo: Pessoas com conhecimento mínimo do Claude Code que nunca programaram e querem criar um software real para uso próprio.
+
+  Tom: Direto, acessível, sem jargão técnico desnecessário. Quando um termo técnico for inevitável, explique-o imediatamente em linguagem simples. Sem ser motivacional. Apenas claro e útil.       
+
+  Extensão: O suficiente para cobrir o tutorial completo do início ao fim com profundidade real. Estime entre 35 e 45 páginas.
+
+  Formato: Ebook completo com texto corrido, capítulos bem desenvolvidos, subtítulos, listas onde couber e blocos de código para comandos reais.
+
+  Stack técnica do sistema a ser construído
+
+  - Frontend: interface web simples, visual limpo e funcional (HTML, CSS, JavaScript básico ou framework leve)
+  - Backend: Node.js com Express (ou equivalente simples)
+  - Banco de dados: SQLite, rodando localmente no computador
+  - Deploy: local, sem Docker, sem servidor externo. O sistema roda no computador do dono e é acessado pelo navegador via localhost
+
+  O Claude Code vai configurar tudo isso. O leitor não precisa entender o que é cada tecnologia em profundidade, apenas seguir o tutorial.
+
+  Estrutura obrigatória
+
+  Escreva todos os capítulos com profundidade real. Não faça resumos ou esboços. Escreva o texto completo de cada seção.
+
+  ---
+  Introdução (300 a 400 palavras)
+
+  - O que o leitor vai construir neste ebook
+  - Por que SQLite e por que rodar localmente
+  - O que o sistema vai fazer ao final do tutorial
+  - O que está fora do escopo (autenticação, notificações, pagamentos, deploy na internet, evoluções futuras)
+  - Pré-requisitos: ter o Claude Code instalado e funcionando
+
+  ---
+  Capítulo 1: Preparando o ambiente (400 a 500 palavras)
+
+  - Verificando se o Claude Code está instalado corretamente
+  - Criando a pasta do projeto
+  - Iniciando o Claude Code dentro da pasta do projeto
+  - Criando o arquivo CLAUDE.md inicial: o que escrever nele para que o Claude Code entenda o projeto desde o início
+  - O que é o CLAUDE.md e por que ele é o primeiro passo de qualquer projeto
+
+  ---
+  Capítulo 2: Definindo o sistema antes de escrever uma linha (500 a 600 palavras)
+
+  - Por que planejar antes de pedir ao Claude Code para criar
+  - O que o sistema de agendamento precisa ter: lista de funcionalidades mínimas
+    - Cadastrar clientes
+    - Criar agendamentos com data, hora, serviço e cliente
+    - Ver agenda do dia e da semana
+    - Editar e cancelar agendamentos
+  - Como escrever essa definição no CLAUDE.md de forma que o Claude Code use como referência
+  - O conceito de escopo: o que entra e o que fica de fora
+  - Como dar a primeira instrução ao Claude Code para iniciar o projeto
+
+  ---
+  Capítulo 3: Skills que você vai precisar (500 a 600 palavras)
+
+  - O que são skills no Claude Code e por que elas importam aqui
+  - Skills recomendadas para este projeto e o que cada uma faz:
+    - frontend-design: para gerar uma interface visual limpa e funcional sem precisar saber CSS
+    - react-nextjs-development ou equivalente para frontend estruturado
+    - testing-debugging: para identificar e corrigir erros sem entender o código
+    - simplify: para manter o código limpo e sem complexidade desnecessária
+  - Como instalar cada skill (tutorial passo a passo)
+  - Quando acionar cada skill durante o desenvolvimento
+  - O que acontece se você não usar skills: por que elas fazem diferença na qualidade do resultado
+
+  ---
+  Capítulo 4: Configurando o banco de dados SQLite (500 a 600 palavras)
+
+  - O que é o SQLite em linguagem simples: um arquivo que guarda os dados
+  - Por que SQLite é a escolha certa para um sistema local
+  - Como pedir ao Claude Code para configurar o SQLite no projeto
+  - O que o Claude Code vai criar: estrutura de tabelas para clientes e agendamentos
+  - Como verificar se o banco foi criado corretamente sem precisar entender SQL
+  - Onde fica o arquivo do banco de dados e como fazer backup dele
+
+  ---
+  Capítulo 5: Criando o backend (600 a 700 palavras)
+
+  - O que é o backend em linguagem simples: a parte que processa os dados
+  - Como pedir ao Claude Code para criar o servidor Node.js com Express
+  - As rotas que o sistema precisa: explicadas em linguagem simples
+    - Listar clientes
+    - Criar cliente
+    - Listar agendamentos
+    - Criar agendamento
+    - Editar agendamento
+    - Cancelar agendamento
+  - Como testar se o backend está funcionando (usando a skill testing-debugging)
+  - Como lidar com erros que aparecerem nessa etapa
+
+  ---
+  Capítulo 6: Criando o frontend (700 a 800 palavras)
+
+  - O que é o frontend: a tela que o dono do negócio vai usar
+  - Como acionar a skill frontend-design para gerar uma interface limpa
+  - O que pedir ao Claude Code: telas necessárias
+    - Tela principal com a agenda do dia
+    - Tela de novo agendamento
+    - Tela de clientes cadastrados
+    - Tela de edição e cancelamento
+  - Como revisar o visual sem saber programar: o que observar
+  - Como pedir ajustes visuais ao Claude Code de forma eficaz
+  - Como conectar o frontend ao backend: o que pedir ao Claude Code para fazer isso
+
+  ---
+  Capítulo 7: Testando o sistema completo (500 a 600 palavras)
+
+  - Como rodar o sistema pela primeira vez
+  - O fluxo de teste: cadastrar um cliente, criar um agendamento, ver na agenda, editar, cancelar
+  - Como usar a skill testing-debugging quando algo não funciona
+  - Os erros mais comuns nessa etapa e como descrevê-los ao Claude Code para que ele corrija
+  - Como confirmar que o banco de dados está salvando os dados corretamente
+  - O que fazer se o sistema travar ou não abrir
+
+  ---
+  Capítulo 8: Rodando o sistema no dia a dia (400 a 500 palavras)
+
+  - Como iniciar o sistema toda vez que precisar usar
+  - Como criar um atalho simples para abrir o sistema sem abrir o terminal manualmente
+  - Onde fica o arquivo do banco de dados e como fazer backup
+  - O que fazer se o computador trocar ou o sistema precisar ser reinstalado
+  - Boas práticas para manter o sistema funcionando ao longo do tempo
+
+  ---
+  Capítulo 9: Quando algo der errado (400 a 500 palavras)
+
+  - Os tipos de erro mais comuns em projetos feitos com Claude Code
+  - Como descrever um erro ao Claude Code de forma que ele consiga corrigir
+  - Quando o Claude Code não consegue corrigir sozinho: o que fazer
+  - A importância de não acumular erros: corrigir um de cada vez
+  - Como usar o Git para voltar a uma versão anterior se tudo quebrar (explicado sem jargão)
+
+  ---
+  Conclusão (300 a 400 palavras)
+
+  - O que o leitor construiu
+  - O que o sistema faz e o que ele não faz (reforço do escopo)
+  - Como continuar aprendendo Claude Code para projetos futuros
+  - O que seria necessário para evoluir o sistema no futuro (sem entrar em detalhes)
+
+  ---
+  Regras de escrita
+
+  1. Nunca use "—" (travessão). Substitua por vírgula, dois pontos, ponto e vírgula ou reescreva.
+  2. Escreva em português brasileiro correto e natural.
+  3. Nao traduza termos em ingles comuns como deploy, commit, etc
+  4. Não use linguagem motivacional. Seja direto e informativo.
+  5. Não use palavras como "incrível", "revolucionário", "poderoso". Mostre os fatos.
+  6. Cada capítulo deve ter subtítulos internos.
+  7. Use blocos de código apenas para comandos reais que o leitor vai digitar.
+  8. Não resuma. Escreva o texto completo conforme os limites de palavras indicados.
+  9. O ebook deve fluir como um livro, não como uma lista de tópicos.
+  10. Incorpore os insights das fontes pesquisadas de forma natural, sem citar explicitamente.
+  11. Sempre que mencionar uma skill, explique o que ela faz antes de dizer como instalar.
+  12. Sempre que o leitor precisar digitar algo no Claude Code, mostre o comando ou instrução exata em bloco de código.
+
+  ---
+  Escreva o ebook completo agora, começando pela introdução e seguindo a ordem dos capítulos. Não pare para pedir confirmações. Escreva tudo de uma vez.

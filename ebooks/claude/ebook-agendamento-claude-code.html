@@ -1,0 +1,229 @@
+
+<!-- PAGE 18: CAPÍTULO 7 continuação -->
+<div class="page">
+  <h2>Como usar a skill testing-debugging quando algo não funciona</h2>
+  <p>Se qualquer etapa do roteiro de teste falhar, acione a skill <code>testing-debugging</code> antes de descrever o problema ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Dentro do Claude Code</span>
+    <pre><span class="cmd">/skill testing-debugging</span></pre>
+  </div>
+
+  <p>Depois, descreva o que aconteceu com o máximo de detalhes possível. Um bom relato de erro tem três partes: o que você fez, o que esperava que acontecesse e o que aconteceu de fato. Por exemplo:</p>
+
+  <div class="quote-box">
+    <p>"Cliquei em Salvar no formulário de novo agendamento. Esperava que o agendamento aparecesse na agenda do dia. Em vez disso, a página ficou em branco e no terminal apareceu a mensagem: [cole aqui a mensagem de erro]."</p>
+    <div class="author">Exemplo de relato de erro eficaz</div>
+  </div>
+
+  <h2>Os erros mais comuns nessa etapa</h2>
+  <p>Alguns problemas aparecem com frequência durante os testes de sistemas criados com Claude Code. Conhecê-los ajuda a descrevê-los melhor:</p>
+
+  <div class="info-box">
+    <span class="lbl">Erros comuns e como descrevê-los</span>
+    <div class="item"><b>Dados não aparecem na tela:</b> "a tela de agenda está vazia mesmo com agendamentos cadastrados. No terminal não aparece nenhum erro."</div>
+    <div class="item"><b>Formulário não salva:</b> "ao clicar em Salvar, nada acontece. Ou aparece uma mensagem de erro na tela dizendo [descreva a mensagem]."</div>
+    <div class="item"><b>Página não carrega:</b> "ao acessar localhost:3000, o navegador mostra 'Esta página não pode ser acessada'. O terminal mostra [cole a mensagem]."</div>
+    <div class="item"><b>Dados somem após reiniciar:</b> "cadastrei um cliente, fechei o sistema, abri novamente e o cliente não está mais lá."</div>
+    <div class="item"><b>Botão não responde:</b> "clico no botão X e nada acontece. Não aparece nenhuma mensagem de erro."</div>
+  </div>
+
+  <h2>Como confirmar que o banco de dados está salvando corretamente</h2>
+  <p>O teste mais simples para confirmar que os dados estão sendo persistidos é o seguinte: cadastre um cliente, feche completamente o navegador, feche o servidor no terminal (pressione <code>Ctrl+C</code>), inicie o servidor novamente com <code>node src/server.js</code>, abra o navegador e vá para a tela de Clientes. Se o cliente que você cadastrou ainda estiver lá, o banco de dados está funcionando corretamente.</p>
+  <p>Se os dados sumirem após reiniciar o servidor, há um problema na configuração do banco de dados. Descreva isso ao Claude Code: "os dados somem toda vez que reinicio o servidor. O banco de dados não está persistindo os dados entre sessões."</p>
+
+  <h2>O que fazer se o sistema travar ou não abrir</h2>
+  <p>Se o sistema travar completamente, o primeiro passo é fechar tudo e recomeçar. Pressione <code>Ctrl+C</code> no terminal para encerrar o servidor. Feche o navegador. Abra o terminal novamente, navegue até a pasta do projeto e inicie o servidor de novo.</p>
+  <p>Se o problema persistir, copie qualquer mensagem de erro que aparecer no terminal e leve ao Claude Code. Se não aparecer nenhuma mensagem de erro, descreva o comportamento: "o servidor inicia mas o navegador não consegue acessar localhost:3000" ou "o servidor não inicia e não mostra nenhuma mensagem".</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: mantenha o terminal visível durante os testes</span>
+    <p>Durante os testes, deixe o terminal visível ao lado do navegador. Muitos erros aparecem no terminal antes de aparecerem na tela. Ver a mensagem de erro no momento em que ela acontece facilita muito o diagnóstico.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 19: CAPÍTULO 8 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">8</span><span class="chapter-label">Capítulo Oito</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Rodando o sistema no dia a dia</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O sistema está pronto e testado. Agora você precisa saber como usá-lo de forma prática no cotidiano, sem depender do terminal toda vez que quiser abrir a agenda.</p>
+
+  <h2>Como iniciar o sistema toda vez que precisar usar</h2>
+  <p>Para usar o sistema, você precisa iniciar o servidor. O processo básico é sempre o mesmo: abrir o terminal, navegar até a pasta do projeto e executar o comando do servidor. Depois, abrir o navegador em <code>localhost:3000</code>.</p>
+  <p>Esse processo de dois passos pode parecer trabalhoso no início, mas você vai se acostumar rapidamente. A próxima seção mostra como simplificá-lo ainda mais com um atalho.</p>
+
+  <h2>Como criar um atalho simples para abrir o sistema</h2>
+  <p>Em vez de abrir o terminal e digitar os comandos toda vez, você pode criar um script que faz tudo isso com um duplo clique. Peça ao Claude Code para criar esse script:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie um script para iniciar o sistema com um duplo clique.
+No Windows, crie um arquivo iniciar.bat na raiz do projeto que:
+- Navega para a pasta do projeto
+- Inicia o servidor com node src/server.js
+- Abre o navegador padrão em localhost:3000 após 2 segundos
+
+No macOS, crie um arquivo iniciar.sh na raiz do projeto com o mesmo comportamento,
+e configure as permissões de execução.</span></pre>
+  </div>
+
+  <p>Após o Claude Code criar o script, você pode colocar um atalho para ele na área de trabalho. No Windows, clique com o botão direito no arquivo <code>iniciar.bat</code>, selecione "Enviar para" e depois "Área de trabalho (criar atalho)". No macOS, arraste o arquivo <code>iniciar.sh</code> para o Dock ou para a área de trabalho.</p>
+  <p>A partir daí, para abrir o sistema, basta dar um duplo clique no atalho. O terminal vai abrir, o servidor vai iniciar e o navegador vai abrir automaticamente na tela do sistema.</p>
+
+  <h2>Onde fica o arquivo do banco de dados e como fazer backup</h2>
+  <p>O arquivo <code>agendamento.db</code> fica na raiz da pasta do projeto. Esse arquivo contém todos os seus dados. Para fazer backup, copie esse arquivo para outro local. Algumas opções práticas:</p>
+
+  <div class="info-box">
+    <span class="lbl">Opções de backup</span>
+    <div class="item"><b>Google Drive ou Dropbox:</b> copie o arquivo para uma pasta sincronizada com a nuvem. O backup acontece automaticamente sempre que você copiar o arquivo.</div>
+    <div class="item"><b>Pendrive:</b> copie o arquivo para um pendrive guardado em local seguro. Simples e não depende de internet.</div>
+    <div class="item"><b>HD externo:</b> ideal para backups semanais. Conecte o HD, copie o arquivo, desconecte.</div>
+    <div class="item"><b>Outra pasta no mesmo computador:</b> menos seguro (se o HD falhar, você perde tudo), mas melhor do que nenhum backup.</div>
+  </div>
+
+  <p>Faça backup pelo menos uma vez por semana. Se você usa o sistema intensamente, faça backup diário. O processo leva menos de um minuto.</p>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 20: CAPÍTULO 8 continuação -->
+<div class="page">
+  <h2>O que fazer se o computador trocar ou o sistema precisar ser reinstalado</h2>
+  <p>Se você precisar instalar o sistema em um computador novo, o processo é simples:</p>
+
+  <div class="checklist">
+    <span class="lbl">Passos para reinstalar em um computador novo</span>
+    <div class="item"><div class="check"></div>Instale o Node.js no novo computador (nodejs.org, versão LTS)</div>
+    <div class="item"><div class="check"></div>Instale o Claude Code (<code>npm install -g @anthropic-ai/claude-code</code>)</div>
+    <div class="item"><div class="check"></div>Copie a pasta inteira do projeto para o novo computador</div>
+    <div class="item"><div class="check"></div>Abra o terminal na pasta do projeto e execute <code>npm install</code> para reinstalar as dependências</div>
+    <div class="item"><div class="check"></div>Copie o arquivo de backup <code>agendamento.db</code> para a raiz da pasta do projeto</div>
+    <div class="item"><div class="check"></div>Inicie o servidor com <code>node src/server.js</code> e verifique se os dados aparecem</div>
+  </div>
+
+  <p>O passo mais importante é o quinto: copiar o arquivo de backup do banco de dados. Sem ele, você perde todos os dados cadastrados. Com ele, o sistema volta exatamente ao estado em que estava antes da troca de computador.</p>
+
+  <h2>Boas práticas para manter o sistema funcionando ao longo do tempo</h2>
+  <p>Um sistema local tem vantagens claras em termos de simplicidade, mas também exige alguns cuidados básicos para continuar funcionando bem ao longo do tempo:</p>
+  <p>Mantenha o Node.js atualizado. Versões muito antigas podem ter problemas de compatibilidade com pacotes mais novos. Verifique a versão instalada com <code>node --version</code> e atualize quando a versão LTS atual for significativamente mais nova.</p>
+  <p>Não delete arquivos da pasta do projeto sem saber o que são. Se precisar liberar espaço em disco, a pasta <code>node_modules</code> pode ser deletada com segurança: ela pode ser recriada a qualquer momento com o comando <code>npm install</code>. Os outros arquivos, especialmente o <code>agendamento.db</code>, não devem ser deletados.</p>
+  <p>Se o sistema começar a ficar lento após muitos meses de uso, pode ser que o banco de dados tenha acumulado muitos registros de agendamentos antigos. Peça ao Claude Code para criar uma função de arquivamento que move agendamentos com mais de seis meses para uma tabela separada, mantendo o banco principal leve.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: não atualize pacotes sem motivo</span>
+    <p>Atualizar os pacotes do projeto (<code>npm update</code>) sem um motivo específico pode introduzir incompatibilidades. Só atualize quando houver um problema que a atualização resolve, ou quando o Claude Code recomendar explicitamente.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 21: CAPÍTULO 9 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">9</span><span class="chapter-label">Capítulo Nove</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Quando algo der errado</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Erros fazem parte do desenvolvimento de software. Não são sinal de que algo está fundamentalmente errado: são parte normal do processo. O que importa é saber como lidar com eles.</p>
+
+  <h2>Os tipos de erro mais comuns em projetos feitos com Claude Code</h2>
+  <p>Projetos criados com Claude Code por pessoas sem experiência em programação tendem a ter três categorias de erro:</p>
+  <p>A primeira categoria são erros de ambiente: o Node.js não está instalado, a versão está desatualizada, um pacote não foi instalado corretamente. Esses erros geralmente aparecem logo no início, quando você tenta iniciar o servidor pela primeira vez. A mensagem de erro costuma mencionar o nome do pacote ou módulo que está faltando.</p>
+  <p>A segunda categoria são erros de lógica: o sistema faz algo diferente do que deveria. Um agendamento é salvo com a data errada, a lista de clientes não aparece, um botão não responde. Esses erros são mais sutis e às vezes só aparecem durante o uso real do sistema.</p>
+  <p>A terceira categoria são erros de integração: o frontend e o backend não estão se comunicando corretamente. A tela tenta buscar dados de uma rota que não existe, ou envia dados em um formato que o servidor não entende. Esses erros geralmente aparecem no console do navegador (acessível pressionando F12) ou no terminal onde o servidor está rodando.</p>
+
+  <h2>Como descrever um erro ao Claude Code de forma que ele consiga corrigir</h2>
+  <p>A qualidade da correção depende diretamente da qualidade da descrição do problema. Um erro bem descrito tem quatro elementos:</p>
+
+  <div class="info-box">
+    <span class="lbl">Os quatro elementos de um bom relato de erro</span>
+    <div class="item"><b>1. O que você fez:</b> descreva a sequência de ações que levou ao erro. "Abri o sistema, fui para a tela de novo agendamento, preenchi todos os campos e cliquei em Salvar."</div>
+    <div class="item"><b>2. O que esperava:</b> descreva o resultado esperado. "Esperava que o agendamento aparecesse na agenda do dia."</div>
+    <div class="item"><b>3. O que aconteceu:</b> descreva o resultado real. "Em vez disso, a tela ficou em branco e não aconteceu nada."</div>
+    <div class="item"><b>4. A mensagem de erro:</b> copie e cole qualquer mensagem de erro que aparecer, seja no terminal, seja na tela do navegador. Não resuma: copie o texto completo.</div>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 22: CAPÍTULO 9 continuação -->
+<div class="page">
+  <h2>Quando o Claude Code não consegue corrigir sozinho</h2>
+  <p>Em alguns casos, o Claude Code vai tentar corrigir um erro e a correção vai criar outro erro. Isso pode acontecer quando o problema é mais profundo do que parece na superfície, ou quando a instrução original foi ambígua e o agente tomou uma decisão que não era a ideal.</p>
+  <p>Se você perceber que o agente está tentando a mesma abordagem repetidamente sem sucesso, ou que cada correção cria um novo problema, pare. Não continue pedindo correções incrementais. Em vez disso, descreva o problema do início: o que o sistema deveria fazer, o que está fazendo de errado e o que já foi tentado para corrigir. Às vezes, recomeçar a descrição do problema do zero leva o agente a uma abordagem completamente diferente que resolve o problema de forma mais limpa.</p>
+  <p>Se o problema persistir após duas ou três tentativas com abordagens diferentes, considere desfazer as últimas mudanças e voltar ao estado anterior usando o Git, conforme explicado na próxima seção.</p>
+
+  <h2>A importância de não acumular erros</h2>
+  <p>Um erro não corrigido tende a gerar outros erros. Se você perceber que algo não está funcionando corretamente, corrija antes de continuar adicionando funcionalidades. Um sistema com cinco problemas acumulados é muito mais difícil de corrigir do que um sistema com um problema de cada vez.</p>
+  <p>A regra prática é: nunca avance para o próximo capítulo ou para a próxima funcionalidade com um erro conhecido não resolvido. Se algo não funciona, resolva agora. Se não conseguir resolver, peça ajuda ao Claude Code com uma descrição detalhada antes de continuar.</p>
+
+  <h2>Como usar o Git para voltar a uma versão anterior</h2>
+  <p>O Git é o sistema de controle de versão que você configurou no Capítulo 1. Ele registra o histórico de mudanças do projeto. Se algo quebrar de forma que você não consiga corrigir, você pode voltar ao estado anterior do projeto usando o Git.</p>
+  <p>Primeiro, veja o histórico de commits para identificar para qual versão você quer voltar:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">git log --oneline</span></pre>
+  </div>
+
+  <p>Esse comando mostra uma lista de commits com um código curto e uma descrição. Cada commit é um ponto no histórico do projeto. Identifique o commit que representa o estado em que o sistema estava funcionando corretamente.</p>
+  <p>Para voltar a esse estado sem perder o histórico, peça ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">O sistema está com problemas que não consigo corrigir. Quero voltar ao estado
+do commit [cole aqui o código do commit, ex: ab3f7c2]. Mostre o que vai mudar
+antes de fazer qualquer alteração.</span></pre>
+  </div>
+
+  <p>O agente vai mostrar o que vai ser revertido antes de fazer qualquer mudança. Confirme apenas quando tiver certeza de que é isso que você quer. Lembre-se: ao voltar para um commit anterior, as mudanças feitas depois daquele ponto serão perdidas. Por isso, faça commits frequentes durante o desenvolvimento, especialmente após cada funcionalidade que estiver funcionando corretamente.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: faça commits frequentes</span>
+    <p>Sempre que uma funcionalidade estiver funcionando, peça ao Claude Code para fazer um commit: "o sistema de cadastro de clientes está funcionando corretamente, faça um commit com essa mensagem". Isso cria pontos de restauração ao longo do desenvolvimento.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 23: CONCLUSÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="label">Conclusão</div>
+    <h1 class="chapter-title" style="margin-top:10px;">O que você construiu</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Você chegou ao final do tutorial com um sistema de agendamento funcionando no seu computador. Não um protótipo, não uma demonstração: um sistema real, que salva dados, que você pode abrir amanhã de manhã e usar para organizar sua agenda.</p>
+
+  <p>O sistema que você construiu faz o seguinte: cadastra clientes com nome, telefone e observações; cadastra serviços com nome e duração; cria agendamentos associando cliente, serviço, data e horário; mostra a agenda do dia em ordem cronológica; mostra a agenda da semana; permite editar e cancelar agendamentos; e guarda tudo em um arquivo local no seu computador que você pode copiar como backup a qualquer momento.</p>
+
+  <h2>O que o sistema não faz</h2>
+  <p>O sistema não envia notificações para os clientes. Não tem controle de acesso ou login. Não gera relatórios financeiros. Não funciona em outros computadores sem ser instalado neles. Não está disponível na internet. Essas limitações são intencionais: elas mantêm o sistema simples, confiável e fácil de manter.</p>
+  <p>Para o uso que foi proposto, um sistema local de agendamentos para o dono do negócio, essas funcionalidades são suficientes. Um sistema que faz poucas coisas e as faz bem é mais útil do que um sistema que tenta fazer tudo e funciona mal.</p>
+
+  <h2>Como continuar aprendendo Claude Code</h2>
+  <p>Este tutorial cobriu um fluxo específico: criar um sistema do zero, com uma stack definida, para um caso de uso concreto. O Claude Code é capaz de muito mais do que isso. Para continuar aprendendo, os próximos passos naturais são:</p>
+
+  <div class="info-box">
+    <span class="lbl">Próximos passos com Claude Code</span>
+    <div class="item"><b>Explore outras skills:</b> o Claude Code tem skills para diferentes tipos de projeto. Cada skill abre novas possibilidades de desenvolvimento.</div>
+    <div class="item"><b>Aprenda sobre MCP:</b> o Model Context Protocol permite conectar o Claude Code a ferramentas externas, como bancos de dados remotos, APIs de terceiros e serviços de notificação.</div>
+    <div class="item"><b>Leia o CLAUDE.md de outros projetos:</b> ver como outros desenvolvedores estruturam seus arquivos CLAUDE.md ajuda a escrever instruções mais eficazes.</div>
+    <div class="item"><b>Pratique descrever problemas:</b> a habilidade mais importante para trabalhar com Claude Code é descrever o que você quer com precisão. Quanto mais você praticar, melhores serão os resultados.</div>
+  </div>
+
+  <h2>O que seria necessário para evoluir o sistema no futuro</h2>
+  <p>Se um dia você quiser expandir o sistema, as evoluções mais naturais seriam: adicionar envio de lembretes por WhatsApp usando a API do WhatsApp Business; criar um relatório simples de agendamentos por período; adicionar suporte a múltiplos profissionais, cada um com sua própria agenda; ou publicar o sistema em um servidor para que os clientes possam fazer agendamentos online.</p>
+  <p>Cada uma dessas evoluções é um projeto separado, com sua própria complexidade. O sistema que você construiu aqui é a base: ele funciona, os dados estão organizados e a estrutura está clara. Qualquer evolução futura parte desse ponto.</p>
+  <p>Por enquanto, o sistema está pronto para uso. Abra o terminal, inicie o servidor e comece a cadastrar seus clientes.</p>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Conclusão</div></div>
+</div>
+
+</body>
+</html>

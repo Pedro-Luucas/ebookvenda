@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<!--
+  RESUMO PARA IA — Do Zero ao SaaS: Como Criar um Produto Real na Internet com Claude Code
+  ========================================================================================
+  Foco: criação de SaaS do zero por pessoas sem conhecimento de programação usando Claude Code.
+  Stack: Next.js, Supabase, Vercel, TypeScript, Tailwind CSS.
+  Capítulos: Introdução, Erro inicial, Nicho, Produto, Planejamento, Skills, Configuração, Construção, Deploy, Landing Page, Erros, Conclusão.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Do Zero ao SaaS: Como Criar um Produto Real na Internet com Claude Code</title>
+<style>
+  :root{
+    --blue:#2563EB;
+    --blue-light:#3B82F6;
+    --blue-dark:#1D4ED8;
+    --blue-bg:#EFF6FF;
+    --indigo:#4338CA;
+    --slate:#1E293B;
+    --black:#0A0F1E;
+    --black-rich:#060B18;
+    --gray-text:#1E293B;
+    --gray-light:#F8FAFC;
+    --gray-mid:#CBD5E1;
+    --white:#FFFFFF;
+    --accent:#0EA5E9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#e5e5e5;font-family:Arial,sans-serif;color:var(--gray-text);}
+  .page{
+    width:794px;
+    min-height:1123px;
+    margin:0 auto 32px;
+    background:white;
+    padding:70px 80px;
+    position:relative;
+    box-shadow:0 4px 24px rgba(0,0,0,0.08);
+    overflow:hidden;
+  }
+  h1.chapter-title{font-family:Georgia,serif;font-size:36px;font-weight:900;color:#0A0F1E;line-height:1.2;}
+  h2{font-family:Georgia,serif;font-size:22px;font-weight:bold;color:#1D4ED8;margin:32px 0 14px;}
+  h3{font-family:Arial,sans-serif;font-size:14px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#0A0F1E;margin:24px 0 10px;}
+  p{font-family:Arial,sans-serif;font-size:16px;line-height:1.9;color:#1E293B;margin-bottom:16px;}
+  em{font-style:italic;}
+  strong{color:#0A0F1E;}
+  .label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#2563EB;font-weight:bold;}
+
+  .chapter-header{padding-top:60px;border-top:3px solid #2563EB;margin-bottom:24px;}
+  .chapter-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#2563EB,#1D4ED8);color:white;border-radius:50%;font-family:Georgia,serif;font-weight:bold;font-size:18px;margin-right:14px;vertical-align:middle;}
+  .chapter-label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#2563EB;font-weight:bold;vertical-align:middle;}
+  .deco-line{width:60px;height:3px;background:linear-gradient(90deg,#2563EB,#0EA5E9);margin:16px 0 28px;}
+  .opening{font-family:Georgia,serif;font-style:italic;font-size:18px;color:#1E293B;border-left:3px solid #3B82F6;padding-left:16px;margin-bottom:28px;line-height:1.7;}
+
+  .quote-box{background:#EFF6FF;border-left:4px solid #2563EB;padding:24px 28px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .quote-box p{font-family:Georgia,serif;font-style:italic;font-size:18px;color:#1D4ED8;margin-bottom:10px;}
+  .quote-box .author{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#2563EB;font-weight:bold;}
+
+  .code-box{background:#0A0F1E;border-left:4px solid #2563EB;border-radius:0 8px 8px 0;padding:24px 28px;margin:28px 0;}
+  .code-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#3B82F6;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .code-box pre{font-family:'Courier New',monospace;font-size:14px;color:#E2E8F0;line-height:1.8;white-space:pre-wrap;}
+  .code-box .comment{color:#475569;font-style:italic;}
+  .code-box .cmd{color:#3B82F6;font-weight:bold;}
+
+  .info-box{background:#F8FAFC;border:1px solid #CBD5E1;border-top:3px solid #2563EB;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .info-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#2563EB;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .info-box .item{margin-bottom:12px;font-size:14px;color:#1E293B;line-height:1.6;}
+  .info-box .item b{color:#1D4ED8;}
+
+  .tip-box{border:1px solid #3B82F6;border-top:3px solid #2563EB;border-radius:8px;padding:24px 28px;margin:28px 0;background:white;}
+  .tip-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#2563EB;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .tip-box p{font-size:15px;color:#1E293B;}
+
+  .checklist{background:#F8FAFC;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .checklist .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#2563EB;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:16px;}
+  .checklist .item{display:flex;align-items:flex-start;margin-bottom:12px;font-size:14px;color:#1E293B;line-height:1.6;}
+  .checklist .check{flex-shrink:0;width:18px;height:18px;border:2px solid #2563EB;border-radius:3px;margin-right:14px;margin-top:2px;background:white;}
+
+  .warn-box{background:#EFF6FF;border-left:4px solid #1D4ED8;padding:20px 24px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .warn-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#1D4ED8;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .warn-box p{font-size:14px;color:#1E293B;margin-bottom:8px;}
+
+  .badge{display:inline-block;background:linear-gradient(135deg,#2563EB,#1D4ED8);color:white;border-radius:6px;padding:4px 14px;font-size:13px;font-weight:bold;font-family:Arial,sans-serif;}
+
+  .footer{position:absolute;bottom:28px;left:80px;right:80px;border-top:0.5px solid #CBD5E1;padding-top:10px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+  .footer .left{color:#2563EB;font-weight:bold;}
+  .footer .right{color:#1D4ED8;font-weight:bold;}
+
+  /* CAPA */
+  .cover{background:linear-gradient(135deg,#0A0F1E 0%,#060B18 50%,#0F172A 100%);color:white;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;position:relative;overflow:hidden;}
+  .cover-bg{position:absolute;inset:0;opacity:0.07;}
+  .cover-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:24px;padding-top:50px;}
+  .cover-badge-top{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#3B82F6;font-weight:bold;}
+  .cover-title{font-family:Georgia,serif;font-size:58px;font-weight:bold;color:white;line-height:0.95;letter-spacing:-1px;}
+  .cover-title .blue{color:#2563EB;display:block;}
+  .cover-subtitle{font-family:Georgia,serif;font-style:italic;font-size:20px;color:#3B82F6;margin-top:6px;}
+  .cover-line{width:120px;height:3px;background:linear-gradient(90deg,#2563EB,#0EA5E9);margin:16px auto;}
+  .cover-desc{font-family:Georgia,serif;font-style:italic;font-size:16px;color:#94A3B8;max-width:480px;line-height:1.7;}
+  .cover-bottom{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:40px;}
+  .cover-year{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:5px;color:#2563EB;font-weight:bold;}
+
+  /* SUMARIO */
+  .toc-list{margin-top:30px;}
+  .toc-item{display:flex;align-items:center;padding:14px 0;border-bottom:1px dashed #CBD5E1;}
+  .toc-num{flex-shrink:0;width:32px;height:32px;background:linear-gradient(135deg,#2563EB,#1D4ED8);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:bold;font-size:14px;margin-right:18px;}
+  .toc-name{flex-grow:1;font-family:Georgia,serif;font-size:16px;color:#0A0F1E;}
+  .toc-dot{color:#2563EB;font-size:13px;margin:0 6px;}
+
+  @media print {
+    body{background:white;}
+    .page{margin:0;box-shadow:none;page-break-after:always;}
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: CAPA -->
+<div class="page cover">
+  <div class="cover-bg">
+    <svg viewBox="0 0 794 1123" preserveAspectRatio="none" width="100%" height="100%">
+      <defs>
+        <pattern id="grid" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#2563EB" stroke-width="0.6"/>
+        </pattern>
+      </defs>
+      <rect width="794" height="1123" fill="url(#grid)"/>
+    </svg>
+  </div>
+  <div class="cover-content">
+    <div class="cover-badge-top">Guia Estratégico e Prático · 2026</div>
+    <svg width="160" height="160" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="logoG" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#2563EB"/>
+          <stop offset="1" stop-color="#0EA5E9"/>
+        </linearGradient>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="none" stroke="#2563EB" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="100" cy="100" r="72" fill="none" stroke="#3B82F6" stroke-width="0.6" opacity="0.5"/>
+      <!-- Rocket icon -->
+      <path d="M100 40 C120 60 130 80 128 110 L100 130 L72 110 C70 80 80 60 100 40Z" fill="none" stroke="url(#logoG)" stroke-width="2.5"/>
+      <circle cx="100" cy="90" r="12" fill="none" stroke="#3B82F6" stroke-width="2"/>
+      <path d="M72 110 L60 130 L80 120Z" fill="none" stroke="#2563EB" stroke-width="2"/>
+      <path d="M128 110 L140 130 L120 120Z" fill="none" stroke="#2563EB" stroke-width="2"/>
+      <path d="M88 130 L100 155 L112 130" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/>
+    </svg>
+    <div class="cover-title">DO ZERO<span class="blue">AO SAAS</span></div>
+    <div class="cover-subtitle">Com Claude Code</div>
+    <div class="cover-line"></div>
+    <div class="cover-desc">Como criar um produto real na internet, do nicho ao deploy, sem saber programar.</div>
+  </div>
+  <div class="cover-bottom">
+    <svg width="120" height="20" viewBox="0 0 120 20">
+      <circle cx="20" cy="10" r="4" fill="#2563EB"/>
+      <circle cx="40" cy="10" r="3" fill="#1D4ED8"/>
+      <line x1="50" y1="10" x2="70" y2="10" stroke="#3B82F6" stroke-width="1"/>
+      <circle cx="80" cy="10" r="3" fill="#1D4ED8"/>
+      <circle cx="100" cy="10" r="4" fill="#2563EB"/>
+    </svg>
+    <div class="cover-year">Edição 2026</div>
+  </div>
+</div>
+
+<!-- PAGE 2: SUMÁRIO -->
+<div class="page">
+  <div style="padding-top:20px;">
+    <div class="label">Conteúdo do Ebook</div>
+    <h1 class="chapter-title" style="margin-top:8px;font-size:38px;">Sumário</h1>
+    <div class="deco-line"></div>
+  </div>
+  <div class="toc-list">
+    <div class="toc-item"><div class="toc-num">00</div><div class="toc-name">Introdução: O que mudou e o que você vai construir</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">01</div><div class="toc-name">O erro que mata a maioria dos projetos antes de começar</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">02</div><div class="toc-name">Encontrando seu nicho</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">03</div><div class="toc-name">Definindo o produto</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">04</div><div class="toc-name">Planejando antes de construir</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">05</div><div class="toc-name">Skills que você vai precisar</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">06</div><div class="toc-name">Configurando o projeto</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">07</div><div class="toc-name">Construindo o SaaS</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">08</div><div class="toc-name">Publicando na internet com Vercel</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">09</div><div class="toc-name">Criando a landing page</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">10</div><div class="toc-name">Quando algo der errado</div><div class="toc-dot">◆</div></div>
+    <div class="toc-item"><div class="toc-num">11</div><div class="toc-name">Conclusão: O caminho de agora em diante</div><div class="toc-dot">◆</div></div>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Sumário</div></div>
+</div>
+
+<!-- PAGE 3: INTRODUÇÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="label">Introdução</div>
+    <h1 class="chapter-title" style="margin-top:10px;">O que mudou e o que você vai construir</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p>Durante décadas, criar um produto de software exigiu uma combinação específica de habilidades: saber programar, entender arquitetura de sistemas, dominar bancos de dados, configurar servidores. Quem não tinha esse conjunto de conhecimentos ficava dependente de contratar desenvolvedores, o que tornava o custo de entrada proibitivo para a maioria das pessoas com boas ideias.</p>
+  <p>Isso mudou. Não de forma gradual, mas de forma abrupta, nos últimos dois anos. Ferramentas como o Claude Code tornaram possível que uma pessoa sem nenhum conhecimento de programação descreva o que quer construir e receba, em minutos, código funcional, estruturado e pronto para ser publicado na internet. O que antes levava semanas de trabalho de um desenvolvedor experiente agora pode ser feito em horas por alguém que nunca escreveu uma linha de código.</p>
+  <p>Este ebook parte desse ponto. Você já sabe usar o Claude Code. O que este guia vai fazer é mostrar como usar essa ferramenta para construir algo que vai além de um experimento local: um SaaS real, publicado na internet, com autenticação de usuários, banco de dados e uma landing page para apresentar o produto.</p>
+
+  <h2>O que você vai construir</h2>
+  <p>Ao final deste ebook, você terá um SaaS funcional publicado na internet. Não um protótipo rodando no seu computador. Não um projeto de demonstração. Um produto real, acessível por qualquer pessoa com um navegador, com usuários podendo criar conta, fazer login e usar o que você construiu.</p>
+  <p>A stack técnica usada é Next.js com App Router para o frontend e backend, Supabase para banco de dados e autenticação, e Vercel para o deploy. O Claude Code vai configurar tudo isso. Você não precisa entender cada tecnologia em profundidade para seguir este guia.</p>
+
+  <h2>O que está fora do escopo</h2>
+  <p>Este ebook não cobre pagamentos, marketing ou crescimento pós-lançamento. Esses são temas importantes, mas cada um deles merece um guia próprio. O foco aqui é chegar ao produto publicado e funcionando. Pagamentos podem ser integrados depois, quando você já tiver usuários reais usando o produto.</p>
+  <p>O pré-requisito para este guia é saber o básico do Claude Code: como abrir um projeto, como dar instruções, como revisar o que foi feito. Se você ainda não tem esse conhecimento, leia o guia introdutório do Claude Code antes de continuar.</p>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Introdução</div></div>
+</div>
+
+<!-- PAGE 4: CAPÍTULO 1 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">1</span><span class="chapter-label">Capítulo Um</span>
+    <h1 class="chapter-title" style="margin-top:16px;">O erro que mata a maioria dos projetos antes de começar</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">A maioria das pessoas que decide criar um SaaS começa pelo lugar errado. Não por falta de capacidade, mas por um impulso natural: quando você tem uma ferramenta nova e poderosa nas mãos, a vontade é usá-la imediatamente.</p>
+
+  <h2>O impulso de ir direto para o código</h2>
+  <p>Quando alguém descobre que pode descrever um produto ao Claude Code e receber código funcional em minutos, a reação mais comum é começar a construir na mesma hora. A ideia aparece, a empolgação chega junto, e a próxima ação parece óbvia: abrir o Claude Code e começar a pedir telas, funcionalidades, banco de dados.</p>
+  <p>O problema não é a velocidade. O problema é que construir rápido sem saber o que construir não economiza tempo. Multiplica o retrabalho. Você passa dias pedindo ao Claude Code para criar funcionalidades que depois percebe que não fazem sentido para o problema que quer resolver. Pede para refazer. Muda de direção. Pede de novo. O projeto cresce em complexidade sem crescer em clareza.</p>
+  <p>Esse padrão é tão comum que tem nome na comunidade de desenvolvedores independentes: construir em busca de um problema. Você cria a solução antes de entender o problema com precisão suficiente para saber se a solução resolve alguma coisa.</p>
+
+  <h2>O que acontece quando você constrói sem definir o problema</h2>
+  <p>Imagine que você decide criar "um app de produtividade". Você pede ao Claude Code para criar um sistema de tarefas com categorias, prioridades, lembretes e integração com calendário. Duas semanas depois, você tem um produto funcionando. Mas quando tenta explicar para alguém o que ele faz de diferente dos outros apps de produtividade que já existem, não consegue responder com clareza.</p>
+  <p>O produto existe, mas não tem um problema específico que resolve melhor do que qualquer alternativa. Não tem um grupo específico de pessoas para quem foi feito. Não tem uma razão clara para alguém pagar por ele em vez de usar algo gratuito que já existe.</p>
+  <p>Isso não é um problema de execução. É um problema de definição. E ele não aparece no código. Aparece quando você tenta vender.</p>
+
+  <h2>A diferença entre uma ideia e um produto</h2>
+  <p>Uma ideia é uma direção. "Quero criar algo para ajudar freelancers a gerenciar clientes" é uma ideia. Um produto é uma solução específica para um problema específico de um grupo específico de pessoas. "Um sistema simples para freelancers de design gráfico registrarem horas por projeto e enviarem propostas de orçamento com um clique" é um produto.</p>
+  <p>A diferença entre os dois não é o nível de detalhe técnico. É a clareza sobre quem tem o problema, qual é o problema exato e por que a solução que você vai construir resolve melhor do que o que já existe.</p>
+  <p>Sem essa clareza, você pode construir qualquer coisa. Com ela, você sabe exatamente o que construir, o que deixar de fora e como explicar o produto para alguém em trinta segundos.</p>
+
+  <h2>Por que "eu quero criar um app" não é suficiente</h2>
+  <p>A frase "eu quero criar um app" não contém nenhuma informação útil para começar a construir. Ela diz o formato, mas não diz o problema, o público, o contexto de uso, o que o produto faz de diferente ou por que alguém pagaria por ele.</p>
+  <p>Antes de abrir o Claude Code para escrever a primeira linha de código, você precisa ter respostas claras para quatro perguntas: Quem tem o problema? Qual é o problema exato? Por que esse problema não está sendo resolvido bem pelas soluções que já existem? O que a sua solução vai fazer de diferente?</p>
+  <p>Essas perguntas não são formalidade. São o filtro que separa projetos que chegam ao ar de projetos que ficam eternamente em construção.</p>
+
+  <h2>O que precisa estar definido antes de escrever código</h2>
+  <p>Antes de abrir o Claude Code para construir qualquer coisa, você precisa ter três coisas definidas: o nicho (quem tem o problema e qual é o problema), o produto (o que você vai construir para resolver esse problema) e o escopo da versão inicial (o que entra na primeira versão e o que fica para depois).</p>
+  <p>Os próximos três capítulos cobrem exatamente isso, nessa ordem. Não pule para o capítulo 6 antes de ter essas três coisas definidas. O tempo que você gasta planejando antes de construir é o tempo que você economiza não precisando refazer.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção</span>
+    <p>O Claude Code é muito bom em construir o que você pede. Mas ele não sabe o que você deveria pedir. Essa parte é sua. E é a parte mais importante de todo o processo.</p>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 1</div></div>
+</div>
+
+<!-- PAGE 5: CAPÍTULO 2 parte 1 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">2</span><span class="chapter-label">Capítulo Dois</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Encontrando seu nicho</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Este é o capítulo mais importante do ebook. Não porque seja o mais técnico, mas porque é onde a maioria das pessoas trava. Encontrar um nicho não é uma questão de criatividade. É uma questão de método.</p>
+
+  <h2>O que é um nicho, em linguagem simples</h2>
+  <p>Um nicho é a combinação de um problema específico com um grupo específico de pessoas que tem esse problema. Não é um mercado amplo como "produtividade" ou "saúde". É algo como "nutricionistas que atendem por videochamada e precisam enviar planos alimentares personalizados para cada paciente sem gastar horas formatando documentos".</p>
+  <p>Quanto mais específico o nicho, mais fácil é construir algo que realmente resolve o problema. E mais fácil é encontrar as pessoas certas para usar o produto. Um nicho pequeno e bem definido é mais valioso do que um nicho grande e vago, especialmente para quem está construindo sozinho.</p>
+  <p>A lógica é simples: se você tenta resolver um problema para todo mundo, acaba não resolvendo bem para ninguém. Se você resolve um problema específico para um grupo específico de pessoas, você tem uma chance real de ser a melhor opção disponível para esse grupo.</p>
+
+  <h2>Por que nicho pequeno é melhor para quem está começando</h2>
+  <p>Existe uma tendência natural de querer construir algo grande, que sirva para muitas pessoas. A lógica parece correta: quanto maior o mercado, maior o potencial de receita. Mas essa lógica ignora o custo de competir em mercados grandes.</p>
+  <p>Em mercados grandes, você compete com empresas que têm equipes de dezenas de pessoas, orçamentos de marketing expressivos e anos de vantagem. Em nichos pequenos, você compete com planilhas, processos manuais e soluções genéricas que não foram feitas para aquele grupo específico. Essa é uma competição muito mais favorável.</p>
+  <p>Além disso, nichos pequenos têm uma característica valiosa: as pessoas que fazem parte deles se conhecem. Um nutricionista satisfeito com o seu produto vai recomendar para outros nutricionistas. Esse tipo de crescimento orgânico é muito mais eficiente do que qualquer campanha de marketing.</p>
+
+  <h2>Os três critérios de um bom nicho</h2>
+  <p>Antes de decidir por um nicho, ele precisa passar por três critérios. Se falhar em qualquer um dos três, o nicho não é viável para um SaaS.</p>
+  <p><strong>Primeiro: o problema existe de verdade.</strong> Não é uma suposição sua sobre o que as pessoas precisam. É algo que você pode verificar: as pessoas falam sobre esse problema em fóruns, grupos, redes sociais. Elas buscam soluções. Elas reclamam das soluções que existem.</p>
+  <p><strong>Segundo: as pessoas pagam para resolver.</strong> Existem problemas reais que as pessoas preferem conviver a pagar para resolver. Um SaaS precisa de um problema que as pessoas considerem urgente o suficiente para justificar um pagamento mensal. A forma mais simples de verificar isso é ver se já existem produtos pagos nesse espaço. Se existem, as pessoas pagam. Se não existem, pode ser que o problema não seja urgente o suficiente.</p>
+  <p><strong>Terceiro: você consegue construir a solução.</strong> Com o Claude Code, o escopo do que é possível construir expandiu muito. Mas ainda existem limites. Integrações complexas com sistemas legados, processamento de dados em tempo real em escala, algoritmos de machine learning sofisticados: esses são exemplos de coisas que estão fora do escopo de um primeiro SaaS construído com Claude Code. Escolha um problema cuja solução seja um aplicativo web com banco de dados, autenticação e lógica de negócio razoavelmente simples.</p>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 2</div></div>
+</div>
+
+<!-- PAGE 6: CAPÍTULO 2 parte 2 -->
+<div class="page">
+  <h2>Como avaliar um nicho sem sair do computador</h2>
+  <p>Você não precisa fazer entrevistas com dezenas de pessoas para validar um nicho. Existem formas de fazer uma avaliação inicial usando apenas o que está disponível online.</p>
+  <p>Procure por grupos no Facebook, comunidades no Reddit, fóruns especializados e canais no YouTube voltados para o grupo de pessoas que você quer atender. Observe o que elas reclamam. Veja quais perguntas aparecem com frequência. Preste atenção nas soluções que elas usam hoje e no que dizem sobre essas soluções.</p>
+  <p>Procure por produtos que já existem nesse espaço. Leia as avaliações negativas. As avaliações negativas de produtos concorrentes são um mapa do que as pessoas precisam e não estão recebendo. Se você encontrar um padrão de reclamações sobre algo específico, esse é um sinal de oportunidade.</p>
+  <p>Procure por pessoas que cobram para fazer manualmente o que você quer automatizar. Se existem freelancers ou consultores que cobram para fazer algo que poderia ser feito por um software, isso é um sinal forte de que o problema existe e que as pessoas pagam para resolver.</p>
+
+  <h2>Exemplos de nichos que funcionam bem para SaaS pequeno</h2>
+  <p>Alguns padrões de nicho têm funcionado bem para produtos pequenos construídos por uma pessoa só. Não são receitas, mas referências para calibrar o tipo de problema que vale a pena explorar.</p>
+  <p>Profissionais autônomos que precisam gerenciar clientes, projetos ou documentos: advogados, nutricionistas, psicólogos, designers, consultores. Esses grupos têm processos repetitivos que consomem tempo e que as ferramentas genéricas não resolvem bem.</p>
+  <p>Pequenos negócios com processos específicos do setor: pet shops que precisam gerenciar agendamentos de banho e tosa, academias que precisam controlar frequência de alunos, clínicas que precisam enviar lembretes de consulta. Cada setor tem suas particularidades, e ferramentas genéricas raramente as atendem bem.</p>
+  <p>Criadores de conteúdo com necessidades operacionais: pessoas que gerenciam múltiplos canais, que precisam organizar pautas, que trabalham com patrocinadores e precisam controlar entregas e pagamentos.</p>
+
+  <h2>Como usar o Claude Code para explorar e comparar nichos</h2>
+  <p>O Claude Code pode ser um parceiro valioso na fase de exploração de nichos, antes de qualquer linha de código. Você pode usá-lo para analisar ideias, identificar pontos fracos em um nicho e comparar opções. A chave é formular as perguntas de forma específica.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: explorar um nicho</span>
+    <pre>Quero criar um SaaS para [grupo de pessoas] que resolve [problema específico].
+
+Analise esse nicho para mim considerando:
+1. Esse problema existe de verdade? Quais são os sinais?
+2. As pessoas desse grupo costumam pagar por soluções de software?
+3. Quais soluções já existem para esse problema?
+4. O que essas soluções não resolvem bem?
+5. Qual seria a versão mais simples possível de um produto que resolve esse problema?
+
+Seja direto e crítico. Se o nicho tiver problemas sérios, me diga.</pre>
+  </div>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: comparar nichos</span>
+    <pre>Tenho três ideias de nicho para um SaaS. Compare as três e me ajude
+a decidir qual tem mais potencial para um produto inicial.
+
+Nicho 1: [descreva o grupo e o problema]
+Nicho 2: [descreva o grupo e o problema]
+Nicho 3: [descreva o grupo e o problema]
+
+Para cada um, avalie:
+- Urgência do problema (as pessoas precisam resolver isso agora?)
+- Disposição para pagar (esse grupo costuma pagar por software?)
+- Complexidade da solução (dá para construir com Next.js e Supabase?)
+- Concorrência (existem muitas soluções boas já?)
+
+Ao final, recomende um e explique por quê.</pre>
+  </div>
+
+  <p>Use essas análises como ponto de partida, não como veredicto final. O Claude Code vai trazer perspectivas úteis, mas a decisão final é sua. Você conhece seu contexto, suas conexões e o que você está disposto a construir.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica prática</span>
+    <p>Se você já faz parte de um grupo profissional ou tem experiência em algum setor, comece por aí. Você já conhece os problemas, já sabe o que as pessoas reclamam e já tem credibilidade para conversar com potenciais usuários. Construir para um grupo do qual você faz parte é uma vantagem real.</p>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 2</div></div>
+</div>
+
+<!-- PAGE 7: CAPÍTULO 3 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">3</span><span class="chapter-label">Capítulo Três</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Definindo o produto</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Você tem um nicho. Agora precisa transformar esse nicho em um produto. Essa transição parece simples, mas é onde muitos projetos perdem o foco. Definir um produto é, em grande parte, um exercício de corte: decidir o que não vai entrar.</p>
+
+  <h2>Da ideia ao escopo</h2>
+  <p>Quando você tem um problema claro e um grupo de pessoas bem definido, a tentação é listar tudo que o produto poderia fazer para resolver esse problema. Um sistema para nutricionistas poderia ter cadastro de pacientes, histórico de consultas, geração de planos alimentares, cálculo de macronutrientes, integração com aplicativos de saúde, lembretes automáticos, relatórios de progresso, chat com o paciente, assinatura digital de documentos.</p>
+  <p>Cada uma dessas funcionalidades faz sentido individualmente. O problema é que construir todas elas na primeira versão vai levar meses, e você vai lançar um produto complexo para um mercado que ainda não conhece você. Enquanto isso, o problema que você quer resolver continua sem solução para as pessoas que precisam dela.</p>
+  <p>Definir o produto significa escolher o subconjunto mínimo de funcionalidades que resolve o problema central. Não o problema completo. O problema central.</p>
+
+  <h2>O conceito de MVP</h2>
+  <p>MVP é a sigla em inglês para "produto mínimo viável" (minimum viable product). O conceito é simples: a versão mais enxuta do produto que ainda entrega valor real para o usuário. Não é um protótipo. Não é uma demonstração. É um produto que funciona, que resolve um problema real, mas que tem apenas as funcionalidades essenciais para fazer isso.</p>
+  <p>A palavra "viável" é importante. Viável não significa perfeito. Significa que o produto funciona bem o suficiente para que alguém use e pague por ele. Um MVP ruim é aquele que tem tantas funcionalidades que demora meses para ficar pronto. Um MVP bom é aquele que você consegue construir em semanas e que já resolve o problema central do usuário.</p>
+  <p>Para o sistema de nutricionistas, o MVP poderia ser apenas: cadastro de pacientes, registro de consultas e geração de um plano alimentar em PDF. Tudo o mais fica para versões futuras, depois que você tiver usuários reais usando o produto e dando feedback.</p>
+
+  <h2>O que entra na versão 1 e o que fica para depois</h2>
+  <p>Uma forma prática de decidir o que entra no MVP é fazer duas listas. Na primeira, coloque tudo que o produto poderia fazer. Na segunda, coloque apenas o que o produto precisa fazer para que alguém use e pague por ele hoje.</p>
+  <p>A segunda lista é o seu MVP. Tudo que está na primeira lista mas não na segunda é uma funcionalidade futura. Não descarte essas ideias, mas não as construa agora. Guarde-as para depois que você tiver validado que o produto resolve o problema central.</p>
+  <p>Uma regra útil: se uma funcionalidade não impede o usuário de resolver o problema central sem ela, ela não entra no MVP. O usuário pode resolver o problema central com um processo manual enquanto você não constrói essa funcionalidade? Se sim, ela fica para depois.</p>
+
+  <h2>Como escrever a definição do produto antes de qualquer código</h2>
+  <p>Antes de pedir ao Claude Code para construir qualquer coisa, escreva a definição do produto em linguagem simples. Não em linguagem técnica. Em linguagem que qualquer pessoa entenderia.</p>
+  <p>A definição deve responder: para quem é o produto, qual problema ele resolve, o que o usuário consegue fazer com ele e o que não está incluído na versão inicial. Esse documento não precisa ser longo. Dois ou três parágrafos são suficientes. O que importa é a clareza.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: definir o escopo do produto</span>
+    <pre>Quero criar um SaaS para [grupo de pessoas] que resolve [problema específico].
+
+Com base nessa descrição, me ajude a definir o escopo do produto:
+
+1. Quais são as 3 a 5 funcionalidades essenciais para a versão 1?
+2. Quais funcionalidades fazem sentido mas devem ficar para versões futuras?
+3. Como seria o fluxo principal do usuário: o que ele faz desde que entra
+   no produto até resolver o problema?
+4. Quais telas o produto precisa ter na versão 1?
+
+Seja conservador. Prefira um escopo menor que funcione bem a um escopo
+maior que demore meses para ficar pronto.</pre>
+  </div>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: refinar o escopo</span>
+    <pre>Aqui está a definição do meu produto:
+
+[cole a definição que você escreveu]
+
+Revise essa definição e me diga:
+1. Tem alguma funcionalidade que parece simples mas é tecnicamente complexa?
+2. Tem alguma funcionalidade que posso remover sem comprometer o valor central?
+3. O fluxo do usuário está claro? Tem alguma lacuna?
+
+Quero chegar a um escopo que eu consiga construir em 2 a 4 semanas
+usando Claude Code, com Next.js e Supabase.</pre>
+  </div>
+
+  <div class="info-box">
+    <span class="lbl">O que a definição do produto deve conter</span>
+    <div class="item"><b>Para quem:</b> o grupo específico de pessoas que vai usar o produto.</div>
+    <div class="item"><b>O problema:</b> o que essas pessoas precisam resolver e não conseguem resolver bem hoje.</div>
+    <div class="item"><b>O que o produto faz:</b> as funcionalidades da versão 1, em linguagem simples.</div>
+    <div class="item"><b>O que o produto não faz:</b> o que fica explicitamente fora do escopo inicial.</div>
+    <div class="item"><b>O fluxo principal:</b> o caminho que o usuário percorre para resolver o problema central.</div>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 3</div></div>
+</div>
+
+<!-- PAGE 8: CAPÍTULO 4 parte 1 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">4</span><span class="chapter-label">Capítulo Quatro</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Planejando antes de construir</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Você tem o nicho, tem o produto definido, tem o escopo da versão 1. Agora vem a etapa que separa projetos que ficam coerentes do início ao fim de projetos que se perdem no meio do caminho: o CLAUDE.md.</p>
+
+  <h2>O que é o CLAUDE.md e por que ele importa</h2>
+  <p>O CLAUDE.md é um arquivo de texto que fica na raiz do seu projeto e serve como documento de referência para o Claude Code. Toda vez que você abre o Claude Code em um projeto, ele lê esse arquivo antes de qualquer coisa. É nele que você descreve o que o projeto é, como ele está estruturado, quais tecnologias usa, quais são as convenções e o que o produto deve fazer.</p>
+  <p>Sem um CLAUDE.md bem escrito, o Claude Code trabalha sem contexto. Ele vai fazer escolhas técnicas baseadas em padrões genéricos, pode usar tecnologias diferentes das que você quer, pode criar estruturas que não fazem sentido para o seu produto. Com um CLAUDE.md bem escrito, ele tem um mapa claro do que você está construindo e como.</p>
+  <p>Pense no CLAUDE.md como a conversa que você teria com um desenvolvedor no primeiro dia de trabalho. Você explicaria o produto, a stack técnica, as convenções do projeto e o que está sendo construído. O CLAUDE.md faz isso de forma permanente, para que você não precise repetir essas informações toda vez que abre uma nova sessão.</p>
+
+  <h2>O que incluir em um CLAUDE.md eficaz</h2>
+  <p>Um bom CLAUDE.md para um SaaS tem cinco seções principais. Cada uma serve a um propósito específico e influencia diretamente a qualidade do código que o Claude Code vai produzir.</p>
+  <p><strong>Descrição do projeto:</strong> o que o produto é, para quem é e qual problema resolve. Duas ou três frases são suficientes. O objetivo é dar contexto imediato sobre o propósito do que está sendo construído.</p>
+  <p><strong>Stack técnica:</strong> quais tecnologias o projeto usa e como elas se relacionam. Para o nosso caso: Next.js com App Router, TypeScript, Tailwind CSS, Supabase para banco de dados e autenticação, Vercel para deploy. Especifique versões quando relevante.</p>
+  <p><strong>Estrutura do projeto:</strong> como as pastas e arquivos estão organizados. Quais são as rotas principais, onde ficam os componentes, onde ficam as funções de acesso ao banco de dados.</p>
+  <p><strong>Funcionalidades e telas:</strong> o que o produto faz, quais são as telas principais e o que cada uma contém. Quanto mais específico, melhor. Não escreva "tela de dashboard". Escreva "tela de dashboard que mostra os últimos 10 pacientes cadastrados, com nome, data da última consulta e um botão para acessar o perfil".</p>
+  <p><strong>Convenções:</strong> regras que o Claude Code deve seguir ao escrever código. Idioma dos textos da interface, padrões de nomenclatura, como tratar erros, como estruturar as rotas de API.</p>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 4</div></div>
+</div>
+
+<!-- PAGE 9: CAPÍTULO 4 parte 2 -->
+<div class="page">
+  <h2>Exemplo completo de um CLAUDE.md para um SaaS</h2>
+  <p>O exemplo abaixo é para um SaaS fictício de gestão de pacientes para nutricionistas. Use-o como referência para estruturar o seu próprio CLAUDE.md, adaptando cada seção para o seu produto.</p>
+
+  <div class="code-box">
+    <span class="lbl">Exemplo de CLAUDE.md</span>
+    <pre><span class="comment"># NutriGestão</span>
+
+<span class="comment">## Sobre o Projeto</span>
+SaaS para nutricionistas autônomos gerenciarem pacientes e consultas.
+O nutricionista cadastra pacientes, registra consultas e gera planos
+alimentares em PDF. Toda a interface está em português brasileiro.
+
+<span class="comment">## Stack Técnica</span>
+- Frontend e backend: Next.js 15 com App Router, TypeScript, Tailwind CSS
+- Banco de dados e autenticação: Supabase
+- Deploy: Vercel
+- Path alias: @/* aponta para a raiz do projeto
+
+<span class="comment">## Estrutura</span>
+- app/page.tsx: landing page pública
+- app/(auth)/: rotas de login e cadastro
+- app/(dashboard)/: área autenticada do nutricionista
+- app/api/: rotas de API server-side
+- app/components/: componentes reutilizáveis
+- app/lib/supabase/: cliente Supabase e funções de acesso ao banco
+
+<span class="comment">## Funcionalidades da Versão 1</span>
+1. Autenticação: cadastro e login via Supabase Auth (email e senha)
+2. Pacientes: listar, cadastrar, editar e arquivar pacientes
+3. Consultas: registrar consultas por paciente com data e anotações
+4. Plano alimentar: criar e salvar plano alimentar por paciente
+
+<span class="comment">## Telas Principais</span>
+- /login: formulário de login
+- /cadastro: formulário de cadastro do nutricionista
+- /dashboard: lista de pacientes com busca e filtro
+- /pacientes/novo: formulário de cadastro de paciente
+- /pacientes/[id]: perfil do paciente com histórico de consultas
+- /pacientes/[id]/consulta/nova: formulário de nova consulta
+- /pacientes/[id]/plano: editor de plano alimentar
+
+<span class="comment">## Convenções</span>
+- Toda interface visível ao usuário em português brasileiro
+- Componentes que usam hooks do browser têm "use client" no topo
+- Server Components são o padrão para páginas e layouts
+- Erros de formulário exibidos inline, abaixo do campo com problema
+- Rotas de API retornam JSON com { data } em caso de sucesso
+  e { error } em caso de falha</pre>
+  </div>
+
+  <h2>Como descrever funcionalidades com precisão</h2>
+  <p>A parte mais importante do CLAUDE.md é a descrição das funcionalidades e telas. Quanto mais específica for essa descrição, menos retrabalho você vai ter. O Claude Code vai construir exatamente o que você descreveu, então vale a pena gastar tempo escrevendo com precisão.</p>
+  <p>Evite descrições vagas como "tela de perfil do usuário". Prefira descrições que incluam o que a tela mostra, quais ações o usuário pode fazer e quais dados são exibidos. Se uma tela tem um formulário, descreva os campos. Se uma tela tem uma lista, descreva o que aparece em cada item da lista.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: criar o CLAUDE.md</span>
+    <pre>Vou te dar a definição do meu produto. Com base nela, crie um arquivo
+CLAUDE.md completo para o projeto.
+
+Definição do produto:
+[cole aqui a definição que você escreveu no capítulo anterior]
+
+O CLAUDE.md deve incluir:
+- Descrição do projeto (2 a 3 frases)
+- Stack técnica: Next.js 15 App Router, TypeScript, Tailwind CSS,
+  Supabase, Vercel
+- Estrutura de pastas sugerida para esse tipo de produto
+- Lista de funcionalidades da versão 1
+- Lista de telas com descrição do que cada uma contém
+- Convenções de código e interface
+
+Toda a interface deve estar em português brasileiro.</pre>
+  </div>
+
+  <div class="tip-box">
+    <span class="lbl">Por que o CLAUDE.md economiza horas</span>
+    <p>Sem o CLAUDE.md, cada nova sessão do Claude Code começa do zero. Você precisa reexplicar o projeto, a stack, as convenções. Com o CLAUDE.md, o contexto está sempre disponível. O Claude Code lê o arquivo e já sabe onde está e o que está construindo. Isso elimina uma categoria inteira de erros e retrabalho.</p>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 4</div></div>
+</div>
+
+<!-- PAGE 10: CAPÍTULO 5 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">5</span><span class="chapter-label">Capítulo Cinco</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Skills que você vai precisar</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O Claude Code tem capacidades padrão que cobrem a maioria das tarefas de desenvolvimento. Mas para um projeto SaaS com qualidade de produção, algumas skills específicas fazem diferença real na qualidade do resultado.</p>
+
+  <h2>Por que skills importam neste projeto</h2>
+  <p>Skills são extensões do Claude Code que adicionam conhecimento especializado e comportamentos específicos para determinados tipos de tarefa. Quando você ativa uma skill, o Claude Code passa a seguir um conjunto de práticas e padrões otimizados para aquela área.</p>
+  <p>Para um SaaS construído com Next.js, Supabase e Vercel, existem cinco skills que vão fazer diferença direta na qualidade do que é construído. Cada uma resolve um problema específico que aparece com frequência nesse tipo de projeto.</p>
+
+  <h2>As cinco skills recomendadas</h2>
+
+  <h3>react-nextjs-development</h3>
+  <p>Esta skill garante que o Claude Code use os padrões corretos do Next.js com App Router. Sem ela, o Claude Code pode misturar padrões antigos do Pages Router com o App Router, criar componentes client-side onde deveriam ser server-side, ou estruturar as rotas de forma incorreta. Com ela ativa, o projeto vai seguir as convenções do Next.js 15 desde o início, o que evita uma categoria inteira de problemas difíceis de corrigir depois.</p>
+
+  <h3>frontend-design</h3>
+  <p>Esta skill melhora a qualidade visual das interfaces geradas. Sem ela, o Claude Code tende a criar interfaces funcionais mas com aparência genérica. Com ela ativa, o resultado tem mais cuidado com tipografia, espaçamento, hierarquia visual e consistência. Para um SaaS que vai ser apresentado a usuários reais, a aparência importa.</p>
+
+  <h3>testing-debugging</h3>
+  <p>Esta skill é essencial para identificar e corrigir erros sem precisar entender o código. Quando algo quebra, você descreve o problema e a skill orienta o Claude Code a diagnosticar a causa raiz de forma sistemática, em vez de tentar correções aleatórias. Para quem não sabe programar, essa skill é especialmente valiosa porque transforma erros incompreensíveis em problemas resolvíveis.</p>
+
+  <h3>simplify</h3>
+  <p>Esta skill revisa o código gerado em busca de complexidade desnecessária e o simplifica. Projetos construídos com IA tendem a acumular código redundante ao longo do tempo, especialmente quando você pede muitas alterações incrementais. A skill simplify mantém o código limpo e fácil de manter, o que reduz a chance de erros futuros.</p>
+
+  <h3>typescript-expert</h3>
+  <p>Esta skill garante que o TypeScript seja usado corretamente no projeto. TypeScript é a linguagem usada no Next.js e oferece verificação de tipos que previne uma classe inteira de erros. Sem essa skill, o Claude Code pode usar TypeScript de forma superficial, perdendo os benefícios da verificação de tipos. Com ela, o código vai ser mais robusto e os erros vão aparecer antes de chegar ao usuário.</p>
+
+  <h2>Como instalar cada skill</h2>
+  <p>Para instalar uma skill no Claude Code, use o comando <code>/install-skill</code> seguido do nome da skill. Você pode instalar todas de uma vez antes de começar o projeto.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instalando as skills no Claude Code</span>
+    <pre><span class="comment"># Digite cada um desses comandos no Claude Code, um por vez:</span>
+
+/install-skill react-nextjs-development
+/install-skill frontend-design
+/install-skill testing-debugging
+/install-skill simplify
+/install-skill typescript-expert</pre>
+  </div>
+
+  <h2>Quando acionar cada skill</h2>
+  <p>Você não precisa acionar todas as skills o tempo todo. Cada uma tem um momento ideal de uso durante o desenvolvimento.</p>
+
+  <div class="info-box">
+    <span class="lbl">Quando usar cada skill</span>
+    <div class="item"><b>react-nextjs-development:</b> no início do projeto, ao criar a estrutura inicial, e sempre que criar novas páginas ou rotas.</div>
+    <div class="item"><b>frontend-design:</b> ao criar ou revisar telas, especialmente a landing page e as telas principais do produto.</div>
+    <div class="item"><b>testing-debugging:</b> sempre que algo não funcionar como esperado ou quando um erro aparecer no console.</div>
+    <div class="item"><b>simplify:</b> após terminar uma funcionalidade completa, antes de passar para a próxima.</div>
+    <div class="item"><b>typescript-expert:</b> quando aparecerem erros de tipo ou quando o Claude Code sugerir usar <code>any</code> como tipo.</div>
+  </div>
+
+  <div class="tip-box">
+    <span class="lbl">Dica de uso</span>
+    <p>Para acionar uma skill em uma instrução específica, mencione o nome dela no início da mensagem. Por exemplo: "Usando a skill frontend-design, melhore a aparência da tela de dashboard." Isso garante que o Claude Code aplique os padrões da skill naquela tarefa específica.</p>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 5</div></div>
+</div>
+
+<!-- PAGE 11: CAPÍTULO 6 parte 1 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">6</span><span class="chapter-label">Capítulo Seis</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Configurando o projeto</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">A partir daqui, o tom muda. Os capítulos anteriores foram estratégicos. Este e os seguintes são operacionais. Cada instrução é exata. Siga na ordem.</p>
+
+  <h2>Criando a estrutura inicial do projeto</h2>
+  <p>O primeiro passo é criar a pasta do projeto e inicializar a estrutura do Next.js. Abra o Claude Code em uma pasta vazia no seu computador e dê a seguinte instrução:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: criar o projeto</span>
+    <pre>Crie um novo projeto Next.js 15 com App Router, TypeScript e Tailwind CSS.
+Use o comando create-next-app com as seguintes opções:
+- TypeScript: sim
+- ESLint: sim
+- Tailwind CSS: sim
+- App Router: sim
+- src/ directory: não
+- Import alias: sim (@/*)
+
+Após criar o projeto, instale também a dependência do Supabase:
+npm install @supabase/supabase-js @supabase/ssr
+
+Depois crie o arquivo CLAUDE.md na raiz do projeto com o seguinte conteúdo:
+[cole aqui o conteúdo do seu CLAUDE.md]</pre>
+  </div>
+
+  <h2>O que é o Supabase e como criar uma conta</h2>
+  <p>O Supabase é uma plataforma que oferece banco de dados PostgreSQL, autenticação de usuários e armazenamento de arquivos, tudo em um só lugar. Para o seu SaaS, ele vai guardar todos os dados dos usuários e gerenciar o login e cadastro.</p>
+  <p>Para criar uma conta, acesse supabase.com e clique em "Start your project". Você pode criar uma conta com o GitHub, o que vai facilitar a integração com o Vercel mais tarde. Após criar a conta, crie um novo projeto. Escolha um nome para o projeto, defina uma senha para o banco de dados (guarde essa senha em um lugar seguro) e selecione a região mais próxima dos seus usuários.</p>
+  <p>Após criar o projeto, você vai precisar de duas informações: a URL do projeto e a chave anônima (anon key). Essas informações ficam em Settings, depois API, dentro do painel do Supabase. Guarde as duas, pois você vai precisar delas em breve.</p>
+
+  <h2>Como conectar o Supabase ao projeto</h2>
+  <p>Com as credenciais do Supabase em mãos, crie um arquivo chamado <code>.env.local</code> na raiz do projeto com as seguintes variáveis:</p>
+
+  <div class="code-box">
+    <span class="lbl">Arquivo .env.local</span>
+    <pre>NEXT_PUBLIC_SUPABASE_URL=sua_url_do_projeto_aqui
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_chave_anonima_aqui</pre>
+  </div>
+
+  <p>Depois, peça ao Claude Code para configurar o cliente do Supabase:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: configurar o Supabase</span>
+    <pre>Configure o cliente do Supabase no projeto seguindo as melhores práticas
+para Next.js 15 com App Router.
+
+Crie os seguintes arquivos:
+1. app/lib/supabase/client.ts: cliente para uso em componentes client-side
+2. app/lib/supabase/server.ts: cliente para uso em Server Components e
+   rotas de API
+3. middleware.ts: middleware para gerenciar a sessão do usuário
+
+Use o pacote @supabase/ssr para a configuração correta com Next.js.</pre>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 12: CAPÍTULO 6 parte 2 -->
+<div class="page">
+  <h2>O que é o GitHub e por que ele é necessário</h2>
+  <p>O GitHub é um serviço que armazena o código do seu projeto na nuvem e mantém um histórico de todas as alterações feitas. Pense nele como um Google Drive para código, mas com a capacidade de voltar a qualquer versão anterior do projeto.</p>
+  <p>Para este fluxo, o GitHub é necessário por dois motivos. Primeiro, o Vercel (o serviço de deploy) se conecta ao GitHub para publicar o projeto automaticamente toda vez que você faz uma alteração. Segundo, o GitHub serve como backup do seu código. Se algo der errado no seu computador, o código está seguro na nuvem.</p>
+  <p>Para criar uma conta, acesse github.com. Após criar a conta, crie um novo repositório com o nome do seu projeto. O Claude Code pode fazer o processo de conectar o projeto local ao GitHub:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: conectar ao GitHub</span>
+    <pre>Conecte este projeto ao GitHub. O repositório já foi criado em:
+https://github.com/seu-usuario/nome-do-repositorio
+
+Faça o commit inicial com todos os arquivos do projeto e envie para
+o repositório remoto.</pre>
+  </div>
+
+  <h2>Como configurar o Vercel para deploy</h2>
+  <p>O Vercel é o serviço que vai publicar o seu SaaS na internet. Ele se conecta ao GitHub e, toda vez que você enviar uma alteração para o repositório, o Vercel automaticamente publica a nova versão do produto.</p>
+  <p>Para criar uma conta, acesse vercel.com e clique em "Sign Up". Use a opção de entrar com o GitHub, o que vai facilitar a conexão com o repositório. Após criar a conta, clique em "Add New Project" e selecione o repositório do seu projeto no GitHub.</p>
+  <p>O Vercel vai detectar automaticamente que é um projeto Next.js e vai configurar as opções de build corretamente. Antes de fazer o primeiro deploy, você precisa adicionar as variáveis de ambiente do Supabase no painel do Vercel.</p>
+
+  <div class="code-box">
+    <span class="lbl">Variáveis de ambiente no Vercel</span>
+    <pre><span class="comment"># No painel do Vercel, vá em Settings > Environment Variables
+# e adicione as seguintes variáveis:</span>
+
+NEXT_PUBLIC_SUPABASE_URL        = sua_url_do_projeto
+NEXT_PUBLIC_SUPABASE_ANON_KEY   = sua_chave_anonima</pre>
+  </div>
+
+  <h2>Verificando se tudo está conectado</h2>
+  <p>Antes de começar a construir as funcionalidades do produto, verifique se a conexão entre o projeto, o Supabase e o Vercel está funcionando. Peça ao Claude Code para criar uma rota de teste simples:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: verificar a conexão</span>
+    <pre>Crie uma rota de API em app/api/health/route.ts que:
+1. Conecta ao Supabase usando o cliente server-side
+2. Faz uma consulta simples para verificar a conexão
+3. Retorna { status: "ok" } se a conexão funcionar
+4. Retorna { status: "error", message: "..." } se falhar
+
+Depois, faça o deploy no Vercel e me diga como testar a rota.</pre>
+  </div>
+
+  <div class="checklist">
+    <span class="lbl">Checklist antes de começar a construir</span>
+    <div class="item"><div class="check"></div>Projeto Next.js criado com TypeScript e Tailwind CSS</div>
+    <div class="item"><div class="check"></div>CLAUDE.md criado na raiz do projeto</div>
+    <div class="item"><div class="check"></div>Conta no Supabase criada e projeto configurado</div>
+    <div class="item"><div class="check"></div>Arquivo .env.local com as credenciais do Supabase</div>
+    <div class="item"><div class="check"></div>Cliente do Supabase configurado no projeto</div>
+    <div class="item"><div class="check"></div>Repositório criado no GitHub e código enviado</div>
+    <div class="item"><div class="check"></div>Projeto conectado ao Vercel com variáveis de ambiente</div>
+    <div class="item"><div class="check"></div>Rota de health check funcionando no deploy</div>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 13: CAPÍTULO 7 parte 1 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">7</span><span class="chapter-label">Capítulo Sete</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Construindo o SaaS</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Com o projeto configurado, o Supabase conectado e o CLAUDE.md no lugar, você está pronto para construir. O processo de construção com Claude Code segue um ritmo específico: descrever, revisar, aprovar, iterar.</p>
+
+  <h2>O fluxo de construção com Claude Code</h2>
+  <p>Cada funcionalidade do seu SaaS vai ser construída em ciclos. Você descreve o que quer, o Claude Code constrói, você revisa o resultado no navegador, aprova ou pede ajustes, e passa para a próxima funcionalidade. Esse ciclo se repete até o produto estar completo.</p>
+  <p>A regra mais importante desse fluxo é construir uma funcionalidade de cada vez. Não peça ao Claude Code para criar o sistema de autenticação, o dashboard e o cadastro de pacientes em uma única instrução. Peça um de cada vez, revise cada um antes de continuar. Isso mantém o projeto coerente e facilita a identificação de problemas.</p>
+  <p>A ordem recomendada para construir um SaaS é: autenticação primeiro, depois as telas principais, depois as rotas de API, depois as integrações com o banco de dados. Essa ordem garante que a base do produto esteja sólida antes de construir as funcionalidades específicas.</p>
+
+  <h2>Implementando autenticação com Supabase Auth</h2>
+  <p>A autenticação é sempre o primeiro passo. Sem ela, você não tem como saber quem está usando o produto ou separar os dados de um usuário dos dados de outro.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: criar autenticação</span>
+    <pre>Implemente autenticação completa usando Supabase Auth com as seguintes
+telas e funcionalidades:
+
+1. Tela de cadastro (/cadastro):
+   - Campos: nome completo, email, senha, confirmação de senha
+   - Validação inline dos campos
+   - Após cadastro bem-sucedido, redirecionar para /dashboard
+
+2. Tela de login (/login):
+   - Campos: email e senha
+   - Link para a tela de cadastro
+   - Após login bem-sucedido, redirecionar para /dashboard
+
+3. Proteção de rotas:
+   - Todas as rotas dentro de /(dashboard)/ devem exigir autenticação
+   - Usuário não autenticado deve ser redirecionado para /login
+
+4. Logout:
+   - Botão de logout no header da área autenticada
+   - Após logout, redirecionar para /login
+
+Toda a interface em português brasileiro.</pre>
+  </div>
+
+  <h2>Criando as telas principais</h2>
+  <p>Com a autenticação funcionando, construa as telas principais do produto. Siga a lista de telas que você definiu no CLAUDE.md, uma por vez. Para cada tela, descreva o que ela deve mostrar e quais ações o usuário pode fazer.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: criar uma tela</span>
+    <pre>Crie a tela de dashboard em app/(dashboard)/dashboard/page.tsx.
+
+A tela deve mostrar:
+- Cabeçalho com o nome do usuário logado e botão de logout
+- Título "Meus Pacientes"
+- Botão "Novo Paciente" no canto superior direito
+- Lista de pacientes cadastrados pelo usuário logado, com:
+  - Nome do paciente
+  - Data da última consulta (ou "Sem consultas" se não houver)
+  - Botão "Ver perfil" que leva para /pacientes/[id]
+- Mensagem "Nenhum paciente cadastrado ainda" quando a lista estiver vazia
+
+Os dados devem vir do Supabase. Use Server Component para buscar os dados.
+Toda a interface em português brasileiro.</pre>
+  </div>
+
+  <h2>Criando as rotas de API e conectando ao Supabase</h2>
+  <p>Para operações que modificam dados (criar, editar, deletar), você vai precisar de rotas de API. Essas rotas ficam em <code>app/api/</code> e são executadas no servidor, o que as torna mais seguras para operações sensíveis.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: criar rota de API</span>
+    <pre>Crie as rotas de API para gerenciar pacientes:
+
+1. POST /api/pacientes: criar um novo paciente
+   - Recebe: nome, email, telefone, data de nascimento
+   - Valida que todos os campos obrigatórios estão presentes
+   - Salva no Supabase associado ao usuário logado
+   - Retorna { data: paciente } em caso de sucesso
+   - Retorna { error: "mensagem" } em caso de falha
+
+2. PATCH /api/pacientes/[id]: atualizar um paciente
+   - Verifica que o paciente pertence ao usuário logado
+   - Atualiza apenas os campos enviados
+   - Retorna { data: paciente } em caso de sucesso
+
+3. DELETE /api/pacientes/[id]: arquivar um paciente
+   - Verifica que o paciente pertence ao usuário logado
+   - Marca o paciente como arquivado (não deleta do banco)
+   - Retorna { data: { success: true } } em caso de sucesso</pre>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 14: CAPÍTULO 7 parte 2 -->
+<div class="page">
+  <h2>Como revisar o que foi construído sem entender o código</h2>
+  <p>Você não precisa ler o código para saber se o que foi construído está correto. O que você precisa fazer é testar o produto no navegador como se fosse um usuário real.</p>
+  <p>Para cada funcionalidade construída, faça o seguinte: abra o produto no navegador, execute o fluxo principal da funcionalidade do início ao fim, verifique se o resultado é o esperado, e tente casos extremos (campos vazios, dados inválidos, ações repetidas). Se algo não funcionar como esperado, descreva o problema ao Claude Code com precisão.</p>
+  <p>O que observar ao revisar: a tela carrega sem erros? Os dados aparecem corretamente? Os formulários validam os campos? As mensagens de erro são claras? O redirecionamento após ações funciona? A interface está em português?</p>
+
+  <h2>Como pedir ajustes de forma eficaz</h2>
+  <p>A qualidade dos ajustes que o Claude Code faz depende diretamente da qualidade da descrição do problema. Descrições vagas geram ajustes imprecisos. Descrições específicas geram ajustes corretos.</p>
+
+  <div class="code-box">
+    <span class="lbl">Exemplo de descrição ruim vs. boa</span>
+    <pre><span class="comment"># Ruim: vago e sem contexto</span>
+"O formulário não está funcionando."
+
+<span class="comment"># Bom: específico e com contexto</span>
+"Na tela /pacientes/novo, quando clico no botão 'Salvar' com todos os
+campos preenchidos corretamente, nada acontece. Não aparece mensagem
+de erro nem de sucesso, e o paciente não aparece na lista do dashboard.
+O console do navegador mostra o erro: [cole o erro aqui]."</pre>
+  </div>
+
+  <h2>Como testar o sistema antes de publicar</h2>
+  <p>Antes de fazer o deploy final, execute um teste completo do produto. Crie uma conta de teste, passe por todos os fluxos principais, verifique se os dados estão sendo salvos corretamente no Supabase e se as proteções de rota estão funcionando.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: criar dados de teste</span>
+    <pre>Crie um script em scripts/seed.ts que popula o banco de dados com
+dados de teste para facilitar o desenvolvimento:
+
+- 1 usuário de teste (email: teste@exemplo.com, senha: Teste123!)
+- 5 pacientes associados a esse usuário
+- 2 consultas para cada paciente
+
+O script deve usar o cliente admin do Supabase e deve poder ser
+executado com: npx ts-node scripts/seed.ts</pre>
+  </div>
+
+  <h2>Os erros mais comuns nessa etapa</h2>
+  <div class="info-box">
+    <span class="lbl">Erros comuns e como descrevê-los</span>
+    <div class="item"><b>Erro de CORS:</b> aparece quando o frontend tenta acessar o Supabase diretamente de forma incorreta. Descreva o erro exato do console e peça ao Claude Code para verificar a configuração do cliente Supabase.</div>
+    <div class="item"><b>Erro de RLS (Row Level Security):</b> o Supabase bloqueia acesso a dados por padrão. Se os dados não aparecem mesmo com o usuário logado, peça ao Claude Code para verificar as políticas de segurança das tabelas no Supabase.</div>
+    <div class="item"><b>Erro de hidratação do React:</b> aparece quando um Server Component e um Client Component renderizam conteúdo diferente. Descreva o erro e peça ao Claude Code para verificar se os componentes estão marcados corretamente com "use client".</div>
+    <div class="item"><b>Variáveis de ambiente não encontradas:</b> se o produto funciona localmente mas não no Vercel, verifique se as variáveis de ambiente foram adicionadas no painel do Vercel.</div>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 15: CAPÍTULO 8 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">8</span><span class="chapter-label">Capítulo Oito</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Publicando na internet com Vercel</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Publicar o produto na internet é o momento em que ele deixa de ser um projeto local e se torna algo real. O processo com Vercel é direto, mas tem alguns detalhes que fazem diferença.</p>
+
+  <h2>O que acontece no deploy</h2>
+  <p>Deploy é o processo de pegar o código que está no seu computador (ou no GitHub) e publicá-lo em servidores que ficam acessíveis pela internet. Quando você faz um deploy no Vercel, ele pega o código do seu repositório no GitHub, executa o processo de build do Next.js (que transforma o código TypeScript em arquivos otimizados para produção) e publica o resultado em servidores distribuídos globalmente.</p>
+  <p>O resultado é uma URL pública, no formato <code>nome-do-projeto.vercel.app</code>, que qualquer pessoa com acesso à internet pode acessar. Toda vez que você enviar uma nova versão do código para o GitHub, o Vercel vai automaticamente fazer um novo deploy com as alterações.</p>
+
+  <h2>Como fazer o primeiro deploy</h2>
+  <p>Se você seguiu o capítulo anterior e conectou o projeto ao Vercel, o primeiro deploy já deve ter acontecido automaticamente quando você enviou o código para o GitHub. Para verificar, acesse o painel do Vercel e veja se o projeto aparece com status "Ready".</p>
+  <p>Se o deploy ainda não aconteceu, ou se você quer forçar um novo deploy, peça ao Claude Code para enviar as alterações para o GitHub:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: fazer deploy</span>
+    <pre>Faça commit de todas as alterações pendentes e envie para o GitHub.
+Use uma mensagem de commit descritiva sobre o que foi alterado.
+Após o push, o Vercel vai fazer o deploy automaticamente.</pre>
+  </div>
+
+  <h2>Configurando variáveis de ambiente no Vercel</h2>
+  <p>As variáveis de ambiente que você tem no arquivo <code>.env.local</code> no seu computador não são enviadas para o GitHub por segurança. Você precisa adicioná-las manualmente no painel do Vercel.</p>
+  <p>No painel do Vercel, acesse o projeto, clique em "Settings" e depois em "Environment Variables". Adicione cada variável com o nome e valor exatos. Para o Supabase, você precisa de <code>NEXT_PUBLIC_SUPABASE_URL</code> e <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code>. Se o seu produto tiver outras variáveis de ambiente, adicione todas aqui.</p>
+  <p>Após adicionar as variáveis, faça um novo deploy para que elas entrem em vigor. No painel do Vercel, clique em "Deployments", selecione o último deploy e clique em "Redeploy".</p>
+
+  <h2>Como acessar o SaaS pelo domínio gerado</h2>
+  <p>Após o deploy bem-sucedido, o Vercel vai mostrar a URL do seu produto. Acesse essa URL no navegador e teste o produto como se fosse um usuário real. Crie uma conta, faça login, use as funcionalidades principais.</p>
+
+  <h2>Como configurar um domínio próprio</h2>
+  <p>Se você tem um domínio próprio (como <code>meuproduto.com.br</code>), pode configurá-lo no Vercel para que o produto seja acessível por esse endereço. No painel do Vercel, acesse "Settings" e depois "Domains". Adicione o domínio e siga as instruções para configurar os registros DNS no seu provedor de domínio.</p>
+
+  <h2>O que fazer quando o deploy falha</h2>
+  <p>Quando um deploy falha, o Vercel mostra os logs do erro. Esses logs são a informação mais importante para diagnosticar o problema. Copie o erro e descreva ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: corrigir erro de deploy</span>
+    <pre>O deploy no Vercel falhou com o seguinte erro:
+
+[cole aqui o erro completo dos logs do Vercel]
+
+Analise o erro e corrija o problema. Após a correção, faça commit
+e push para o GitHub para acionar um novo deploy.</pre>
+  </div>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção</span>
+    <p>Os erros de build no Vercel são diferentes dos erros que aparecem durante o desenvolvimento local. O ambiente de produção é mais restrito. Erros de TypeScript que são ignorados localmente vão impedir o build no Vercel. Se o produto funciona localmente mas o deploy falha, o erro está quase sempre nos logs do Vercel.</p>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 16: CAPÍTULO 9 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">9</span><span class="chapter-label">Capítulo Nove</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Criando a landing page</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O produto está publicado. Agora você precisa de uma forma de apresentá-lo para quem ainda não o conhece. A landing page é essa apresentação. Ela existe antes de qualquer divulgação e precisa responder uma pergunta em segundos: o que é isso e por que eu deveria usar?</p>
+
+  <h2>Por que a landing page importa antes de qualquer divulgação</h2>
+  <p>Quando você começa a mostrar o produto para pessoas, seja em grupos, redes sociais ou conversas diretas, a primeira coisa que elas vão fazer é acessar o endereço do produto. O que elas encontram nesse momento determina se vão continuar explorando ou fechar a aba.</p>
+  <p>Uma landing page bem feita não precisa ser longa nem sofisticada. Ela precisa ser clara. Quem é o produto, para quem é, o que ele faz e como começar a usar. Essas quatro informações, apresentadas de forma limpa e direta, são suficientes para uma primeira versão.</p>
+  <p>A landing page fica na rota raiz do projeto (<code>/</code>), que é a página pública acessível por qualquer pessoa antes de fazer login. Ela vai ser construída dentro do mesmo projeto Next.js, o que significa que vai ser publicada automaticamente no mesmo domínio do produto.</p>
+
+  <h2>O que uma boa landing page de SaaS precisa ter</h2>
+  <p>Para um produto que está começando, a landing page precisa de cinco seções. Cada uma tem um propósito específico e deve ser escrita pensando no visitante que nunca ouviu falar do produto.</p>
+  <p><strong>Hero:</strong> a primeira coisa que o visitante vê. Deve ter o nome do produto, uma frase que explica o que ele faz (em uma linha), e um botão de chamada para ação (geralmente "Criar conta grátis" ou "Começar agora"). Sem imagens desnecessárias, sem texto longo.</p>
+  <p><strong>Problema:</strong> uma descrição breve do problema que o produto resolve. Essa seção cria identificação com o visitante que tem esse problema. Duas ou três frases são suficientes.</p>
+  <p><strong>Solução:</strong> como o produto resolve o problema. Pode ser uma lista de três a cinco funcionalidades principais, cada uma com uma frase de descrição. Não liste todas as funcionalidades. Liste as que mais importam para o usuário.</p>
+  <p><strong>Como funciona:</strong> um fluxo simples de três passos mostrando como o usuário vai do problema à solução usando o produto. "Crie sua conta, cadastre seus pacientes, gere planos alimentares em segundos."</p>
+  <p><strong>Chamada para ação final:</strong> um botão de cadastro no final da página, para o visitante que chegou até aqui e quer começar.</p>
+
+  <h2>Como pedir ao Claude Code para criar a landing page</h2>
+  <p>A landing page deve ser criada em <code>app/page.tsx</code>, que já existe no projeto. Peça ao Claude Code para substituir o conteúdo padrão pela landing page do seu produto:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: criar a landing page</span>
+    <pre>Crie a landing page do produto em app/page.tsx.
+
+Informações do produto:
+- Nome: [nome do produto]
+- Para quem é: [grupo de pessoas]
+- O que resolve: [problema em uma frase]
+- Funcionalidades principais: [liste 3 a 5]
+- Como funciona: [descreva em 3 passos]
+
+A landing page deve ter as seguintes seções:
+1. Hero: nome, frase de valor e botão "Criar conta grátis" que leva para /cadastro
+2. Problema: descrição do problema que o produto resolve
+3. Solução: lista das funcionalidades principais com ícones
+4. Como funciona: 3 passos visuais
+5. CTA final: botão de cadastro
+
+Use a skill frontend-design para garantir uma aparência profissional.
+Toda a interface em português brasileiro.
+O design deve ser limpo, com fundo branco e a cor de destaque do projeto.</pre>
+  </div>
+
+  <h2>Como revisar e ajustar o visual</h2>
+  <p>Após criar a landing page, abra o produto no navegador e avalie o resultado. Verifique se o texto está claro, se a hierarquia visual está correta (o que é mais importante aparece maior e mais destacado), se os botões estão visíveis e se a página funciona bem em telas menores.</p>
+  <p>Para ajustes visuais, descreva o que você quer mudar de forma específica. "O botão do hero está pequeno demais, aumente o tamanho e use a cor azul do projeto" é uma instrução que o Claude Code consegue executar com precisão.</p>
+
+  <h2>O que não colocar na landing page de um produto que está começando</h2>
+  <p>Evite depoimentos de clientes que você ainda não tem. Evite números de usuários ou métricas que não existem. Evite promessas que o produto ainda não cumpre. Evite seções de preços se você ainda não definiu o modelo de cobrança.</p>
+  <p>Uma landing page honesta e direta é mais eficaz do que uma landing page cheia de elementos que não têm substância. O visitante percebe quando algo não é genuíno, e isso prejudica a confiança no produto antes mesmo de ele ser testado.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica de revisão</span>
+    <p>Mostre a landing page para alguém que não conhece o produto e peça para essa pessoa explicar o que o produto faz depois de ler a página. Se a explicação estiver correta, a landing page está clara. Se estiver errada ou confusa, o texto precisa ser revisado.</p>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 17: CAPÍTULO 10 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">10</span><span class="chapter-label">Capítulo Dez</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Quando algo der errado</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Algo vai dar errado. Não é pessimismo, é a realidade de qualquer projeto de software. A diferença entre quem avança e quem trava está em saber como responder quando isso acontece.</p>
+
+  <h2>Os erros mais comuns em projetos SaaS com Claude Code</h2>
+  <p>Alguns erros aparecem com tanta frequência que vale a pena conhecê-los antes de encontrá-los. Cada um tem uma causa típica e uma forma de resolver.</p>
+  <p><strong>O produto funciona localmente mas não no Vercel.</strong> Quase sempre é um problema de variáveis de ambiente não configuradas no painel do Vercel, ou um erro de TypeScript que o ambiente local ignora mas o build de produção não. Verifique os logs do Vercel primeiro.</p>
+  <p><strong>Os dados não aparecem na tela.</strong> Pode ser um problema de RLS (Row Level Security) no Supabase, onde as políticas de segurança estão bloqueando o acesso. Pode também ser um problema na query, onde os dados estão sendo buscados de forma incorreta. Verifique o painel do Supabase para ver se os dados existem no banco.</p>
+  <p><strong>O login não funciona.</strong> Verifique se o Supabase Auth está configurado corretamente, se as URLs de redirecionamento estão configuradas no painel do Supabase (em Authentication, depois URL Configuration) e se o middleware está funcionando.</p>
+  <p><strong>A tela fica em branco ou mostra um erro 500.</strong> Abra o console do navegador (F12) e veja o erro. Copie o erro completo e descreva ao Claude Code.</p>
+  <p><strong>O Claude Code fez uma alteração que quebrou algo que funcionava.</strong> Use o Git para voltar à versão anterior (veja a seção abaixo) e descreva o problema com mais precisão antes de tentar novamente.</p>
+
+  <h2>Como descrever um erro ao Claude Code de forma eficaz</h2>
+  <p>A forma como você descreve um erro determina a qualidade da solução. Um erro bem descrito tem quatro elementos: onde o erro acontece (qual tela, qual ação), o que você esperava que acontecesse, o que aconteceu de fato, e o erro exato (do console do navegador ou dos logs do servidor).</p>
+
+  <div class="code-box">
+    <span class="lbl">Modelo para descrever um erro</span>
+    <pre">Encontrei um erro e preciso de ajuda para resolver.
+
+Onde: [nome da tela ou rota, ex: /pacientes/novo]
+Ação: [o que eu fiz, ex: cliquei no botão "Salvar" com o formulário preenchido]
+Esperado: [o que deveria acontecer, ex: o paciente deveria ser salvo e eu
+           deveria ser redirecionado para /dashboard]
+O que aconteceu: [o que aconteceu de fato, ex: a página ficou em branco]
+Erro no console: [cole o erro exato aqui]
+
+Corrija o problema sem alterar outras partes do código que estão funcionando.</pre>
+  </div>
+
+  <h2>A importância de corrigir um erro de cada vez</h2>
+  <p>Quando vários erros aparecem ao mesmo tempo, a tentação é pedir ao Claude Code para corrigir todos de uma vez. Resista a essa tentação. Corrija um erro de cada vez, verifique se a correção funcionou, e só então passe para o próximo.</p>
+  <p>Corrigir múltiplos erros de uma vez aumenta a chance de uma correção interferir na outra, criando novos problemas. O processo é mais lento no curto prazo, mas muito mais confiável.</p>
+
+  <h2>Como usar o Git para voltar a uma versão anterior</h2>
+  <p>O Git mantém um histórico de todas as versões do projeto. Se uma alteração quebrou algo que funcionava, você pode voltar à versão anterior. Peça ao Claude Code para fazer isso:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code: voltar a uma versão anterior</span>
+    <pre>Algo que funcionava parou de funcionar após as últimas alterações.
+Preciso voltar à versão anterior do projeto.
+
+Mostre o histórico dos últimos 10 commits com git log --oneline
+para eu identificar qual versão estava funcionando.
+
+Depois, me explique como voltar para essa versão sem perder
+o histórico do projeto.</pre>
+  </div>
+
+  <h2>Quando pedir ajuda fora do Claude Code</h2>
+  <p>O Claude Code resolve a grande maioria dos problemas de desenvolvimento. Mas existem situações onde buscar ajuda em outros lugares é mais eficiente: quando o mesmo erro persiste após três tentativas de correção diferentes, quando o problema envolve configurações específicas do Supabase ou do Vercel que estão fora do código, ou quando você precisa de uma segunda opinião sobre uma decisão de arquitetura.</p>
+  <p>A documentação oficial do Supabase (supabase.com/docs) e do Next.js (nextjs.org/docs) são referências confiáveis. A comunidade do Supabase no Discord também é ativa e responde perguntas com rapidez.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Regra de ouro</span>
+    <p>Nunca peça ao Claude Code para "fazer funcionar de qualquer jeito". Soluções improvisadas criam problemas maiores mais tarde. Prefira entender a causa do erro e corrigi-la corretamente, mesmo que leve mais tempo.</p>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Capítulo 10</div></div>
+</div>
+
+<!-- PAGE 18: CONCLUSÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="label">Conclusão</div>
+    <h1 class="chapter-title" style="margin-top:10px;">O caminho de agora em diante</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Se você chegou até aqui e seguiu os passos, você tem um SaaS publicado na internet. Não um protótipo. Não uma ideia. Um produto real, com banco de dados, autenticação, funcionalidades e uma landing page para apresentá-lo.</p>
+
+  <h2>O que você construiu</h2>
+  <p>Você passou por um processo completo: encontrou um nicho com um problema real, definiu um produto com escopo claro, planejou a construção com um CLAUDE.md bem estruturado, configurou uma stack técnica profissional com Next.js, Supabase e Vercel, construiu as funcionalidades principais, publicou o produto na internet e criou uma landing page para apresentá-lo.</p>
+  <p>Cada uma dessas etapas tem valor independente. O processo de encontrar um nicho e definir um produto é aplicável a qualquer projeto, não apenas a SaaS. O fluxo de construção com Claude Code é reutilizável para qualquer produto que você queira construir no futuro. O que você aprendeu aqui não se limita a este projeto.</p>
+
+  <h2>O que vem depois do MVP</h2>
+  <p>O MVP que você construiu é o ponto de partida, não o destino. O próximo passo é colocar o produto nas mãos de usuários reais e observar como eles o usam. Quais funcionalidades eles usam mais? Onde eles travam? O que eles pedem que não existe ainda?</p>
+  <p>Essas respostas vão guiar o desenvolvimento das próximas versões. Não construa funcionalidades baseadas em suposições. Construa baseado no que os usuários reais precisam, observado a partir do uso real do produto.</p>
+  <p>O Claude Code vai continuar sendo seu parceiro nessa evolução. Cada nova funcionalidade segue o mesmo processo: descrever com precisão, construir, revisar, ajustar. Com o CLAUDE.md atualizado e o histórico do projeto no Git, o contexto está sempre disponível para continuar de onde parou.</p>
+
+  <h2>Como continuar evoluindo o produto</h2>
+  <p>À medida que o produto cresce, o CLAUDE.md precisa crescer junto. Toda vez que você adicionar uma funcionalidade significativa, atualize o CLAUDE.md para refletir o novo estado do produto. Isso garante que o Claude Code sempre tenha o contexto correto, independentemente de quando você retomar o trabalho.</p>
+  <p>Mantenha o hábito de fazer commits frequentes no Git. Cada funcionalidade concluída merece um commit com uma mensagem descritiva. Isso cria um histórico claro do que foi construído e quando, e facilita voltar a versões anteriores se necessário.</p>
+
+  <h2>O que este ebook não cobre</h2>
+  <p>Este ebook cobriu o caminho do zero ao produto publicado. Existem etapas importantes que ficaram fora do escopo e que você vai precisar explorar quando chegar nelas.</p>
+  <p>Pagamentos: integrar um gateway de pagamento como Stripe ou AbacatePay para cobrar pelos usuários do produto. Essa é a etapa que transforma o produto em um negócio com receita.</p>
+  <p>Marketing e aquisição: como encontrar os primeiros usuários, como apresentar o produto para o nicho que você escolheu, como crescer a base de usuários de forma sustentável.</p>
+  <p>Operações: monitoramento do produto em produção, alertas quando algo quebra, análise de uso para entender como os usuários interagem com o produto.</p>
+  <p>Cada um desses temas tem recursos específicos disponíveis. Quando você chegar nessas etapas, você já vai ter o produto funcionando e usuários reais para guiar as decisões. Esse é o melhor ponto de partida para qualquer uma delas.</p>
+
+  <div class="quote-box">
+    <p>O produto que você construiu hoje é a versão mais simples do que ele pode se tornar. O que importa é que ele existe, está publicado e resolve um problema real para pessoas reais.</p>
+    <div class="author">Do Zero ao SaaS · 2026</div>
+  </div>
+  <div class="footer"><div class="left">Do Zero ao SaaS</div><div class="right">Conclusão</div></div>
+</div>
+
+</body>
+</html>
