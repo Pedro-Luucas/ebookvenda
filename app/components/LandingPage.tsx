@@ -1,20 +1,37 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const CHECKOUT_URL = "https://pay.cakto.com.br/ffuk56c_881478";
+const AFF_STORAGE_KEY = "aff_id";
+
+function getCheckoutUrl() {
+  if (typeof window === "undefined") return CHECKOUT_URL;
+  const affId = localStorage.getItem(AFF_STORAGE_KEY);
+  if (!affId) return CHECKOUT_URL;
+  return `${CHECKOUT_URL}?aff=${encodeURIComponent(affId)}`;
+}
 
 function CtaButton({
   className = "",
-  href = "#preco",
+  href,
 }: {
   className?: string;
   href?: string;
 }) {
+  const isCheckout = !href;
+  const [resolvedHref, setResolvedHref] = useState(href || "#preco");
+
+  useEffect(() => {
+    if (isCheckout) {
+      setResolvedHref(getCheckoutUrl());
+    }
+  }, [isCheckout]);
+
   return (
     <a
-      href={href}
+      href={resolvedHref}
       className={`inline-block px-8 py-4 rounded-xl font-extrabold text-lg uppercase tracking-wide text-white cta-glow transition-all duration-300 hover:-translate-y-0.5 ${className}`}
       style={{ background: "var(--accent)", color: "#fff" }}
     >
@@ -25,6 +42,13 @@ function CtaButton({
 
 export default function LandingPage() {
   useEffect(() => {
+    // Capture affiliate code from URL (e.g. ?aff=codigo123)
+    const params = new URLSearchParams(window.location.search);
+    const affId = params.get("aff");
+    if (affId) {
+      localStorage.setItem(AFF_STORAGE_KEY, affId);
+    }
+
     const reveals = document.querySelectorAll(".reveal");
     const observer = new IntersectionObserver(
       (entries) => {
@@ -123,7 +147,7 @@ export default function LandingPage() {
             E isso é só o começo.
           </p>
 
-          <CtaButton className="mb-8" />
+          <CtaButton className="mb-8" href="#preco" />
 
           <div className="flex flex-wrap justify-center gap-6 text-sm" style={{ color: "var(--muted)" }}>
             <span>✓ 13 módulos disponíveis</span>
@@ -481,7 +505,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <CtaButton className="w-full text-center" href={CHECKOUT_URL} />
+              <CtaButton className="w-full text-center" />
 
               <div className="flex justify-center gap-4 mt-4 text-xs" style={{ color: "var(--muted)" }}>
                 <span>Cartão ou PIX</span>
