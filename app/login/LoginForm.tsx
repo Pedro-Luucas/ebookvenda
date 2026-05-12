@@ -24,7 +24,7 @@ export default function LoginForm() {
       });
 
       if (authError) {
-        setError("E-mail ou senha incorretos.");
+        setError("E-mail ou senha incorretos. ");
         return;
       }
 
