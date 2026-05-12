@@ -63,6 +63,11 @@ body::before {
   outline-offset: 2px;
 }
 
+input:focus {
+  --tw-ring-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
 .text-gradient-accent {
   background: linear-gradient(135deg, var(--accent) 0%, #f0a882 100%);
   -webkit-background-clip: text;

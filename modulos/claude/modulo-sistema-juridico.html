@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<!--
+  RESUMO PARA IA — Claude Code na Prática: Crie um Sistema Jurídico do Zero
+  ============================================================================
+  Foco: tutorial completo para criar sistema de gestão de processos jurídicos
+  usando Claude Code, para leitores sem conhecimento de programação.
+  Stack: Next.js, TypeScript, Tailwind CSS, Zustand, SQLite.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Claude Code na Prática: Crie um Sistema Jurídico do Zero</title>
+<style>
+  :root{
+    --blue:#1E3A5F;
+    --blue-light:#2E5490;
+    --blue-dark:#0F1F35;
+    --blue-bg:#F0F4F9;
+    --navy:#162D4A;
+    --slate:#D4E0EE;
+    --black:#0D0D0D;
+    --black-rich:#0A0F1A;
+    --gray-text:#1E2A38;
+    --gray-light:#F5F7FA;
+    --gray-mid:#D8E2EE;
+    --white:#FFFFFF;
+    --accent:#C4A35A;
+    --accent-light:#D4B870;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#e5e5e5;font-family:Arial,sans-serif;color:var(--gray-text);}
+  .page{
+    width:794px;
+    min-height:1123px;
+    margin:0 auto 32px;
+    background:white;
+    padding:70px 80px;
+    position:relative;
+    box-shadow:0 4px 24px rgba(0,0,0,0.08);
+    overflow:hidden;
+  }
+  h1.chapter-title{font-family:Georgia,serif;font-size:34px;font-weight:900;color:#0D0D0D;line-height:1.2;}
+  h2{font-family:Georgia,serif;font-size:21px;font-weight:bold;color:#1E3A5F;margin:32px 0 14px;}
+  h3{font-family:Arial,sans-serif;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#0D0D0D;margin:24px 0 10px;}
+  p{font-family:Arial,sans-serif;font-size:15px;line-height:1.9;color:#1E2A38;margin-bottom:16px;}
+  em{font-style:italic;}
+  strong{color:#0D0D0D;}
+  .label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#1E3A5F;font-weight:bold;}
+
+  .chapter-header{padding-top:60px;border-top:3px solid #1E3A5F;margin-bottom:24px;}
+  .chapter-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#1E3A5F,#0F1F35);color:white;border-radius:50%;font-family:Georgia,serif;font-weight:bold;font-size:18px;margin-right:14px;vertical-align:middle;}
+  .chapter-label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#1E3A5F;font-weight:bold;vertical-align:middle;}
+  .deco-line{width:60px;height:3px;background:linear-gradient(90deg,#1E3A5F,#C4A35A);margin:16px 0 28px;}
+  .opening{font-family:Georgia,serif;font-style:italic;font-size:17px;color:#1E2A38;border-left:3px solid #2E5490;padding-left:16px;margin-bottom:28px;line-height:1.7;}
+
+  .quote-box{background:#F0F4F9;border-left:4px solid #1E3A5F;padding:24px 28px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .quote-box p{font-family:Georgia,serif;font-style:italic;font-size:17px;color:#1E3A5F;margin-bottom:10px;}
+  .quote-box .author{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#2E5490;font-weight:bold;}
+
+  .code-box{background:#0A0F1A;border-left:4px solid #C4A35A;border-radius:0 8px 8px 0;padding:24px 28px;margin:28px 0;}
+  .code-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#C4A35A;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .code-box pre{font-family:'Courier New',monospace;font-size:13px;color:#D4E0EE;line-height:1.8;white-space:pre-wrap;}
+  .code-box .comment{color:#4A6080;font-style:italic;}
+  .code-box .cmd{color:#C4A35A;font-weight:bold;}
+  .code-box .str{color:#7EB8D4;}
+
+  .info-box{background:#F5F7FA;border:1px solid #D8E2EE;border-top:3px solid #1E3A5F;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .info-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#1E3A5F;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .info-box .item{margin-bottom:12px;font-size:14px;color:#1E2A38;line-height:1.6;}
+  .info-box .item b{color:#1E3A5F;}
+
+  .tip-box{border:1px solid #2E5490;border-top:3px solid #1E3A5F;border-radius:8px;padding:24px 28px;margin:28px 0;background:white;}
+  .tip-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#1E3A5F;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .tip-box p{font-size:14px;color:#1E2A38;}
+
+  .checklist{background:#F5F7FA;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .checklist .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#1E3A5F;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:16px;}
+  .checklist .item{display:flex;align-items:flex-start;margin-bottom:12px;font-size:14px;color:#1E2A38;line-height:1.6;}
+  .checklist .check{flex-shrink:0;width:18px;height:18px;border:2px solid #1E3A5F;border-radius:3px;margin-right:14px;margin-top:2px;background:white;}
+
+  .warn-box{background:#FFF8F0;border-left:4px solid #C4A35A;padding:20px 24px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .warn-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#8B6A20;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .warn-box p{font-size:14px;color:#1E2A38;margin-bottom:8px;}
+
+  .alert-box{background:#F0F4F9;border:1px solid #D8E2EE;border-radius:8px;padding:20px 24px;margin:20px 0;}
+  .alert-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .alert-box.red{background:#FFF5F5;border-color:#FFCCCC;}.alert-box.red .lbl{color:#CC2200;}
+  .alert-box.orange{background:#FFF8F0;border-color:#FFD9A0;}.alert-box.orange .lbl{color:#8B5A00;}
+  .alert-box.yellow{background:#FFFDF0;border-color:#FFE88A;}.alert-box.yellow .lbl{color:#6B5500;}
+  .alert-box p{font-size:14px;color:#1E2A38;margin-bottom:0;}
+
+  .badge{display:inline-block;background:linear-gradient(135deg,#1E3A5F,#0F1F35);color:white;border-radius:6px;padding:4px 14px;font-size:13px;font-weight:bold;font-family:Arial,sans-serif;}
+
+  .footer{position:absolute;bottom:28px;left:80px;right:80px;border-top:0.5px solid #D8E2EE;padding-top:10px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+  .footer .left{color:#1E3A5F;font-weight:bold;}
+  .footer .right{color:#C4A35A;font-weight:bold;}
+
+  /* CAPA */
+  .cover{background:linear-gradient(160deg,#0A0F1A 0%,#0F1F35 50%,#162D4A 100%);color:white;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;position:relative;overflow:hidden;}
+  .cover-bg{position:absolute;inset:0;opacity:0.06;}
+  .cover-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px;padding-top:50px;}
+  .cover-badge-top{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#C4A35A;font-weight:bold;}
+  .cover-title{font-family:Georgia,serif;font-size:60px;font-weight:bold;color:white;line-height:0.95;letter-spacing:-1px;}
+  .cover-title .gold{color:#C4A35A;display:block;}
+  .cover-subtitle{font-family:Georgia,serif;font-style:italic;font-size:19px;color:#7EB8D4;margin-top:6px;}
+  .cover-line{width:120px;height:3px;background:linear-gradient(90deg,#1E3A5F,#C4A35A);margin:16px auto;}
+  .cover-desc{font-family:Georgia,serif;font-style:italic;font-size:15px;color:#8AA8C4;max-width:480px;line-height:1.7;}
+  .cover-bottom{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:40px;}
+  .cover-year{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:5px;color:#C4A35A;font-weight:bold;}
+
+  /* SUMARIO */
+  .toc-list{margin-top:30px;}
+  .toc-item{display:flex;align-items:center;padding:13px 0;border-bottom:1px dashed #D8E2EE;}
+  .toc-num{flex-shrink:0;width:32px;height:32px;background:linear-gradient(135deg,#1E3A5F,#0F1F35);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:bold;font-size:14px;margin-right:18px;}
+  .toc-name{flex-grow:1;font-family:Georgia,serif;font-size:15px;color:#0D0D0D;}
+  .toc-sub{font-family:Arial,sans-serif;font-size:12px;color:#4A6080;margin-top:3px;}
+
+  @media print {
+    body{background:white;}
+    .page{margin:0;box-shadow:none;page-break-after:always;}
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: CAPA -->
+<div class="page cover">
+  <div class="cover-bg">
+    <svg viewBox="0 0 794 1123" preserveAspectRatio="none" width="100%" height="100%">
+      <defs>
+        <pattern id="grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#1E3A5F" stroke-width="0.8"/>
+        </pattern>
+      </defs>
+      <rect width="794" height="1123" fill="url(#grid)"/>
+    </svg>
+  </div>
+  <div class="cover-content">
+    <div class="cover-badge-top">Tutorial Completo · 2026</div>
+    <svg width="140" height="140" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="logoG" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#1E3A5F"/>
+          <stop offset="1" stop-color="#C4A35A"/>
+        </linearGradient>
+      </defs>
+      <circle cx="100" cy="100" r="88" fill="none" stroke="#1E3A5F" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="100" cy="100" r="70" fill="none" stroke="#C4A35A" stroke-width="0.6" opacity="0.4"/>
+      <!-- Scales of justice icon -->
+      <line x1="100" y1="50" x2="100" y2="150" stroke="url(#logoG)" stroke-width="3"/>
+      <line x1="60" y1="75" x2="140" y2="75" stroke="url(#logoG)" stroke-width="2.5"/>
+      <circle cx="100" cy="50" r="5" fill="#C4A35A"/>
+      <path d="M60,75 L45,105 L75,105 Z" fill="none" stroke="#C4A35A" stroke-width="2"/>
+      <path d="M140,75 L125,105 L155,105 Z" fill="none" stroke="#1E3A5F" stroke-width="2"/>
+      <rect x="88" y="148" width="24" height="6" rx="2" fill="#C4A35A"/>
+    </svg>
+    <div class="cover-title">Claude Code<span class="gold">na Prática</span></div>
+    <div class="cover-subtitle">Crie um Sistema Jurídico do Zero</div>
+    <div class="cover-line"></div>
+    <div class="cover-desc">Um tutorial completo para advogados e assistentes jurídicos criarem seu próprio sistema de gestão de processos, sem saber programar, usando o Claude Code como ferramenta de desenvolvimento.</div>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-year">2026 · Gestão Jurídica · Claude Code</div>
+  </div>
+</div>
+
+<!-- PAGE 2: SUMÁRIO -->
+<div class="page">
+  <div style="padding-top:40px;border-top:3px solid #1E3A5F;margin-bottom:10px;">
+    <span style="font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#1E3A5F;font-weight:bold;">Sumário</span>
+    <h1 style="font-family:Georgia,serif;font-size:38px;font-weight:900;color:#0D0D0D;margin-top:10px;">O que você vai encontrar</h1>
+    <div style="width:60px;height:3px;background:linear-gradient(90deg,#1E3A5F,#C4A35A);margin:16px 0 0;"></div>
+  </div>
+  <div class="toc-list">
+    <div class="toc-item">
+      <div class="toc-num" style="background:linear-gradient(135deg,#C4A35A,#8B6A20);">I</div>
+      <div><div class="toc-name">Introdução</div><div class="toc-sub">O que você vai construir e o que está fora do escopo</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">1</div>
+      <div><div class="toc-name">Preparando o projeto</div><div class="toc-sub">Pasta, Claude Code e o CLAUDE.md que define tudo</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">2</div>
+      <div><div class="toc-name">Skills que você vai precisar</div><div class="toc-sub">Quais instalar, o que fazem e quando acionar cada uma</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">3</div>
+      <div><div class="toc-name">Estrutura do projeto e banco de dados</div><div class="toc-sub">Pastas, SQLite e como verificar que tudo foi criado</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">4</div>
+      <div><div class="toc-name">Configurando o estado global com Zustand</div><div class="toc-sub">O que é estado global e como o Zustand resolve isso</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">5</div>
+      <div><div class="toc-name">Criando as rotas de API</div><div class="toc-sub">A ponte entre a tela e o banco de dados</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">6</div>
+      <div><div class="toc-name">Criando a interface</div><div class="toc-sub">Dashboard, lista, formulário e tela de detalhes</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">7</div>
+      <div><div class="toc-name">O sistema de prazos</div><div class="toc-sub">A parte mais crítica: alertas em três níveis, lógica e testes</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">8</div>
+      <div><div class="toc-name">Busca, filtros e ordenação</div><div class="toc-sub">Encontrar processos por cliente, status e responsável</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">9</div>
+      <div><div class="toc-name">Testando o sistema completo</div><div class="toc-sub">Fluxo de teste do início ao fim</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">10</div>
+      <div><div class="toc-name">Rodando o sistema no dia a dia</div><div class="toc-sub">Atalhos, backup e manutenção</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num">11</div>
+      <div><div class="toc-name">Quando algo der errado</div><div class="toc-sub">Erros comuns, como descrevê-los e como usar o Git</div></div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="background:linear-gradient(135deg,#C4A35A,#8B6A20);">C</div>
+      <div><div class="toc-name">Conclusão</div><div class="toc-sub">O que você construiu e para onde ir a seguir</div></div>
+    </div>
+  </div>
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Sumário</div></div>
+</div>
+
+<!-- PAGE 3: INTRODUÇÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num" style="background:linear-gradient(135deg,#C4A35A,#8B6A20);">I</span><span class="chapter-label">Introdução</span>
+    <h1 class="chapter-title" style="margin-top:16px;">O que você vai construir</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Este tutorial existe para uma finalidade específica: ao final dele, você terá um sistema de gestão de processos jurídicos funcionando no seu computador, criado por você, sem escrever uma linha de código.</p>
+
+  <p>O sistema que você vai construir é uma aplicação web que roda localmente, ou seja, no seu próprio computador. Você acessa pelo navegador, como qualquer site, mas não precisa de internet, não precisa de servidor externo e não precisa pagar por nenhuma infraestrutura. Tudo fica na sua máquina.</p>
+
+  <p>O sistema gerencia processos jurídicos. Cada processo tem número, nome do cliente, tipo de ação (cível, trabalhista, penal e outros), tribunal e vara, status atual, última movimentação registrada, próxima ação prevista, data do prazo e advogado responsável. Você pode criar, editar, visualizar e excluir processos. Pode buscar por cliente, filtrar por status e por responsável, e ordenar por prazo.</p>
+
+  <p>O ponto central do sistema é o controle de prazos. Processos com prazo próximo recebem alertas visuais automáticos em três níveis: sete dias antes, três dias antes e um dia antes. Esses alertas aparecem na interface, com cores e ícones distintos para cada nível de urgência. O dashboard exibe um painel com o total de processos ativos, um gráfico de processos por status e a lista dos próximos prazos ordenada por urgência.</p>
+
+  <h2>Para quem serve este sistema</h2>
+  <p>O sistema foi desenhado para escritórios de advocacia de pequeno e médio porte, advogados autônomos e assistentes jurídicos que precisam de uma ferramenta simples para acompanhar processos sem depender de sistemas caros ou complexos. Também serve para qualquer pessoa que queira criar uma ferramenta de gestão para uso próprio e queira aprender como fazer isso com o Claude Code.</p>
+  <p>Não é necessário saber programar. O único pré-requisito é ter o Claude Code instalado e saber o básico de como dar instruções a ele: abrir o terminal, navegar até uma pasta e digitar comandos simples.</p>
+
+  <h2>O que está fora do escopo</h2>
+  <p>Este tutorial não cobre autenticação de usuários com senha e controle de acesso por perfil. O sistema não tem login. Qualquer pessoa com acesso ao computador pode usar. Se você precisar de controle de acesso, isso seria uma evolução futura.</p>
+  <p>O sistema não envia notificações por e-mail ou SMS. Os alertas de prazo aparecem apenas na interface, enquanto o sistema está aberto no navegador. Não há integração com calendários externos, como Google Calendar ou Outlook, embora isso seja tecnicamente possível como extensão futura.</p>
+  <p>O sistema não é publicado na internet. Ele roda apenas no computador onde foi instalado. Não há deploy em servidor, não há domínio, não há acesso remoto. Se você precisar acessar de outro computador ou de um celular, isso exigiria uma configuração adicional que está fora do escopo deste tutorial.</p>
+  <p>Evoluções como relatórios em PDF, integração com sistemas de tribunais, histórico de movimentações com upload de documentos e módulo financeiro são possibilidades reais, mas não fazem parte deste tutorial. O foco aqui é construir uma base sólida e funcional.</p>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Introdução</div></div>
+</div>
+
+<!-- PAGE 4: CAPÍTULO 1 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">1</span><span class="chapter-label">Capítulo Um</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Preparando o projeto</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Antes de escrever qualquer instrução ao Claude Code, você precisa preparar o ambiente. Isso significa criar a pasta do projeto, iniciar o Claude Code dentro dela e escrever o arquivo que vai guiar todo o desenvolvimento.</p>
+
+  <h2>Criando a pasta do projeto</h2>
+  <p>Escolha um local no seu computador onde você guarda projetos ou documentos importantes. Pode ser a área de trabalho, a pasta Documentos ou qualquer outro lugar de fácil acesso. Crie uma nova pasta e dê a ela um nome simples, sem espaços e sem acentos. Um bom nome seria <code>sistema-juridico</code>.</p>
+  <p>No Windows, você pode criar a pasta pelo Explorador de Arquivos: clique com o botão direito em um espaço vazio, selecione "Novo" e depois "Pasta". No macOS, o processo é o mesmo pelo Finder.</p>
+  <p>Depois de criar a pasta, abra o terminal. No Windows, você pode usar o Prompt de Comando, o PowerShell ou o Terminal do Windows. No macOS, use o Terminal. Navegue até a pasta que você criou usando o comando <code>cd</code>. Por exemplo:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">cd C:\Users\SeuNome\Desktop\sistema-juridico</span>
+<span class="comment"># No macOS:</span>
+<span class="cmd">cd ~/Desktop/sistema-juridico</span></pre>
+  </div>
+
+  <h2>Iniciando o Claude Code dentro da pasta</h2>
+  <p>Com o terminal aberto na pasta do projeto, inicie o Claude Code com o comando:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">claude</span></pre>
+  </div>
+
+  <p>O Claude Code vai iniciar e mostrar a interface de linha de comando. A partir daqui, todas as instruções que você der serão executadas no contexto da pasta <code>sistema-juridico</code>. O Claude Code vai criar arquivos, instalar dependências e rodar comandos sempre dentro dessa pasta.</p>
+
+  <h2>O CLAUDE.md: o passo mais importante do projeto</h2>
+  <p>O arquivo <code>CLAUDE.md</code> é um documento de texto que fica na raiz da pasta do projeto. Ele serve como um briefing permanente para o Claude Code: toda vez que o agente inicia uma sessão, ele lê esse arquivo e entende o contexto do projeto, as regras que deve seguir e as decisões que já foram tomadas.</p>
+  <p>Pense no <code>CLAUDE.md</code> como as instruções que você daria a um desenvolvedor que acabou de entrar no projeto. Sem esse documento, o Claude Code começa cada sessão sem memória do que foi feito antes. Com ele, o agente sabe exatamente o que está construindo, qual tecnologia usar e quais convenções respeitar.</p>
+  <p>Um <code>CLAUDE.md</code> bem escrito tem quatro partes: a descrição do sistema (o que é e para que serve), a stack técnica (quais tecnologias usar), as convenções do projeto (como nomear arquivos, onde colocar cada coisa) e o escopo (o que está dentro e o que está fora). Quanto mais claro e específico for esse documento, menos retrabalho você vai ter.</p>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 1</div></div>
+</div>
+
+<!-- PAGE 5: CAPÍTULO 1 continuação -->
+<div class="page">
+  <h2>O conteúdo exato do CLAUDE.md para este projeto</h2>
+  <p>Peça ao Claude Code para criar o arquivo <code>CLAUDE.md</code> com o seguinte conteúdo. Você pode copiar a instrução abaixo e colar diretamente no Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie um arquivo CLAUDE.md na raiz do projeto com este conteúdo:</span></pre>
+  </div>
+
+  <div class="code-box">
+    <span class="lbl">Conteúdo do CLAUDE.md</span>
+    <pre><span class="str"># Sistema de Gestão de Processos Jurídicos
+
+## Descrição
+Aplicação web local para gestão de processos jurídicos em escritórios
+de advocacia. Roda no computador do usuário via localhost. Sem deploy
+externo, sem autenticação, sem envio de e-mail ou SMS.
+
+## Stack técnica
+- Framework: Next.js com App Router e TypeScript
+- Estilo: Tailwind CSS
+- Estado global: Zustand
+- Banco de dados: SQLite (arquivo local, via better-sqlite3)
+- API: rotas no próprio Next.js (app/api/)
+- Porta padrão: 3000
+
+## Estrutura de pastas
+- app/          : páginas e rotas de API (Next.js App Router)
+- components/   : componentes React reutilizáveis
+- store/        : stores do Zustand
+- types/        : tipos TypeScript compartilhados
+- lib/          : utilitários e conexão com o banco de dados
+
+## Banco de dados
+Arquivo: juridico.db na raiz do projeto.
+Tabelas: processos, advogados.
+Nunca usar ORM. Usar better-sqlite3 diretamente com queries SQL.
+
+## Convenções
+- Português brasileiro em toda a interface visível ao usuário
+- Nomes de arquivos em kebab-case (ex: lista-processos.tsx)
+- Componentes React em PascalCase (ex: ListaProcessos)
+- Datas sempre no formato DD/MM/AAAA na interface
+- Datas armazenadas no banco como texto ISO 8601 (AAAA-MM-DD)
+
+## Funcionalidades do sistema
+1. CRUD completo de processos
+2. Dashboard com totais, gráfico de status e próximos prazos
+3. Sistema de alertas de prazo: 7 dias (amarelo), 3 dias (laranja),
+   1 dia (vermelho), vencido (cinza escuro)
+4. Busca por nome do cliente
+5. Filtro por status (em andamento, concluído, suspenso)
+6. Filtro por advogado responsável
+7. Ordenação por data de prazo
+
+## Campos de cada processo
+- id (gerado automaticamente)
+- numero_processo (texto)
+- nome_cliente (texto)
+- tipo_acao (cível, trabalhista, penal, família, outro)
+- tribunal (texto)
+- vara (texto)
+- status (em_andamento, concluido, suspenso)
+- ultima_movimentacao (texto)
+- proxima_acao (texto)
+- data_prazo (texto ISO 8601)
+- advogado_responsavel (texto)
+- criado_em e atualizado_em (texto ISO 8601, automáticos)
+
+## Fora do escopo
+- Autenticação e controle de acesso
+- Envio de e-mail ou SMS
+- Deploy em servidor externo
+- Upload de documentos
+- Integração com sistemas de tribunais</span></pre>
+  </div>
+
+  <h2>Como dar a primeira instrução ao Claude Code</h2>
+  <p>Com o <code>CLAUDE.md</code> criado, você está pronto para iniciar o projeto. A primeira instrução ao Claude Code deve pedir a criação da estrutura base do projeto Next.js:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Leia o CLAUDE.md e crie a estrutura inicial do projeto Next.js com
+TypeScript e Tailwind CSS. Use o comando npx create-next-app para
+iniciar o projeto na pasta atual, com as seguintes opções:
+TypeScript: sim, ESLint: sim, Tailwind CSS: sim, App Router: sim,
+src/ directory: não, import alias: sim (@/*).
+Depois de criar o projeto, instale as dependências adicionais:
+zustand e better-sqlite3 (com seus tipos @types/better-sqlite3).</span></pre>
+  </div>
+
+  <p>O Claude Code vai executar os comandos necessários, instalar as dependências e preparar a estrutura base. Esse processo pode levar alguns minutos, dependendo da velocidade da sua internet. Aguarde até que o agente confirme que tudo foi instalado corretamente.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Por que o CLAUDE.md é o passo mais importante</span>
+    <p>Projetos criados com Claude Code sem um CLAUDE.md claro tendem a acumular inconsistências ao longo do tempo: arquivos em pastas erradas, nomes que não seguem um padrão, tecnologias misturadas. O CLAUDE.md evita isso porque o agente consulta esse arquivo antes de tomar qualquer decisão. Invista tempo nele agora para economizar retrabalho depois.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 1</div></div>
+</div>
+
+<!-- PAGE 6: CAPÍTULO 2 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">2</span><span class="chapter-label">Capítulo Dois</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Skills que você vai precisar</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O Claude Code tem um sistema de skills: módulos especializados que você instala e aciona para dar ao agente capacidades específicas. Para este projeto, cinco skills fazem diferença real.</p>
+
+  <h2>Por que skills importam neste projeto</h2>
+  <p>Sem skills, o Claude Code funciona como um agente generalista. Ele consegue criar código, corrigir erros e responder perguntas, mas sem a profundidade de um especialista em cada área. As skills mudam isso: quando você aciona a skill <code>frontend-design</code>, por exemplo, o agente passa a aplicar princípios de design visual que normalmente exigiriam anos de experiência em desenvolvimento de interfaces.</p>
+  <p>Para um sistema jurídico, onde a interface precisa ser clara e profissional e onde erros de lógica no sistema de prazos podem ter consequências sérias, usar as skills certas no momento certo é a diferença entre um sistema que funciona bem e um que funciona mais ou menos.</p>
+
+  <h2>As cinco skills deste projeto</h2>
+
+  <h3>frontend-design</h3>
+  <p>Esta skill especializa o Claude Code em design de interfaces. Ela aplica princípios de hierarquia visual, espaçamento, tipografia e uso de cores para gerar interfaces que parecem ter sido feitas por um designer profissional. Para o sistema jurídico, ela vai garantir que o dashboard seja legível, que os alertas de prazo sejam visualmente distintos e que o formulário de cadastro seja intuitivo.</p>
+  <p>Use esta skill sempre que for pedir ao Claude Code para criar ou ajustar qualquer tela do sistema.</p>
+
+  <h3>react-nextjs-development</h3>
+  <p>Esta skill especializa o agente no desenvolvimento com React e Next.js, especificamente com o App Router, que é a arquitetura que este projeto usa. Ela garante que os componentes sejam criados da forma correta para o Next.js moderno: sabe quando usar Server Components (componentes que rodam no servidor) e quando usar Client Components (componentes que rodam no navegador), e aplica as convenções corretas de nomenclatura e organização de arquivos.</p>
+  <p>Use esta skill ao criar páginas, componentes e rotas de API.</p>
+
+  <h3>testing-debugging</h3>
+  <p>Esta skill especializa o agente em identificar e corrigir erros. Quando algo não funciona como esperado, acionar esta skill antes de descrever o problema faz com que o Claude Code aborde o diagnóstico de forma mais sistemática: ele vai verificar os logs, identificar a causa raiz e propor uma correção precisa em vez de tentar soluções aleatórias.</p>
+  <p>Use esta skill sempre que algo não funcionar corretamente.</p>
+
+  <h3>simplify</h3>
+  <p>Esta skill revisa o código gerado em busca de complexidade desnecessária. Ao longo do desenvolvimento, é comum que o código acumule soluções redundantes, funções duplicadas ou estruturas mais complicadas do que o necessário. A skill <code>simplify</code> identifica esses problemas e os corrige, mantendo o projeto limpo e fácil de manter.</p>
+  <p>Use esta skill ao final de cada capítulo, depois de implementar uma funcionalidade completa.</p>
+
+  <h3>typescript-expert</h3>
+  <p>Esta skill especializa o agente no uso correto do TypeScript. O TypeScript é uma versão do JavaScript com tipagem estática, o que significa que ele verifica se os dados têm o formato correto antes de o sistema rodar. Sem essa skill, o Claude Code pode gerar código TypeScript que funciona mas que não aproveita os benefícios da tipagem, deixando brechas para erros difíceis de detectar.</p>
+  <p>Use esta skill ao criar os tipos compartilhados do projeto e ao revisar as interfaces de dados.</p>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 2</div></div>
+</div>
+
+<!-- PAGE 7: CAPÍTULO 2 continuação -->
+<div class="page">
+  <h2>Como instalar cada skill</h2>
+  <p>A instalação de skills no Claude Code é feita com o comando <code>/install-skill</code> seguido do nome da skill. Você precisa estar com o Claude Code aberto no terminal. Instale as cinco skills uma por vez:</p>
+
+  <div class="code-box">
+    <span class="lbl">Dentro do Claude Code</span>
+    <pre><span class="cmd">/install-skill frontend-design</span>
+<span class="cmd">/install-skill react-nextjs-development</span>
+<span class="cmd">/install-skill testing-debugging</span>
+<span class="cmd">/install-skill simplify</span>
+<span class="cmd">/install-skill typescript-expert</span></pre>
+  </div>
+
+  <p>Após cada instalação, o Claude Code vai confirmar que a skill foi instalada. As skills ficam disponíveis para uso imediato e persistem entre sessões: você não precisa reinstalá-las toda vez que abrir o Claude Code.</p>
+
+  <h2>Como acionar cada skill durante o desenvolvimento</h2>
+  <p>Para acionar uma skill, use o comando <code>/skill</code> seguido do nome da skill, antes de dar a instrução principal. Por exemplo, para pedir ao Claude Code para criar a tela de dashboard com qualidade visual profissional:</p>
+
+  <div class="code-box">
+    <span class="lbl">Dentro do Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="str">Crie a página de dashboard do sistema jurídico conforme
+descrito no CLAUDE.md.</span></pre>
+  </div>
+
+  <p>Você pode acionar mais de uma skill para a mesma tarefa. Se estiver criando uma página que precisa tanto de qualidade visual quanto de estrutura correta para o Next.js, acione as duas:</p>
+
+  <div class="code-box">
+    <span class="lbl">Dentro do Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="cmd">/skill react-nextjs-development</span>
+<span class="str">Crie a página de lista de processos com busca e filtros.</span></pre>
+  </div>
+
+  <div class="info-box">
+    <span class="lbl">Guia de uso das skills por etapa</span>
+    <div class="item"><b>Estrutura do projeto e banco de dados:</b> react-nextjs-development, typescript-expert</div>
+    <div class="item"><b>Estado global com Zustand:</b> typescript-expert</div>
+    <div class="item"><b>Rotas de API:</b> react-nextjs-development</div>
+    <div class="item"><b>Interface (todas as telas):</b> frontend-design, react-nextjs-development</div>
+    <div class="item"><b>Sistema de prazos:</b> react-nextjs-development, typescript-expert</div>
+    <div class="item"><b>Busca e filtros:</b> react-nextjs-development</div>
+    <div class="item"><b>Correção de erros:</b> testing-debugging</div>
+    <div class="item"><b>Revisão final de cada capítulo:</b> simplify</div>
+  </div>
+
+  <h2>Uma nota sobre MCP</h2>
+  <p>O Claude Code tem um sistema chamado MCP (Model Context Protocol), que permite conectar o agente a ferramentas externas. Por exemplo, existe um MCP para o Google Calendar que permitiria sincronizar os prazos do sistema jurídico diretamente com a agenda do Google. Existe também um MCP para o Notion, para o GitHub e para diversas outras ferramentas.</p>
+  <p>Essas integrações são tecnicamente possíveis e podem ser muito úteis em uma evolução futura do sistema. No entanto, elas estão fora do escopo deste tutorial. O foco aqui é construir o sistema base de forma sólida. Integrações externas adicionam complexidade e dependências que tornariam este tutorial mais longo e mais difícil de seguir para quem está começando.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: não acione skills desnecessariamente</span>
+    <p>Acionar uma skill para uma tarefa simples não causa problemas, mas pode tornar as respostas do Claude Code mais longas do que o necessário. Reserve as skills para as tarefas em que elas fazem diferença real: design visual, estrutura de componentes, diagnóstico de erros e revisão de tipos.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 2</div></div>
+</div>
+
+<!-- PAGE 8: CAPÍTULO 3 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">3</span><span class="chapter-label">Capítulo Três</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Estrutura do projeto e banco de dados</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Com o projeto Next.js criado e as skills instaladas, o próximo passo é organizar a estrutura de pastas e configurar o banco de dados. Esses dois elementos formam a fundação sobre a qual todo o resto será construído.</p>
+
+  <h2>Como pedir ao Claude Code para criar a estrutura de pastas</h2>
+  <p>O Next.js com App Router já cria uma estrutura básica de pastas. Mas o sistema jurídico precisa de pastas adicionais para organizar os componentes, os tipos TypeScript, o estado global e os utilitários. Dê esta instrução ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Leia o CLAUDE.md e crie a estrutura de pastas do projeto conforme
+especificado. As pastas necessárias são:
+- components/ na raiz do projeto
+- store/ na raiz do projeto
+- types/ na raiz do projeto
+- lib/ na raiz do projeto
+
+Dentro de cada pasta, crie um arquivo index.ts vazio para que
+o TypeScript reconheça as pastas como módulos.</span></pre>
+  </div>
+
+  <p>Após o Claude Code criar as pastas, a estrutura do projeto deve ficar assim:</p>
+
+  <div class="code-box">
+    <span class="lbl">Estrutura esperada do projeto</span>
+    <pre><span class="str">sistema-juridico/
+├── app/
+│   ├── api/          (rotas de API)
+│   ├── dashboard/    (página do dashboard)
+│   ├── processos/    (páginas de processos)
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/       (componentes reutilizáveis)
+├── store/            (estado global com Zustand)
+├── types/            (tipos TypeScript)
+├── lib/              (utilitários e banco de dados)
+├── CLAUDE.md
+├── juridico.db       (criado automaticamente)
+└── package.json</span></pre>
+  </div>
+
+  <h2>O que é o SQLite em linguagem simples</h2>
+  <p>O SQLite é um banco de dados que funciona como um arquivo no seu computador. Diferente de bancos de dados como MySQL ou PostgreSQL, que precisam de um servidor rodando em segundo plano, o SQLite é apenas um arquivo com extensão <code>.db</code>. Quando o sistema precisa salvar ou buscar dados, ele abre esse arquivo, faz a operação e fecha.</p>
+  <p>Para este projeto, o arquivo se chama <code>juridico.db</code> e fica na raiz da pasta do projeto. Todos os processos cadastrados ficam dentro desse arquivo. Para fazer backup do sistema inteiro, basta copiar esse arquivo para outro lugar.</p>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 3</div></div>
+</div>
+
+<!-- PAGE 9: CAPÍTULO 3 continuação -->
+<div class="page">
+  <h2>Como pedir ao Claude Code para configurar o SQLite</h2>
+  <p>A configuração do banco de dados envolve dois passos: criar o arquivo de conexão e criar as tabelas. Dê esta instrução ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie o arquivo lib/database.ts com a configuração do banco de dados
+SQLite usando better-sqlite3. O arquivo deve:
+
+1. Criar a conexão com o arquivo juridico.db na raiz do projeto
+2. Criar a tabela "processos" com os campos definidos no CLAUDE.md
+   usando CREATE TABLE IF NOT EXISTS
+3. Criar a tabela "advogados" com os campos: id (INTEGER PRIMARY KEY
+   AUTOINCREMENT), nome (TEXT NOT NULL), email (TEXT), criado_em (TEXT)
+4. Exportar a instância do banco para uso nas rotas de API
+5. Executar a criação das tabelas automaticamente quando o módulo
+   for importado pela primeira vez
+
+Também crie o arquivo types/index.ts com as interfaces TypeScript
+para Processo e Advogado, correspondendo exatamente aos campos
+das tabelas do banco de dados.</span></pre>
+  </div>
+
+  <h2>As tabelas que o sistema precisa</h2>
+  <p>O sistema usa duas tabelas. A tabela <code>processos</code> é a principal: ela armazena todos os dados de cada processo jurídico. A tabela <code>advogados</code> é auxiliar: ela armazena os nomes dos advogados do escritório para que possam ser selecionados no formulário de cadastro.</p>
+  <p>A tabela de advogados é opcional no início. Se o escritório tiver apenas um advogado, ou se você preferir digitar o nome do responsável livremente, pode pedir ao Claude Code para simplificar o campo <code>advogado_responsavel</code> para um campo de texto livre, sem tabela separada.</p>
+
+  <h2>Como verificar se o banco foi criado corretamente</h2>
+  <p>Você não precisa entender SQL para verificar se o banco foi criado. Peça ao Claude Code para fazer essa verificação por você:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Verifique se o banco de dados foi criado corretamente. Crie um
+script temporário em lib/verificar-banco.ts que:
+1. Abre a conexão com o banco
+2. Lista todas as tabelas existentes
+3. Mostra a estrutura de cada tabela
+4. Insere um processo de teste e depois o remove
+5. Imprime "Banco de dados OK" se tudo funcionar
+
+Execute o script com: npx ts-node lib/verificar-banco.ts
+Depois de verificar, delete o arquivo verificar-banco.ts.</span></pre>
+  </div>
+
+  <h2>Onde fica o arquivo do banco e como fazer backup</h2>
+  <p>O arquivo <code>juridico.db</code> fica na raiz da pasta do projeto, no mesmo nível do <code>package.json</code> e do <code>CLAUDE.md</code>. Esse arquivo é o seu banco de dados completo. Todos os processos cadastrados estão dentro dele.</p>
+  <p>Para fazer backup, copie o arquivo <code>juridico.db</code> para outro local: um pendrive, uma pasta no Google Drive, um HD externo. O arquivo tem poucos kilobytes no início e cresce lentamente conforme você cadastra processos. Mesmo com centenas de processos, ele raramente passa de alguns megabytes.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: adicione o banco ao .gitignore</span>
+    <p>Se você usar o Git para versionar o projeto (recomendado), adicione o arquivo <code>juridico.db</code> ao <code>.gitignore</code>. Bancos de dados com dados reais de clientes não devem ser versionados. Peça ao Claude Code: "Adicione juridico.db ao .gitignore do projeto."</p>
+  </div>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: inicialize o Git agora</span>
+    <p>Este é um bom momento para inicializar o Git no projeto. O Git vai permitir que você volte a versões anteriores se algo quebrar. Peça ao Claude Code: "Inicialize o Git no projeto, crie um .gitignore adequado para Next.js e faça o primeiro commit com a mensagem 'estrutura inicial do projeto'."</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 3</div></div>
+</div>
+
+<!-- PAGE 10: CAPÍTULO 4 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">4</span><span class="chapter-label">Capítulo Quatro</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Configurando o estado global com Zustand</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Com o banco de dados configurado, o próximo passo é criar o estado global do sistema. O estado global é o mecanismo que permite que diferentes telas do sistema compartilhem e atualizem os mesmos dados sem precisar buscá-los do banco toda vez.</p>
+
+  <h2>O que é estado global em linguagem simples</h2>
+  <p>Imagine que você tem três telas no sistema: o dashboard, a lista de processos e o formulário de edição. Quando você edita um processo no formulário e salva, o dashboard e a lista precisam mostrar os dados atualizados. Sem estado global, cada tela buscaria os dados do banco de forma independente, o que causaria inconsistências e lentidão.</p>
+  <p>O estado global resolve isso criando um repositório central de dados que todas as telas podem ler e atualizar. Quando uma tela atualiza um processo, todas as outras telas que exibem aquele processo são atualizadas automaticamente, sem precisar recarregar a página.</p>
+  <p>Pense no estado global como uma lousa na sala de reuniões do escritório. Qualquer pessoa pode ler o que está escrito e qualquer pessoa pode apagar e reescrever. Quando alguém atualiza a lousa, todos que estão olhando para ela veem a mudança imediatamente.</p>
+
+  <h2>O que é o Zustand</h2>
+  <p>O Zustand (pronuncia-se "tsushtand", palavra alemã para "estado") é uma biblioteca para gerenciar estado global em aplicações React. Ele foi escolhido para este projeto por três razões práticas: é simples de configurar, tem uma API direta sem muita cerimônia e funciona bem com o Next.js App Router.</p>
+  <p>Alternativas como Redux ou Context API do React também funcionariam, mas o Zustand exige menos código para fazer a mesma coisa. Para um projeto criado com Claude Code por alguém sem experiência em programação, menos código significa menos pontos de falha e menos complexidade para o agente gerenciar.</p>
+
+  <h2>Como pedir ao Claude Code para criar a store de processos</h2>
+  <p>A store (em português, "armazém") é o arquivo que define o estado global e as ações que podem modificá-lo. Acione a skill <code>typescript-expert</code> antes de dar esta instrução:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill typescript-expert</span>
+<span class="str">Crie o arquivo store/processos-store.ts com a store do Zustand
+para gerenciar os processos. A store deve conter:
+
+Estado:
+- processos: array de Processo (tipo definido em types/index.ts)
+- carregando: boolean (true enquanto busca dados da API)
+- erro: string | null (mensagem de erro, se houver)
+
+Ações:
+- carregarProcessos(): busca todos os processos da API GET /api/processos
+- criarProcesso(dados): envia POST /api/processos e atualiza a lista
+- atualizarProcesso(id, dados): envia PUT /api/processos/[id] e atualiza
+- deletarProcesso(id): envia DELETE /api/processos/[id] e remove da lista
+
+A store deve usar o padrão correto do Zustand com TypeScript,
+com tipos explícitos para o estado e para cada ação.</span></pre>
+  </div>
+
+  <h2>O que a store deve conter</h2>
+  <p>A store de processos tem duas responsabilidades: guardar os dados (a lista de processos e os estados de carregamento e erro) e fornecer as ações para modificar esses dados (criar, editar, deletar processos).</p>
+  <p>As ações de criar, editar e deletar se comunicam com as rotas de API que serão criadas no próximo capítulo. A store não acessa o banco de dados diretamente: ela sempre passa pela API. Isso mantém uma separação clara entre o frontend (a interface) e o backend (o banco de dados).</p>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 4</div></div>
+</div>
+
+<!-- PAGE 11: CAPÍTULO 4 continuação -->
+<div class="page">
+  <h2>Como verificar se a store foi criada corretamente</h2>
+  <p>A store não pode ser testada isoladamente antes de as rotas de API existirem, porque ela depende dessas rotas para funcionar. Mas você pode verificar se o arquivo foi criado sem erros de TypeScript. Peça ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Execute o comando npx tsc --noEmit para verificar se há erros
+de TypeScript no projeto. Se houver erros, corrija-os antes
+de continuar.</span></pre>
+  </div>
+
+  <p>O comando <code>npx tsc --noEmit</code> verifica os tipos do projeto sem gerar arquivos. Se ele retornar sem mensagens de erro, o TypeScript está satisfeito com o código gerado. Se retornar erros, copie as mensagens e peça ao Claude Code para corrigi-las.</p>
+
+  <div class="info-box">
+    <span class="lbl">O que esperar da store criada</span>
+    <div class="item"><b>Estado inicial:</b> processos como array vazio, carregando como false, erro como null.</div>
+    <div class="item"><b>carregarProcessos:</b> define carregando como true, busca da API, atualiza processos, define carregando como false.</div>
+    <div class="item"><b>criarProcesso:</b> envia os dados para a API, adiciona o processo retornado ao array local.</div>
+    <div class="item"><b>atualizarProcesso:</b> envia os dados para a API, substitui o processo no array local pelo retornado.</div>
+    <div class="item"><b>deletarProcesso:</b> envia o pedido de exclusão para a API, remove o processo do array local pelo id.</div>
+  </div>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: faça um commit após cada capítulo</span>
+    <p>Ao final de cada capítulo, peça ao Claude Code para fazer um commit no Git: "Faça um commit com a mensagem 'capítulo 4: store de processos com Zustand'." Isso cria pontos de restauração no histórico do projeto. Se algo quebrar nos capítulos seguintes, você pode voltar a este ponto sem perder o trabalho feito até aqui.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 4</div></div>
+</div>
+
+<!-- PAGE 12: CAPÍTULO 5 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">5</span><span class="chapter-label">Capítulo Cinco</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Criando as rotas de API</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">As rotas de API são a ponte entre a interface que o usuário vê e o banco de dados onde os dados ficam armazenados. Toda vez que você cria, edita ou busca um processo, é uma rota de API que recebe o pedido, faz a operação no banco e devolve o resultado.</p>
+
+  <h2>O que são rotas de API em linguagem simples</h2>
+  <p>Imagine que o banco de dados é um arquivo em um cofre. A interface do sistema é a recepção do escritório. As rotas de API são os funcionários que ficam entre a recepção e o cofre: quando a recepção precisa de um documento, ela pede ao funcionário, que vai ao cofre, pega o documento e traz de volta.</p>
+  <p>No Next.js com App Router, as rotas de API são arquivos chamados <code>route.ts</code> dentro da pasta <code>app/api/</code>. Cada arquivo define o que acontece quando o sistema recebe um tipo específico de pedido: GET (buscar dados), POST (criar dados), PUT (atualizar dados) ou DELETE (excluir dados).</p>
+
+  <h2>As rotas que o sistema precisa</h2>
+  <div class="info-box">
+    <span class="lbl">Rotas necessárias e o que cada uma faz</span>
+    <div class="item"><b>GET /api/processos:</b> retorna a lista de todos os processos. Aceita parâmetros opcionais de busca (cliente), filtro (status, advogado) e ordenação (prazo).</div>
+    <div class="item"><b>POST /api/processos:</b> recebe os dados de um novo processo e o salva no banco. Retorna o processo criado com o id gerado.</div>
+    <div class="item"><b>GET /api/processos/[id]:</b> retorna os dados de um processo específico pelo seu id.</div>
+    <div class="item"><b>PUT /api/processos/[id]:</b> recebe os dados atualizados de um processo e os salva no banco. Retorna o processo atualizado.</div>
+    <div class="item"><b>DELETE /api/processos/[id]:</b> remove um processo do banco pelo seu id.</div>
+    <div class="item"><b>GET /api/advogados:</b> retorna a lista de advogados cadastrados para popular o campo de seleção no formulário.</div>
+  </div>
+
+  <h2>Como pedir ao Claude Code para criar cada rota</h2>
+  <p>Acione a skill <code>react-nextjs-development</code> antes de dar esta instrução:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill react-nextjs-development</span>
+<span class="str">Crie as rotas de API do sistema jurídico conforme o CLAUDE.md.
+
+Crie app/api/processos/route.ts com:
+- GET: lista todos os processos. Aceita query params: cliente (busca
+  por nome), status (filtra por status), advogado (filtra por
+  responsável), ordenar (aceita "prazo" para ordenar por data_prazo).
+- POST: cria um novo processo. Valida que numero_processo, nome_cliente
+  e data_prazo estão presentes. Gera criado_em e atualizado_em
+  automaticamente com a data atual em ISO 8601.
+
+Crie app/api/processos/[id]/route.ts com:
+- GET: retorna um processo pelo id. Retorna 404 se não encontrar.
+- PUT: atualiza um processo pelo id. Atualiza atualizado_em
+  automaticamente. Retorna 404 se não encontrar.
+- DELETE: remove um processo pelo id. Retorna 404 se não encontrar.
+
+Crie app/api/advogados/route.ts com:
+- GET: retorna todos os advogados cadastrados.
+- POST: cria um novo advogado.
+
+Todas as rotas devem retornar JSON e tratar erros com try/catch,
+retornando status 500 com mensagem de erro em caso de falha.</span></pre>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 5</div></div>
+</div>
+
+<!-- PAGE 13: CAPÍTULO 5 continuação -->
+<div class="page">
+  <h2>Como testar se as rotas estão funcionando</h2>
+  <p>Antes de criar a interface, vale confirmar que as rotas de API estão respondendo corretamente. Primeiro, inicie o servidor de desenvolvimento:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal (fora do Claude Code)</span>
+    <pre><span class="cmd">npm run dev</span></pre>
+  </div>
+
+  <p>Com o servidor rodando, acione a skill <code>testing-debugging</code> e peça ao Claude Code para testar as rotas:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill testing-debugging</span>
+<span class="str">Teste as rotas de API do sistema. Crie um script de teste
+temporário que:
+1. Cria um processo de teste via POST /api/processos
+2. Busca a lista via GET /api/processos e confirma que aparece
+3. Busca o processo pelo id via GET /api/processos/[id]
+4. Atualiza o processo via PUT /api/processos/[id]
+5. Deleta o processo via DELETE /api/processos/[id]
+6. Confirma que foi removido via GET /api/processos
+
+Mostre o resultado de cada operação e confirme se todas
+as rotas estão funcionando corretamente.</span></pre>
+  </div>
+
+  <p>Se alguma rota retornar erro, o Claude Code vai identificar o problema e corrigi-lo. Os erros mais comuns nessa etapa são: importação incorreta do banco de dados, campos com nomes diferentes dos definidos no banco, ou problemas com a serialização de datas.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: better-sqlite3 é síncrono</span>
+    <p>A biblioteca <code>better-sqlite3</code> funciona de forma síncrona, diferente da maioria das bibliotecas de banco de dados em JavaScript. Isso significa que as operações não usam <code>async/await</code>. Se o Claude Code gerar código com <code>await</code> nas chamadas ao banco, peça para corrigir: "As chamadas ao better-sqlite3 não devem usar async/await. Corrija as rotas de API para usar a API síncrona da biblioteca."</p>
+  </div>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: adicione alguns advogados de teste</span>
+    <p>Antes de avançar para a interface, adicione alguns advogados ao banco para que o formulário de cadastro de processos tenha opções para selecionar. Peça ao Claude Code: "Crie um script de seed em lib/seed.ts que insere três advogados de teste no banco de dados e execute-o."</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 5</div></div>
+</div>
+
+<!-- PAGE 14: CAPÍTULO 6 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">6</span><span class="chapter-label">Capítulo Seis</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Criando a interface</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Com o banco de dados, o estado global e as rotas de API prontos, você tem tudo o que precisa para construir a interface. Este é o capítulo em que o sistema começa a tomar forma visual.</p>
+
+  <h2>Como acionar a skill frontend-design</h2>
+  <p>A skill <code>frontend-design</code> é a mais importante deste capítulo. Ela instrui o Claude Code a aplicar princípios de design profissional: hierarquia visual clara, espaçamento consistente, paleta de cores coerente e tipografia legível. Para um sistema jurídico, isso significa uma interface sóbria, organizada e fácil de usar em longas sessões de trabalho.</p>
+  <p>Acione sempre as duas skills juntas ao criar telas neste capítulo:</p>
+
+  <div class="code-box">
+    <span class="lbl">Dentro do Claude Code (antes de cada tela)</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="cmd">/skill react-nextjs-development</span></pre>
+  </div>
+
+  <h2>O layout base: sidebar de navegação</h2>
+  <p>Antes de criar as telas individuais, você precisa criar o layout base do sistema. O layout base é a estrutura que envolve todas as páginas: a sidebar de navegação à esquerda e a área de conteúdo à direita. Dê esta instrução ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="cmd">/skill react-nextjs-development</span>
+<span class="str">Crie o layout base do sistema jurídico em app/layout.tsx.
+O layout deve ter:
+
+- Sidebar fixa à esquerda com 240px de largura
+- Logo ou nome do escritório no topo da sidebar
+- Menu de navegação com os itens: Dashboard, Processos, Novo Processo
+- Indicador visual do item ativo no menu
+- Área de conteúdo principal à direita que ocupa o restante da tela
+- Fundo cinza claro na área de conteúdo para contraste com os cards
+- Design sóbrio e profissional, adequado para uso jurídico
+- Totalmente responsivo: em telas pequenas, a sidebar vira um menu
+  hambúrguer no topo
+
+Use Tailwind CSS para todos os estilos. Não use bibliotecas de
+componentes externas.</span></pre>
+  </div>
+
+  <h2>A tela de dashboard</h2>
+  <p>O dashboard é a primeira tela que o usuário vê ao abrir o sistema. Ele precisa mostrar, de forma imediata, o estado geral dos processos do escritório. Dê esta instrução ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="cmd">/skill react-nextjs-development</span>
+<span class="str">Crie a página de dashboard em app/dashboard/page.tsx.
+O dashboard deve ter:
+
+1. Linha de cards de resumo no topo com:
+   - Total de processos ativos (status em_andamento)
+   - Total de processos concluídos
+   - Total de processos suspensos
+   - Quantidade de processos com prazo nos próximos 7 dias
+
+2. Seção de próximos prazos: lista dos 10 processos com prazo
+   mais próximo, ordenados por data_prazo crescente. Cada item
+   mostra: número do processo, nome do cliente, data do prazo
+   e um badge colorido indicando urgência (verde: mais de 7 dias,
+   amarelo: 7 dias, laranja: 3 dias, vermelho: 1 dia ou menos,
+   cinza escuro: vencido).
+
+3. Gráfico simples de barras mostrando a distribuição de processos
+   por status. Use apenas HTML e CSS, sem biblioteca de gráficos.
+
+O dashboard deve buscar os dados da API ao carregar.</span></pre>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 15: CAPÍTULO 6 continuação -->
+<div class="page">
+  <h2>A tela de lista de processos</h2>
+  <p>A lista de processos é onde o usuário passa a maior parte do tempo. Ela precisa ser rápida de ler e fácil de navegar. Dê esta instrução ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="cmd">/skill react-nextjs-development</span>
+<span class="str">Crie a página de lista de processos em app/processos/page.tsx.
+A página deve ter:
+
+1. Barra de ferramentas no topo com:
+   - Campo de busca por nome do cliente
+   - Filtro por status (dropdown: todos, em andamento, concluído, suspenso)
+   - Filtro por advogado responsável (dropdown com os advogados cadastrados)
+   - Botão "Novo Processo" que leva ao formulário de criação
+
+2. Tabela de processos com as colunas:
+   - Número do processo
+   - Cliente
+   - Tipo de ação
+   - Advogado responsável
+   - Status (badge colorido)
+   - Prazo (data formatada em DD/MM/AAAA com badge de urgência)
+   - Ações (botões de ver detalhes, editar e deletar)
+
+3. Estado vazio: mensagem amigável quando não há processos
+   ou quando a busca não retorna resultados.
+
+4. Confirmação antes de deletar: modal de confirmação antes
+   de excluir um processo.
+
+A busca e os filtros devem funcionar em tempo real.</span></pre>
+  </div>
+
+  <h2>O formulário de criação e edição</h2>
+  <p>O formulário é usado tanto para criar novos processos quanto para editar processos existentes. Dê esta instrução ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="cmd">/skill react-nextjs-development</span>
+<span class="str">Crie o formulário de processo como componente reutilizável em
+components/formulario-processo.tsx, usado tanto em
+app/processos/novo/page.tsx quanto em app/processos/[id]/editar/page.tsx.
+
+Campos do formulário:
+- Número do processo (texto, obrigatório)
+- Nome do cliente (texto, obrigatório)
+- Tipo de ação (select: cível, trabalhista, penal, família, outro)
+- Tribunal (texto)
+- Vara (texto)
+- Status (select: em andamento, concluído, suspenso)
+- Última movimentação (textarea)
+- Próxima ação (textarea)
+- Data do prazo (date picker, obrigatório)
+- Advogado responsável (select com os advogados cadastrados)
+
+Validação: mensagens de erro inline nos campos obrigatórios.
+Ao salvar com sucesso, redirecionar para a lista de processos.</span></pre>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 16: CAPÍTULO 6 continuação -->
+<div class="page">
+  <h2>A tela de detalhes do processo</h2>
+  <p>A tela de detalhes mostra todas as informações de um processo em um layout organizado. Dê esta instrução ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="cmd">/skill react-nextjs-development</span>
+<span class="str">Crie a página de detalhes do processo em app/processos/[id]/page.tsx.
+A página deve mostrar:
+
+- Cabeçalho com número do processo e badge de status
+- Alert de prazo no topo se o prazo estiver próximo (mesma lógica
+  de cores do dashboard)
+- Seção de informações do cliente: nome, tipo de ação
+- Seção de informações do tribunal: tribunal, vara
+- Seção de acompanhamento: última movimentação, próxima ação,
+  data do prazo, advogado responsável
+- Botões de ação: Editar processo e Excluir processo
+- Botão de voltar para a lista de processos
+
+Layout em duas colunas em telas grandes, uma coluna em telas pequenas.</span></pre>
+  </div>
+
+  <h2>Como revisar o visual sem saber programar</h2>
+  <p>Depois que o Claude Code criar cada tela, abra o navegador em <code>localhost:3000</code> e observe o resultado. Você não precisa entender o código para avaliar se a interface está boa. Pergunte a si mesmo: a tela está organizada? As informações mais importantes estão em destaque? Os botões estão em lugares óbvios? O texto está legível?</p>
+  <p>Se algo não estiver como você quer, descreva o problema em linguagem natural. Não tente explicar o código: descreva o que você vê e o que gostaria de ver. Por exemplo:</p>
+
+  <div class="quote-box">
+    <p>"A tabela de processos está com as colunas muito apertadas. O nome do cliente está sendo cortado. Quero que a coluna do cliente seja mais larga e que o texto não seja cortado."</p>
+    <div class="author">Exemplo de pedido de ajuste visual eficaz</div>
+  </div>
+
+  <h2>Como conectar as telas às rotas de API</h2>
+  <p>Se o Claude Code criar as telas sem conectá-las às rotas de API (ou seja, as telas aparecem mas não mostram dados reais), peça explicitamente a conexão:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Conecte a página de lista de processos à store do Zustand.
+A página deve chamar carregarProcessos() ao montar e exibir
+os processos retornados pela store. Enquanto carrega, mostrar
+um indicador de carregamento. Se houver erro, mostrar a mensagem
+de erro da store.</span></pre>
+  </div>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: teste cada tela antes de avançar</span>
+    <p>Não avance para o próximo capítulo sem verificar que cada tela está funcionando: abrindo sem erros, mostrando dados reais do banco e respondendo às interações do usuário. Um problema não resolvido agora vai se tornar mais difícil de diagnosticar depois que mais código for adicionado.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 17: CAPÍTULO 7 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">7</span><span class="chapter-label">Capítulo Sete</span>
+    <h1 class="chapter-title" style="margin-top:16px;">O sistema de prazos</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O sistema de prazos é o coração desta aplicação. Em um escritório de advocacia, perder um prazo processual pode ter consequências graves: recursos não interpostos, contestações não apresentadas, prescrições consumadas. Este capítulo trata essa funcionalidade com a seriedade que ela merece.</p>
+
+  <h2>Por que o sistema de prazos é a parte mais crítica</h2>
+  <p>Diferente de outras funcionalidades do sistema, como a busca ou o formulário de cadastro, o sistema de prazos precisa ser correto em todos os casos possíveis. Um erro no formulário de cadastro é inconveniente. Um erro no sistema de prazos pode fazer com que um alerta não apareça quando deveria, e isso tem consequências reais.</p>
+  <p>Por isso, este capítulo vai além de simplesmente pedir ao Claude Code para implementar a funcionalidade. Ele explica a lógica em detalhes, mostra como verificar cada caso e descreve os erros mais comuns para que você saiba o que procurar.</p>
+
+  <h2>Como funciona a lógica de alertas</h2>
+  <p>A lógica de alertas é baseada na diferença entre a data atual e a data do prazo de cada processo. Essa diferença, medida em dias, determina o nível de urgência do alerta:</p>
+
+  <div class="info-box">
+    <span class="lbl">Os cinco níveis de alerta</span>
+    <div class="item"><b>Mais de 7 dias:</b> sem alerta. O prazo está confortável. Nenhuma cor especial ou ícone de urgência.</div>
+    <div class="item"><b>7 dias ou menos (e mais de 3):</b> alerta amarelo. O prazo está se aproximando. Badge amarelo com ícone de relógio.</div>
+    <div class="item"><b>3 dias ou menos (e mais de 0):</b> alerta laranja. O prazo está próximo. Badge laranja com ícone de aviso.</div>
+    <div class="item"><b>Prazo hoje (0 dias de diferença):</b> alerta vermelho. Badge vermelho com ícone de urgência.</div>
+    <div class="item"><b>Prazo vencido (data no passado):</b> alerta cinza escuro. O prazo já passou. Badge cinza com ícone de prazo expirado.</div>
+  </div>
+
+  <p>Um detalhe importante: o cálculo correto da diferença em dias precisa ignorar o horário. Dois processos com prazo no mesmo dia devem ter o mesmo nível de alerta, independentemente de um ter sido cadastrado às 9h e outro às 17h. A comparação deve ser feita apenas com as datas, sem considerar horas, minutos ou segundos.</p>
+
+  <h2>Como pedir ao Claude Code para implementar a lógica</h2>
+  <p>A lógica de prazos deve ser implementada como uma função utilitária separada, não embutida diretamente nos componentes. Isso facilita os testes e garante que a mesma lógica seja usada em todos os lugares do sistema.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill react-nextjs-development</span>
+<span class="cmd">/skill typescript-expert</span>
+<span class="str">Crie o arquivo lib/prazos.ts com a lógica de cálculo de urgência
+de prazos. O arquivo deve exportar:
+
+1. Um tipo PrazoUrgencia:
+   'normal' | 'atencao' | 'urgente' | 'critico' | 'vencido'
+
+2. Uma função calcularUrgencia(dataPrazo: string): PrazoUrgencia
+   que recebe uma data ISO 8601 (AAAA-MM-DD) e retorna:
+   - 'normal': mais de 7 dias até o prazo
+   - 'atencao': 7 dias ou menos, mais de 3 dias
+   - 'urgente': 3 dias ou menos, mais de 0 dias
+   - 'critico': prazo é hoje (0 dias de diferença)
+   - 'vencido': prazo já passou (diferença negativa)
+
+   IMPORTANTE: zere as horas antes de calcular a diferença.
+   Use setHours(0,0,0,0) tanto na data atual quanto na data
+   do prazo para evitar problemas de fuso horário.
+
+3. Uma função diasAtePrazo(dataPrazo: string): number
+   que retorna o número de dias até o prazo (negativo se vencido).
+
+4. Um objeto CORES_URGENCIA mapeando cada nível para classes
+   Tailwind CSS de cor correspondentes.
+
+5. Uma função formatarDataPrazo(dataPrazo: string): string
+   que formata a data de ISO 8601 para DD/MM/AAAA.
+
+Escreva testes unitários para calcularUrgencia cobrindo todos
+os casos: prazo em 10 dias, 7 dias, 3 dias, 1 dia, hoje,
+ontem e há 5 dias.</span></pre>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 18: CAPÍTULO 7 continuação -->
+<div class="page">
+  <h2>Como os alertas devem aparecer na interface</h2>
+  <p>Os alertas de prazo aparecem em três lugares do sistema: na lista de processos (como badge na coluna de prazo), no dashboard (na lista de próximos prazos) e na tela de detalhes do processo (como banner no topo da página). Todos usam a mesma função <code>calcularUrgencia</code> do arquivo <code>lib/prazos.ts</code>.</p>
+  <p>Peça ao Claude Code para criar o componente de badge de prazo:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="str">Crie o componente components/badge-prazo.tsx que recebe uma
+data de prazo (string ISO 8601) e exibe um badge visual com:
+
+- A data formatada em DD/MM/AAAA
+- A quantidade de dias restantes (ex: "em 5 dias", "hoje",
+  "ontem", "há 3 dias")
+- Cor de fundo e texto de acordo com o nível de urgência
+  calculado pela função calcularUrgencia de lib/prazos.ts
+- Um ícone adequado para cada nível de urgência
+
+O componente deve aceitar um prop opcional "tamanho"
+(pequeno | normal | grande) para uso em diferentes contextos.</span></pre>
+  </div>
+
+  <p>Depois de criar o componente, peça ao Claude Code para usá-lo em todos os lugares onde a data do prazo aparece:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Substitua todas as exibições de data de prazo no sistema pelo
+componente BadgePrazo. Isso inclui:
+- A coluna de prazo na tabela de processos
+- Os itens da lista de próximos prazos no dashboard
+- O campo de prazo na tela de detalhes do processo</span></pre>
+  </div>
+
+  <h2>Como o dashboard deve exibir os próximos prazos</h2>
+  <p>A seção de próximos prazos no dashboard precisa mostrar os processos ordenados por urgência, não apenas por data. A ordenação correta é: primeiro os processos críticos (prazo hoje), depois os urgentes (até 3 dias), depois os de atenção (até 7 dias), depois os normais. Os processos vencidos aparecem no final.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Atualize a seção de próximos prazos no dashboard para ordenar
+os processos por urgência, usando a seguinte ordem de prioridade:
+1. Crítico (prazo hoje)
+2. Urgente (prazo em até 3 dias)
+3. Atenção (prazo em até 7 dias)
+4. Normal (prazo em mais de 7 dias)
+5. Vencido (prazo já passou)
+
+Dentro de cada grupo, ordenar por data_prazo crescente.
+Mostrar no máximo 10 processos na lista.
+Adicionar um cabeçalho para cada grupo que tenha pelo menos
+um processo.</span></pre>
+  </div>
+
+  <h2>Erros comuns nessa etapa e como descrevê-los</h2>
+
+  <div class="alert-box red">
+    <span class="lbl">Erro: fuso horário incorreto</span>
+    <p>O JavaScript pode interpretar datas ISO 8601 sem horário como meia-noite UTC, fazendo com que uma data apareça como o dia anterior dependendo do fuso horário. Se os alertas estiverem sempre um dia adiantados ou atrasados, descreva: "Os alertas de prazo estão sempre um dia errados. Suspeito de problema com fuso horário no cálculo de datas."</p>
+  </div>
+
+  <div class="alert-box orange">
+    <span class="lbl">Erro: cálculo incluindo horário</span>
+    <p>Se o cálculo de dias não zerar as horas antes de comparar, um processo com prazo hoje pode aparecer como "urgente" em vez de "crítico" dependendo do horário. Descreva: "O badge de prazo muda dependendo do horário do dia. O cálculo deve ser baseado apenas na data, sem considerar o horário."</p>
+  </div>
+
+  <div class="alert-box yellow">
+    <span class="lbl">Erro: badge não atualiza sem recarregar</span>
+    <p>Se o badge não atualizar quando você edita um processo, o componente pode não estar reagindo às mudanças na store. Descreva: "Quando edito a data de prazo de um processo e volto para a lista, o badge ainda mostra a data antiga. Preciso recarregar a página para ver o badge atualizado."</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 19: CAPÍTULO 7 continuação -->
+<div class="page">
+  <h2>Como testar se os alertas estão funcionando corretamente</h2>
+  <p>Para testar o sistema de prazos, você precisa de processos com datas em diferentes posições em relação à data atual. Peça ao Claude Code para criar um conjunto de dados de teste:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie um script de teste em lib/seed-prazos.ts que insere
+processos de teste com prazos em diferentes posições:
+- Um processo com prazo em 10 dias (deve aparecer como normal)
+- Um processo com prazo em 7 dias (deve aparecer como atenção)
+- Um processo com prazo em 3 dias (deve aparecer como urgente)
+- Um processo com prazo amanhã (deve aparecer como urgente)
+- Um processo com prazo hoje (deve aparecer como crítico)
+- Um processo com prazo ontem (deve aparecer como vencido)
+- Um processo com prazo há 5 dias (deve aparecer como vencido)
+
+Calcule todas as datas dinamicamente a partir de new Date()
+para que o teste funcione em qualquer dia.
+Execute o script e confirme que os processos foram criados.</span></pre>
+  </div>
+
+  <p>Depois de executar o script, abra o dashboard no navegador e verifique se cada processo aparece com o badge correto. Se algum badge estiver errado, descreva o problema ao Claude Code com precisão: "O processo com prazo em 7 dias está aparecendo com badge verde (normal) em vez de amarelo (atenção)."</p>
+
+  <h2>Como verificar casos extremos</h2>
+
+  <div class="checklist">
+    <span class="lbl">Casos extremos para verificar</span>
+    <div class="item"><div class="check"></div>Processo sem data de prazo: o sistema não deve quebrar nem mostrar um badge inválido.</div>
+    <div class="item"><div class="check"></div>Prazo no mesmo dia em que o processo é cadastrado: deve aparecer como crítico (vermelho), não como urgente.</div>
+    <div class="item"><div class="check"></div>Prazo muito distante no futuro (mais de um ano): deve aparecer como normal, sem badge de urgência.</div>
+    <div class="item"><div class="check"></div>Prazo muito antigo no passado (mais de um ano atrás): deve aparecer como vencido, sem erros.</div>
+    <div class="item"><div class="check"></div>Processo com status "concluído" ou "suspenso": o badge de prazo ainda deve aparecer corretamente.</div>
+  </div>
+
+  <p>Para processos sem data de prazo, peça ao Claude Code para tratar esse caso explicitamente:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Atualize o componente BadgePrazo e a função calcularUrgencia
+para tratar o caso em que data_prazo é null, undefined ou
+string vazia. Nesses casos, o componente deve exibir "Sem prazo"
+com estilo neutro, sem cor de urgência.</span></pre>
+  </div>
+
+  <h2>O banner de alerta na tela de detalhes</h2>
+  <p>Na tela de detalhes de um processo, o alerta de prazo deve aparecer como um banner proeminente no topo da página, não apenas como um badge discreto. Isso garante que, ao abrir um processo com prazo próximo, o usuário veja imediatamente a urgência.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span>
+<span class="str">Crie o componente components/banner-prazo.tsx que exibe um
+banner de alerta no topo da tela de detalhes do processo.
+
+O banner deve:
+- Aparecer apenas quando o prazo estiver em nível de atenção,
+  urgente, crítico ou vencido
+- Ocupar toda a largura da área de conteúdo
+- Ter cor de fundo correspondente ao nível de urgência
+- Mostrar uma mensagem clara: "Prazo em X dias", "Prazo hoje"
+  ou "Prazo vencido há X dias"
+- Ter um ícone grande e visível à esquerda da mensagem
+- Para o nível crítico (prazo hoje), adicionar uma animação
+  sutil de pulso para chamar atenção
+
+Use o componente na tela de detalhes do processo,
+logo abaixo do cabeçalho com o número do processo.</span></pre>
+  </div>
+
+  <div class="checklist">
+    <span class="lbl">Roteiro de verificação final do sistema de prazos</span>
+    <div class="item"><div class="check"></div>O dashboard mostra a lista de próximos prazos ordenada por urgência.</div>
+    <div class="item"><div class="check"></div>O card "Processos com prazo nos próximos 7 dias" mostra o número correto.</div>
+    <div class="item"><div class="check"></div>Na lista de processos, cada processo tem um badge de prazo com a cor correta.</div>
+    <div class="item"><div class="check"></div>Ao clicar em um processo com prazo próximo, o banner de alerta aparece no topo da tela de detalhes.</div>
+    <div class="item"><div class="check"></div>Processos com prazo vencido aparecem com badge cinza escuro.</div>
+    <div class="item"><div class="check"></div>Processos sem data de prazo mostram "Sem prazo" sem erros.</div>
+    <div class="item"><div class="check"></div>Ao editar a data de prazo de um processo, o badge atualiza imediatamente na lista.</div>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 20: CAPÍTULO 8 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">8</span><span class="chapter-label">Capítulo Oito</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Busca, filtros e ordenação</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Com o sistema de prazos funcionando, o próximo passo é garantir que o usuário consiga encontrar qualquer processo rapidamente. Um sistema com dezenas ou centenas de processos só é útil se a busca e os filtros funcionarem bem.</p>
+
+  <h2>Como pedir ao Claude Code para implementar a busca por cliente</h2>
+  <p>A busca por cliente deve funcionar em tempo real: conforme o usuário digita, a lista de processos se atualiza automaticamente, sem precisar pressionar Enter ou clicar em um botão. Isso é chamado de busca reativa e é o comportamento esperado em sistemas modernos.</p>
+  <p>Se a busca ainda não foi implementada no Capítulo 6, ou se ela não está funcionando em tempo real, dê esta instrução ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill react-nextjs-development</span>
+<span class="str">Implemente a busca por nome do cliente na página de lista de
+processos. A busca deve:
+
+1. Funcionar em tempo real: a lista atualiza a cada caractere
+   digitado, sem precisar pressionar Enter
+2. Ser case-insensitive: "silva" deve encontrar "Silva" e "SILVA"
+3. Buscar em qualquer parte do nome: "ilva" deve encontrar "Silva"
+4. Mostrar quantos resultados foram encontrados (ex: "3 processos")
+5. Mostrar uma mensagem amigável quando nenhum resultado for
+   encontrado: "Nenhum processo encontrado para 'termo buscado'"
+6. Ter um botão X para limpar a busca rapidamente
+
+A busca deve ser feita no frontend, filtrando a lista já carregada
+na store, sem fazer uma nova requisição à API a cada tecla.</span></pre>
+  </div>
+
+  <h2>Como implementar os filtros por status e por responsável</h2>
+  <p>Os filtros funcionam de forma similar à busca, mas com valores predefinidos em vez de texto livre. O filtro de status tem quatro opções: todos, em andamento, concluído e suspenso. O filtro de responsável lista os advogados cadastrados no banco.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Implemente os filtros na página de lista de processos:
+
+Filtro de status:
+- Dropdown com as opções: Todos os status, Em andamento,
+  Concluído, Suspenso
+- Ao selecionar uma opção, a lista filtra imediatamente
+- O filtro ativo deve ter destaque visual no dropdown
+
+Filtro de advogado responsável:
+- Dropdown populado com os advogados retornados por
+  GET /api/advogados
+- Primeira opção: "Todos os advogados"
+- Ao selecionar um advogado, a lista filtra imediatamente
+
+Ambos os filtros devem funcionar em conjunto com a busca
+por cliente: se o usuário buscar "silva" e filtrar por
+"em andamento", a lista deve mostrar apenas processos do
+cliente Silva que estão em andamento.</span></pre>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 21: CAPÍTULO 8 continuação -->
+<div class="page">
+  <h2>Como implementar a ordenação por prazo</h2>
+  <p>A ordenação por prazo permite que o usuário veja os processos com prazo mais próximo no topo da lista. Isso é especialmente útil quando a lista está longa e o usuário quer identificar rapidamente quais processos precisam de atenção imediata.</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Adicione a opção de ordenação na página de lista de processos.
+
+Adicione um dropdown de ordenação com as opções:
+- Mais recente (padrão): ordenar por criado_em decrescente
+- Prazo mais próximo: ordenar por data_prazo crescente,
+  colocando processos sem prazo no final
+- Prazo mais distante: ordenar por data_prazo decrescente
+- Nome do cliente: ordenar por nome_cliente alfabeticamente
+
+A ordenação deve funcionar em conjunto com a busca e os filtros.</span></pre>
+  </div>
+
+  <h2>Como garantir que busca e filtros funcionem juntos</h2>
+  <p>O ponto mais delicado desta etapa é garantir que busca, filtros e ordenação funcionem simultaneamente. Se cada um deles for implementado de forma independente, pode acontecer de um sobrescrever o outro. A solução correta é aplicar todos os critérios em sequência sobre a mesma lista base.</p>
+  <p>Se você perceber que ativar um filtro cancela a busca, ou que mudar a ordenação remove o filtro ativo, descreva o problema ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">A busca, os filtros e a ordenação não estão funcionando juntos.
+Quando ativo um filtro, a busca é cancelada. Refatore a lógica
+de filtragem para que todos os critérios sejam aplicados em
+sequência sobre a lista completa de processos:
+
+1. Começar com todos os processos da store
+2. Aplicar o filtro de status (se selecionado)
+3. Aplicar o filtro de advogado (se selecionado)
+4. Aplicar a busca por cliente (se houver texto)
+5. Aplicar a ordenação selecionada
+
+O resultado final deve refletir todos os critérios ativos
+ao mesmo tempo.</span></pre>
+  </div>
+
+  <h2>Como testar essa funcionalidade com dados reais</h2>
+  <p>Para testar a busca e os filtros de forma eficaz, você precisa de processos com dados variados. Se você ainda não tem processos suficientes no banco, peça ao Claude Code para criar um conjunto de dados de teste mais completo:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie um script lib/seed-completo.ts que insere 15 processos
+de teste com dados variados: clientes com nomes diferentes,
+tipos de ação variados, status diferentes (alguns em andamento,
+alguns concluídos, alguns suspensos), advogados responsáveis
+diferentes e datas de prazo variadas. Execute o script.</span></pre>
+  </div>
+
+  <div class="checklist">
+    <span class="lbl">Roteiro de teste de busca e filtros</span>
+    <div class="item"><div class="check"></div>Digite parte do nome de um cliente e confirme que a lista filtra em tempo real.</div>
+    <div class="item"><div class="check"></div>Selecione o filtro "Em andamento" e confirme que apenas processos com esse status aparecem.</div>
+    <div class="item"><div class="check"></div>Selecione um advogado no filtro e confirme que apenas os processos desse advogado aparecem.</div>
+    <div class="item"><div class="check"></div>Combine busca por cliente com filtro de status e confirme que ambos funcionam juntos.</div>
+    <div class="item"><div class="check"></div>Selecione "Prazo mais próximo" e confirme que os processos com prazo mais urgente aparecem no topo.</div>
+    <div class="item"><div class="check"></div>Limpe todos os filtros e confirme que a lista volta a mostrar todos os processos.</div>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 22: CAPÍTULO 9 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">9</span><span class="chapter-label">Capítulo Nove</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Testando o sistema completo</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O sistema está construído. Antes de usá-lo no dia a dia, você precisa percorrer um roteiro de teste completo para confirmar que tudo funciona corretamente de ponta a ponta.</p>
+
+  <h2>Como rodar o sistema pela primeira vez</h2>
+  <p>Para iniciar o sistema, abra o terminal, navegue até a pasta do projeto e execute o servidor de desenvolvimento:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">cd sistema-juridico</span>
+<span class="cmd">npm run dev</span></pre>
+  </div>
+
+  <p>O terminal vai mostrar uma mensagem indicando que o servidor está rodando, geralmente algo como "Ready in X ms" seguido de "Local: http://localhost:3000". Abra o navegador e acesse <code>http://localhost:3000</code>. Você deve ver o dashboard do sistema.</p>
+  <p>Se o navegador mostrar uma página em branco ou uma mensagem de erro, não feche o terminal. Copie qualquer mensagem de erro que aparecer no terminal e leve ao Claude Code para diagnóstico.</p>
+
+  <h2>O fluxo de teste completo</h2>
+  <p>Percorra este roteiro na ordem indicada. Cada etapa depende da anterior. Se uma etapa falhar, resolva o problema antes de continuar.</p>
+
+  <div class="checklist">
+    <span class="lbl">Roteiro de teste completo</span>
+    <div class="item"><div class="check"></div><b>Criar um processo:</b> clique em "Novo Processo", preencha todos os campos obrigatórios com dados reais e salve. Confirme que você é redirecionado para a lista de processos e que o processo aparece na lista.</div>
+    <div class="item"><div class="check"></div><b>Ver no dashboard:</b> navegue para o Dashboard e confirme que o contador de processos ativos aumentou em 1. Se o prazo do processo estiver nos próximos 7 dias, confirme que ele aparece na lista de próximos prazos.</div>
+    <div class="item"><div class="check"></div><b>Ver detalhes:</b> clique no processo criado para ver a tela de detalhes. Confirme que todos os campos aparecem corretamente.</div>
+    <div class="item"><div class="check"></div><b>Editar o processo:</b> clique em "Editar", mude o nome do cliente e salve. Confirme que a mudança aparece na lista e nos detalhes.</div>
+    <div class="item"><div class="check"></div><b>Verificar alerta de prazo:</b> edite o processo e coloque a data do prazo para amanhã. Salve e confirme que o badge de prazo na lista mudou para laranja ou vermelho.</div>
+    <div class="item"><div class="check"></div><b>Testar a busca:</b> na lista de processos, busque pelo nome do cliente que você cadastrou. Confirme que o processo aparece nos resultados.</div>
+    <div class="item"><div class="check"></div><b>Testar os filtros:</b> filtre por status "Em andamento" e confirme que o processo aparece. Mude o status para "Concluído" e confirme que ele desaparece do filtro "Em andamento".</div>
+    <div class="item"><div class="check"></div><b>Deletar o processo:</b> clique em "Excluir", confirme a exclusão no modal de confirmação e verifique que o processo foi removido da lista e do dashboard.</div>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 23: CAPÍTULO 9 continuação -->
+<div class="page">
+  <h2>Como usar a skill testing-debugging quando algo não funciona</h2>
+  <p>Se qualquer etapa do roteiro de teste falhar, acione a skill <code>testing-debugging</code> antes de descrever o problema ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Dentro do Claude Code</span>
+    <pre><span class="cmd">/skill testing-debugging</span></pre>
+  </div>
+
+  <p>Depois, descreva o que aconteceu com o máximo de detalhes possível. Um bom relato de erro tem três partes: o que você fez, o que esperava que acontecesse e o que aconteceu de fato. Por exemplo:</p>
+
+  <div class="quote-box">
+    <p>"Cliquei em Salvar no formulário de novo processo. Esperava que o processo aparecesse na lista. Em vez disso, a página ficou em branco e no terminal apareceu a mensagem: [cole aqui a mensagem de erro]."</p>
+    <div class="author">Exemplo de relato de erro eficaz</div>
+  </div>
+
+  <h2>Os erros mais comuns nessa etapa</h2>
+
+  <div class="info-box">
+    <span class="lbl">Erros comuns e como descrevê-los</span>
+    <div class="item"><b>Dados não aparecem na tela:</b> "a lista de processos está vazia mesmo com processos cadastrados. No terminal não aparece nenhum erro."</div>
+    <div class="item"><b>Formulário não salva:</b> "ao clicar em Salvar, nada acontece. Ou aparece uma mensagem de erro na tela dizendo [descreva a mensagem]."</div>
+    <div class="item"><b>Página não carrega:</b> "ao acessar localhost:3000, o navegador mostra erro. O terminal mostra [cole a mensagem]."</div>
+    <div class="item"><b>Dados somem após reiniciar:</b> "cadastrei um processo, fechei o sistema, abri novamente e o processo não está mais lá."</div>
+    <div class="item"><b>Badge de prazo incorreto:</b> "o processo com prazo amanhã está aparecendo com badge verde em vez de vermelho."</div>
+    <div class="item"><b>Filtro não funciona:</b> "ao selecionar o filtro 'Em andamento', a lista não muda. Todos os processos continuam aparecendo."</div>
+  </div>
+
+  <h2>Como confirmar que o banco de dados está salvando corretamente</h2>
+  <p>O teste mais simples para confirmar que os dados estão sendo persistidos é o seguinte: cadastre um processo, feche completamente o navegador, feche o servidor no terminal (pressione <code>Ctrl+C</code>), inicie o servidor novamente com <code>npm run dev</code>, abra o navegador e vá para a lista de processos. Se o processo que você cadastrou ainda estiver lá, o banco de dados está funcionando corretamente.</p>
+  <p>Se os dados sumirem após reiniciar o servidor, há um problema na configuração do banco de dados. Descreva isso ao Claude Code: "os dados somem toda vez que reinicio o servidor. O banco de dados não está persistindo os dados entre sessões."</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: mantenha o terminal visível durante os testes</span>
+    <p>Durante os testes, deixe o terminal visível ao lado do navegador. Muitos erros aparecem no terminal antes de aparecerem na tela. Ver a mensagem de erro no momento em que ela acontece facilita muito o diagnóstico.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 24: CAPÍTULO 10 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">10</span><span class="chapter-label">Capítulo Dez</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Rodando o sistema no dia a dia</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O sistema está pronto e testado. Agora você precisa saber como usá-lo de forma prática no cotidiano, sem depender do terminal toda vez que quiser abrir o sistema.</p>
+
+  <h2>Como iniciar o sistema toda vez que precisar usar</h2>
+  <p>Para usar o sistema, você precisa iniciar o servidor de desenvolvimento. O processo básico é sempre o mesmo: abrir o terminal, navegar até a pasta do projeto e executar o comando do servidor. Depois, abrir o navegador em <code>localhost:3000</code>.</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">cd sistema-juridico</span>
+<span class="cmd">npm run dev</span></pre>
+  </div>
+
+  <p>O servidor fica rodando enquanto o terminal estiver aberto. Para encerrar o sistema, pressione <code>Ctrl+C</code> no terminal.</p>
+
+  <h2>Como criar um atalho simples para abrir o sistema</h2>
+  <p>Em vez de abrir o terminal e digitar os comandos toda vez, você pode criar um script que faz tudo isso com um duplo clique. Peça ao Claude Code para criar esse script:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie um script para iniciar o sistema com um duplo clique.
+
+No Windows, crie um arquivo iniciar.bat na raiz do projeto que:
+- Navega para a pasta do projeto
+- Inicia o servidor com npm run dev
+- Abre o navegador padrão em localhost:3000 após 3 segundos
+
+No macOS, crie um arquivo iniciar.sh na raiz do projeto com
+o mesmo comportamento e configure as permissões de execução
+com chmod +x iniciar.sh.</span></pre>
+  </div>
+
+  <p>Após o Claude Code criar o script, coloque um atalho para ele na área de trabalho. No Windows, clique com o botão direito no arquivo <code>iniciar.bat</code>, selecione "Enviar para" e depois "Área de trabalho (criar atalho)". No macOS, arraste o arquivo <code>iniciar.sh</code> para o Dock ou para a área de trabalho.</p>
+
+  <h2>Onde fica o arquivo do banco de dados e como fazer backup</h2>
+  <p>O arquivo <code>juridico.db</code> fica na raiz da pasta do projeto. Esse arquivo contém todos os seus dados. Para fazer backup, copie esse arquivo para outro local:</p>
+
+  <div class="info-box">
+    <span class="lbl">Opções de backup</span>
+    <div class="item"><b>Google Drive ou Dropbox:</b> copie o arquivo para uma pasta sincronizada com a nuvem. O backup acontece automaticamente sempre que você copiar o arquivo.</div>
+    <div class="item"><b>Pendrive:</b> copie o arquivo para um pendrive guardado em local seguro. Simples e não depende de internet.</div>
+    <div class="item"><b>HD externo:</b> ideal para backups semanais. Conecte o HD, copie o arquivo, desconecte.</div>
+    <div class="item"><b>Outra pasta no mesmo computador:</b> menos seguro (se o HD falhar, você perde tudo), mas melhor do que nenhum backup.</div>
+  </div>
+
+  <p>Faça backup pelo menos uma vez por semana. Se você usa o sistema intensamente, faça backup diário. O processo leva menos de um minuto.</p>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 10</div></div>
+</div>
+
+<!-- PAGE 25: CAPÍTULO 10 continuação -->
+<div class="page">
+  <h2>O que fazer se o computador trocar ou o sistema precisar ser reinstalado</h2>
+  <p>Se você precisar instalar o sistema em um computador novo, o processo é simples:</p>
+
+  <div class="checklist">
+    <span class="lbl">Passos para reinstalar em um computador novo</span>
+    <div class="item"><div class="check"></div>Instale o Node.js no novo computador (nodejs.org, versão LTS)</div>
+    <div class="item"><div class="check"></div>Instale o Claude Code: <code>npm install -g @anthropic-ai/claude-code</code></div>
+    <div class="item"><div class="check"></div>Copie a pasta inteira do projeto para o novo computador</div>
+    <div class="item"><div class="check"></div>Abra o terminal na pasta do projeto e execute <code>npm install</code> para reinstalar as dependências</div>
+    <div class="item"><div class="check"></div>Copie o arquivo de backup <code>juridico.db</code> para a raiz da pasta do projeto</div>
+    <div class="item"><div class="check"></div>Inicie o servidor com <code>npm run dev</code> e verifique se os dados aparecem</div>
+  </div>
+
+  <p>O passo mais importante é o quinto: copiar o arquivo de backup do banco de dados. Sem ele, você perde todos os dados cadastrados. Com ele, o sistema volta exatamente ao estado em que estava antes da troca de computador.</p>
+
+  <h2>Boas práticas para manter o sistema funcionando</h2>
+  <p>Mantenha o Node.js atualizado. Versões muito antigas podem ter problemas de compatibilidade com pacotes mais novos. Verifique a versão instalada com <code>node --version</code> e atualize quando a versão LTS atual for significativamente mais nova.</p>
+  <p>Não delete arquivos da pasta do projeto sem saber o que são. Se precisar liberar espaço em disco, a pasta <code>node_modules</code> pode ser deletada com segurança: ela pode ser recriada a qualquer momento com o comando <code>npm install</code>. Os outros arquivos, especialmente o <code>juridico.db</code>, não devem ser deletados.</p>
+  <p>Se o sistema começar a ficar lento após muitos meses de uso, pode ser que o banco de dados tenha acumulado muitos registros. Peça ao Claude Code para criar uma função de arquivamento que move processos concluídos com mais de dois anos para uma tabela separada, mantendo o banco principal leve.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: não atualize pacotes sem motivo</span>
+    <p>Atualizar os pacotes do projeto (<code>npm update</code>) sem um motivo específico pode introduzir incompatibilidades. Só atualize quando houver um problema que a atualização resolve, ou quando o Claude Code recomendar explicitamente.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 10</div></div>
+</div>
+
+<!-- PAGE 26: CAPÍTULO 11 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">11</span><span class="chapter-label">Capítulo Onze</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Quando algo der errado</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Erros fazem parte do desenvolvimento de software. Não são sinal de que algo está fundamentalmente errado: são parte normal do processo. O que importa é saber como lidar com eles de forma eficiente.</p>
+
+  <h2>Os tipos de erro mais comuns em projetos Next.js feitos com Claude Code</h2>
+  <p>Projetos criados com Claude Code por pessoas sem experiência em programação tendem a ter três categorias de erro:</p>
+  <p>A primeira categoria são erros de ambiente: o Node.js não está instalado, a versão está desatualizada, um pacote não foi instalado corretamente. Esses erros geralmente aparecem logo no início, quando você tenta iniciar o servidor pela primeira vez. A mensagem de erro costuma mencionar o nome do pacote ou módulo que está faltando.</p>
+  <p>A segunda categoria são erros de lógica: o sistema faz algo diferente do que deveria. Um processo é salvo com a data errada, a lista não aparece, um botão não responde. Esses erros são mais sutis e às vezes só aparecem durante o uso real do sistema.</p>
+  <p>A terceira categoria são erros de integração: o frontend e o backend não estão se comunicando corretamente. A tela tenta buscar dados de uma rota que não existe, ou envia dados em um formato que o servidor não entende. Esses erros geralmente aparecem no console do navegador (acessível pressionando F12) ou no terminal onde o servidor está rodando.</p>
+
+  <h2>Como descrever um erro ao Claude Code de forma que ele consiga corrigir</h2>
+  <p>A qualidade da correção depende diretamente da qualidade da descrição do problema. Um erro bem descrito tem quatro elementos:</p>
+
+  <div class="info-box">
+    <span class="lbl">Os quatro elementos de um bom relato de erro</span>
+    <div class="item"><b>1. O que você fez:</b> descreva a sequência de ações que levou ao erro. "Abri o sistema, fui para a tela de novo processo, preenchi todos os campos e cliquei em Salvar."</div>
+    <div class="item"><b>2. O que esperava:</b> descreva o resultado esperado. "Esperava que o processo aparecesse na lista de processos."</div>
+    <div class="item"><b>3. O que aconteceu:</b> descreva o resultado real. "Em vez disso, a tela ficou em branco e não aconteceu nada."</div>
+    <div class="item"><b>4. A mensagem de erro:</b> copie e cole qualquer mensagem de erro que aparecer, seja no terminal, seja no console do navegador (F12). Não resuma: copie o texto completo.</div>
+  </div>
+
+  <h2>Quando o Claude Code não consegue corrigir sozinho</h2>
+  <p>Em alguns casos, o Claude Code vai tentar corrigir um erro e a correção vai criar outro erro. Isso pode acontecer quando o problema é mais profundo do que parece na superfície, ou quando a instrução original foi ambígua e o agente tomou uma decisão que não era a ideal.</p>
+  <p>Se você perceber que o agente está tentando a mesma abordagem repetidamente sem sucesso, ou que cada correção cria um novo problema, pare. Não continue pedindo correções incrementais. Em vez disso, descreva o problema do início: o que o sistema deveria fazer, o que está fazendo de errado e o que já foi tentado para corrigir. Às vezes, recomeçar a descrição do problema do zero leva o agente a uma abordagem completamente diferente que resolve o problema de forma mais limpa.</p>
+  <p>Se o problema persistir após duas ou três tentativas com abordagens diferentes, considere desfazer as últimas mudanças e voltar ao estado anterior usando o Git, conforme explicado na próxima seção.</p>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 11</div></div>
+</div>
+
+<!-- PAGE 27: CAPÍTULO 11 continuação -->
+<div class="page">
+  <h2>A importância de corrigir um erro de cada vez</h2>
+  <p>Um erro não corrigido tende a gerar outros erros. Se você perceber que algo não está funcionando corretamente, corrija antes de continuar adicionando funcionalidades. Um sistema com cinco problemas acumulados é muito mais difícil de corrigir do que um sistema com um problema de cada vez.</p>
+  <p>A regra prática é: nunca avance para o próximo capítulo ou para a próxima funcionalidade com um erro conhecido não resolvido. Se algo não funciona, resolva agora. Se não conseguir resolver, peça ajuda ao Claude Code com uma descrição detalhada antes de continuar.</p>
+
+  <h2>Como usar o Git para voltar a uma versão anterior</h2>
+  <p>O Git é o sistema de controle de versão que você configurou no Capítulo 1. Ele registra o histórico de mudanças do projeto. Se algo quebrar de forma que você não consiga corrigir, você pode voltar ao estado anterior do projeto usando o Git.</p>
+  <p>Primeiro, veja o histórico de commits para identificar para qual versão você quer voltar:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">git log --oneline</span></pre>
+  </div>
+
+  <p>Esse comando mostra uma lista de commits com um código curto e uma descrição. Cada commit é um ponto no histórico do projeto. Identifique o commit que representa o estado em que o sistema estava funcionando corretamente. O código curto tem sete caracteres, como <code>3a4b5c6</code>.</p>
+  <p>Para voltar a esse estado, peça ao Claude Code para fazer isso por você:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">O sistema está com problemas que não consigo corrigir. Quero
+voltar ao estado do commit [cole aqui o código do commit].
+Mostre-me como fazer isso com segurança, sem perder o histórico
+de commits anteriores.</span></pre>
+  </div>
+
+  <p>O Claude Code vai orientar você a usar o comando correto. Geralmente, a abordagem mais segura é criar um novo commit que desfaz as mudanças problemáticas, em vez de apagar o histórico. Isso preserva o registro do que foi tentado e facilita entender o que deu errado.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: faça commits frequentes</span>
+    <p>O Git só pode te salvar se você tiver feito commits ao longo do desenvolvimento. Se você chegou ao Capítulo 11 sem fazer nenhum commit, o Git não tem histórico para restaurar. A partir de agora, faça um commit ao final de cada sessão de trabalho: "Faça um commit com a mensagem 'sessão de [data]: [o que foi feito]'."</p>
+  </div>
+
+  <h2>O que fazer quando o console do navegador mostra erros</h2>
+  <p>O console do navegador é uma ferramenta de diagnóstico que mostra mensagens de erro que não aparecem na tela. Para acessá-lo, pressione F12 (ou Cmd+Option+I no macOS) e clique na aba "Console". Erros aparecem em vermelho.</p>
+  <p>Se você ver erros no console, copie o texto completo e leve ao Claude Code. Não tente interpretar o erro: apenas copie e cole. A mensagem de erro contém informações técnicas que o Claude Code sabe interpretar e que são essenciais para o diagnóstico correto.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: abra o console antes de reportar um erro</span>
+    <p>Antes de descrever qualquer problema ao Claude Code, abra o console do navegador (F12) e verifique se há mensagens de erro em vermelho. Muitos problemas que parecem misteriosos na interface têm uma mensagem de erro clara no console. Incluir essa mensagem no relato economiza várias tentativas de diagnóstico.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Capítulo 11</div></div>
+</div>
+
+<!-- PAGE 28: CONCLUSÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num" style="background:linear-gradient(135deg,#C4A35A,#8B6A20);">C</span><span class="chapter-label">Conclusão</span>
+    <h1 class="chapter-title" style="margin-top:16px;">O que você construiu</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Se você seguiu este tutorial do início ao fim, você tem agora um sistema de gestão de processos jurídicos funcionando no seu computador. Não é um protótipo nem uma demonstração: é um sistema real, com banco de dados real, que você pode usar no dia a dia do seu escritório.</p>
+
+  <h2>O que o sistema faz</h2>
+  <p>O sistema que você construiu gerencia processos jurídicos com CRUD completo: você pode criar, visualizar, editar e excluir processos. Cada processo armazena número, cliente, tipo de ação, tribunal, vara, status, última movimentação, próxima ação, data do prazo e advogado responsável.</p>
+  <p>O dashboard mostra o estado geral do escritório em tempo real: total de processos por status, gráfico de distribuição e lista dos próximos prazos ordenada por urgência. O sistema de alertas de prazo funciona em três níveis visuais, com cores e ícones distintos para cada grau de urgência, e um banner proeminente na tela de detalhes de processos com prazo crítico.</p>
+  <p>A busca por cliente funciona em tempo real. Os filtros por status e por advogado responsável funcionam em conjunto com a busca. A ordenação por prazo coloca os processos mais urgentes no topo da lista.</p>
+  <p>Tudo isso roda localmente, no seu computador, sem internet, sem servidor externo e sem custo de infraestrutura.</p>
+
+  <h2>O que o sistema não faz</h2>
+  <p>O sistema não tem autenticação. Qualquer pessoa com acesso ao computador pode usar. Não há controle de acesso por perfil de usuário. Não há envio de notificações por e-mail ou SMS: os alertas aparecem apenas na interface, enquanto o sistema está aberto no navegador. O sistema não está publicado na internet e não pode ser acessado de outros dispositivos sem configuração adicional.</p>
+  <p>Essas limitações são intencionais. Elas mantêm o sistema simples, fácil de manter e adequado para o escopo deste tutorial.</p>
+
+  <h2>Possibilidades de evolução futura</h2>
+  <p>O sistema que você construiu é uma base sólida. A partir dele, você pode pedir ao Claude Code para adicionar funcionalidades mais avançadas conforme a necessidade do escritório. Algumas possibilidades naturais: autenticação com login e senha, upload de documentos vinculados a cada processo, histórico de movimentações com registro de datas e responsáveis, relatórios em PDF, integração com o Google Calendar para sincronizar prazos com a agenda, e uma versão acessível de outros dispositivos na mesma rede local.</p>
+  <p>Cada uma dessas evoluções pode ser pedida ao Claude Code de forma incremental, sem precisar reescrever o sistema do zero. A estrutura que você criou, com banco de dados SQLite, rotas de API no Next.js e estado global com Zustand, suporta essas adições sem grandes mudanças arquiteturais.</p>
+
+  <h2>Como continuar aprendendo Claude Code</h2>
+  <p>Este tutorial mostrou um fluxo de trabalho específico: CLAUDE.md detalhado, skills acionadas no momento certo, instruções precisas e verificação a cada etapa. Esse fluxo funciona para qualquer tipo de sistema, não apenas para sistemas jurídicos.</p>
+  <p>Para projetos mais complexos, o mesmo princípio se aplica: quanto mais claro for o CLAUDE.md, quanto mais específicas forem as instruções e quanto mais frequentes forem os commits, melhor será o resultado. O Claude Code é uma ferramenta que amplifica a clareza das suas instruções: instruções vagas produzem resultados vagos, instruções precisas produzem resultados precisos.</p>
+  <p>A documentação oficial do Claude Code em docs.anthropic.com é o melhor lugar para aprender sobre funcionalidades avançadas: hooks, permissões, configurações de projeto e integrações via MCP. Com a base que você construiu neste tutorial, você tem o contexto necessário para aproveitar essas funcionalidades de forma produtiva.</p>
+
+  <div class="quote-box">
+    <p>"O sistema está funcionando. Os dados estão sendo salvos. Os alertas de prazo estão aparecendo. Você construiu isso."</p>
+    <div class="author">Resultado deste tutorial</div>
+  </div>
+
+  <div class="footer"><div class="left">Sistema Jurídico</div><div class="right">Conclusão</div></div>
+</div>
+
+</body>
+</html>

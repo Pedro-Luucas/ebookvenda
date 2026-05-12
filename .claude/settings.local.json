@@ -29,7 +29,8 @@
       "Bash(Select-Object -First 5)",
       "Bash(npx @anthropic-ai/claude-code --print \"Use the supabase MCP tool apply_migration to run this SQL migration with name '001_registration_tokens_and_profiles'. The SQL is: $\\(cat supabase/migrations/001_registration_tokens_and_profiles.sql\\)\")",
       "Bash(Select-Object -First 50)",
-      "Bash(curl -s -L \"https://docs.cakto.com.br/api-reference/orders/list\")"
+      "Bash(curl -s -L \"https://docs.cakto.com.br/api-reference/orders/list\")",
+      "Bash(Write-Output ready *)"
     ]
   },
   "enableAllProjectMcpServers": true,

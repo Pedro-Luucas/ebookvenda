@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Sobre o Projeto
 
-E-commerce de ebooks sobre vendas, totalmente em português brasileiro. Gateway de pagamento: **AbacatePay** (PIX). Construído com Next.js 16 App Router + Tailwind CSS 4 + TypeScript.
+E-commerce de módulos sobre vendas, totalmente em português brasileiro. Gateway de pagamento: **AbacatePay** (PIX). Construído com Next.js 16 App Router + Tailwind CSS 4 + TypeScript.
 
 **REGRA FUNDAMENTAL: Toda interface visível ao usuário deve estar em português brasileiro. Nenhum texto em inglês deve aparecer na UI.**
 
@@ -17,7 +17,7 @@ E-commerce de ebooks sobre vendas, totalmente em português brasileiro. Gateway 
 
 ## Arquitetura
 
-- **`app/data/products.ts`** — catálogo de ebooks (dados estáticos). Contém tipos `Product`, lista `products[]`, e helpers `getProductBySlug`, `getProductById`, `formatPrice`.
+- **`app/data/products.ts`** — catálogo de módulos (dados estáticos). Contém tipos `Product`, lista `products[]`, e helpers `getProductBySlug`, `getProductById`, `formatPrice`.
 - **`app/context/CartContext.tsx`** — estado global do carrinho via React Context (`"use client"`). Expõe `useCart()` com items, add/remove/update/clear e controle do sidebar.
 - **`app/lib/abacatepay.ts`** — integração server-side com a API do AbacatePay. Usa `ABACATEPAY_API_KEY` (env var). Endpoint: `POST /v1/billing/create` com frequency `ONE_TIME` e método `PIX`.
 - **`app/api/checkout/route.ts`** — API route que valida o carrinho, resolve produtos por ID, e cria cobrança no AbacatePay. Retorna `paymentUrl` para redirect.
@@ -36,8 +36,8 @@ Copiar `.env.example` para `.env.local` e configurar `ABACATEPAY_API_KEY`.
 - Rotas dinâmicas usam `params` como `Promise` (Next.js 16): `const { slug } = await params`.
 - Palette: emerald como cor de destaque, zinc para neutros. Suporta dark mode via `prefers-color-scheme`.
 
-## Ebooks HTML
+## Módulos HTML
 
-- Ebooks ficam em `ebooks/` e `ebooks/claude/`.
-- Para criar ou editar ebooks HTML grandes, use SEMPRE a ferramenta Write diretamente. Nunca use comandos PowerShell (Add-Content, Out-File, Set-Content) para escrever conteúdo HTML.
+- Módulos ficam em `modulos/` e `modulos/claude/`.
+- Para criar ou editar módulos HTML grandes, use SEMPRE a ferramenta Write diretamente. Nunca use comandos PowerShell (Add-Content, Out-File, Set-Content) para escrever conteúdo HTML.
 - Arquivos grandes devem ser escritos em múltiplas chamadas Write sequenciais, acumulando o conteúdo completo a cada chamada (não append, mas reescrita completa da seção atual até o ponto atual).

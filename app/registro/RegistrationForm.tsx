@@ -54,13 +54,20 @@ export default function RegistrationForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && (
-        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+        <div
+          className="p-3 rounded-xl text-sm border"
+          style={{
+            background: "rgba(239, 68, 68, 0.08)",
+            borderColor: "rgba(239, 68, 68, 0.25)",
+            color: "#f87171",
+          }}
+        >
           {error}
         </div>
       )}
 
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-zinc-300 mb-1">
+        <label htmlFor="name" className="block text-sm font-medium mb-1.5" style={{ color: "var(--text-sec)" }}>
           Nome completo
         </label>
         <input
@@ -69,14 +76,18 @@ export default function RegistrationForm() {
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+          className="w-full px-4 py-3 rounded-xl text-white placeholder-[var(--muted)] focus:outline-none focus:ring-2 transition-all"
+          style={{
+            background: "var(--surface-2)",
+            border: "1px solid var(--border-strong)",
+          }}
           placeholder="Seu nome"
         />
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-1">
-          E-mail (mesmo da compra)
+        <label htmlFor="email" className="block text-sm font-medium mb-1.5" style={{ color: "var(--text-sec)" }}>
+          E-mail <span className="font-normal" style={{ color: "var(--accent)" }}>(mesmo da Cakto)</span>
         </label>
         <input
           id="email"
@@ -84,13 +95,17 @@ export default function RegistrationForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+          className="w-full px-4 py-3 rounded-xl text-white placeholder-[var(--muted)] focus:outline-none focus:ring-2 transition-all"
+          style={{
+            background: "var(--surface-2)",
+            border: "1px solid var(--border-strong)",
+          }}
           placeholder="seu@email.com"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-zinc-300 mb-1">
+        <label htmlFor="password" className="block text-sm font-medium mb-1.5" style={{ color: "var(--text-sec)" }}>
           Senha
         </label>
         <input
@@ -99,13 +114,17 @@ export default function RegistrationForm() {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+          className="w-full px-4 py-3 rounded-xl text-white placeholder-[var(--muted)] focus:outline-none focus:ring-2 transition-all"
+          style={{
+            background: "var(--surface-2)",
+            border: "1px solid var(--border-strong)",
+          }}
           placeholder="Mínimo 6 caracteres"
         />
       </div>
 
       <div>
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-zinc-300 mb-1">
+        <label htmlFor="confirmPassword" className="block text-sm font-medium mb-1.5" style={{ color: "var(--text-sec)" }}>
           Confirmar senha
         </label>
         <input
@@ -114,7 +133,11 @@ export default function RegistrationForm() {
           required
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+          className="w-full px-4 py-3 rounded-xl text-white placeholder-[var(--muted)] focus:outline-none focus:ring-2 transition-all"
+          style={{
+            background: "var(--surface-2)",
+            border: "1px solid var(--border-strong)",
+          }}
           placeholder="Repita a senha"
         />
       </div>
@@ -122,7 +145,8 @@ export default function RegistrationForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 px-4 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3.5 px-4 rounded-xl font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 cta-glow"
+        style={{ background: "var(--accent)" }}
       >
         {loading ? "Verificando compra..." : "Criar minha conta"}
       </button>

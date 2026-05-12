@@ -166,7 +166,7 @@
 <!-- PAGE 2: SUMÁRIO -->
 <div class="page">
   <div style="padding-top:20px;">
-    <div class="label">Conteúdo do Ebook</div>
+    <div class="label">Conteúdo do Módulo</div>
     <h1 class="chapter-title" style="margin-top:8px;font-size:38px;">Sumário</h1>
     <div class="deco-line"></div>
   </div>
@@ -198,14 +198,14 @@
   <p>Toda semana, você repete as mesmas tarefas. Abre o e-mail, verifica a agenda, anota um gasto, registra uma ideia em algum lugar que provavelmente vai esquecer. São tarefas pequenas, mas somadas consomem tempo e atenção que poderiam estar em outro lugar.</p>
   <p>Automações pessoais existem para resolver exatamente isso: fazer com que tarefas repetitivas aconteçam sozinhas, sem que você precise iniciar cada uma delas manualmente. Não é um conceito novo. O que mudou é que, até pouco tempo atrás, criar automações exigia saber programar ou pagar por ferramentas como Zapier ou Make.</p>
   <p>O Claude Code com MCP muda essa equação. A diferença em relação a ferramentas como Zapier não é só de custo: é de inteligência. Zapier conecta campos. O Claude Code entende contexto. Você não precisa mapear "campo A vai para campo B". Você descreve o que quer em linguagem natural, e o agente descobre como fazer.</p>
-  <p>Este ebook ensina como usar o Claude Code, junto com servidores MCP (Model Context Protocol, o protocolo que permite ao Claude Code se conectar a ferramentas externas), para criar automações pessoais que integram as ferramentas do seu dia a dia: Telegram, Google Calendar, Gmail, Google Sheets e Notion. Você não precisa saber programar. Toda automação é criada pelo próprio Claude Code via MCP, sem scripts manuais sempre que possível.</p>
+  <p>Este módulo ensina como usar o Claude Code, junto com servidores MCP (Model Context Protocol, o protocolo que permite ao Claude Code se conectar a ferramentas externas), para criar automações pessoais que integram as ferramentas do seu dia a dia: Telegram, Google Calendar, Gmail, Google Sheets e Notion. Você não precisa saber programar. Toda automação é criada pelo próprio Claude Code via MCP, sem scripts manuais sempre que possível.</p>
   <h2>O que você vai ser capaz de fazer</h2>
-  <p>Ao final deste ebook, você vai saber como receber um resumo da sua agenda toda manhã direto no Telegram, como registrar gastos enviando uma mensagem de texto, como capturar ideias no Notion sem abrir o aplicativo, como fazer o Claude Code ler seus e-mails e classificar o que é urgente, e como combinar tudo isso em rotinas automáticas que rodam sem intervenção.</p>
+  <p>Ao final deste módulo, você vai saber como receber um resumo da sua agenda toda manhã direto no Telegram, como registrar gastos enviando uma mensagem de texto, como capturar ideias no Notion sem abrir o aplicativo, como fazer o Claude Code ler seus e-mails e classificar o que é urgente, e como combinar tudo isso em rotinas automáticas que rodam sem intervenção.</p>
   <p>Você também vai aprender a rodar essas automações na nuvem, de forma gratuita, para que funcionem mesmo quando seu computador estiver desligado.</p>
   <h2>Uma nota sobre o WhatsApp</h2>
-  <p>O WhatsApp é o aplicativo de mensagens mais usado no Brasil, mas a integração com bots exige a API oficial do WhatsApp Business, que tem custo por mensagem enviada e processo de aprovação. Por isso, este ebook usa o Telegram como canal de mensagens principal. O Telegram tem API aberta, gratuita, sem aprovação necessária, e é ideal para bots pessoais. Se você ainda não usa o Telegram, criar uma conta leva menos de dois minutos.</p>
+  <p>O WhatsApp é o aplicativo de mensagens mais usado no Brasil, mas a integração com bots exige a API oficial do WhatsApp Business, que tem custo por mensagem enviada e processo de aprovação. Por isso, este módulo usa o Telegram como canal de mensagens principal. O Telegram tem API aberta, gratuita, sem aprovação necessária, e é ideal para bots pessoais. Se você ainda não usa o Telegram, criar uma conta leva menos de dois minutos.</p>
   <h2>Pré-requisitos</h2>
-  <p>Este ebook assume que você já tem o Claude Code instalado e sabe como instalar servidores MCP. Se ainda não chegou nesse ponto, o ebook <em>Claude Code: O Guia Completo</em> cobre esses passos em detalhes. Aqui, o ponto de partida é: Claude Code funcionando, terminal aberto, pronto para criar.</p>
+  <p>Este módulo assume que você já tem o Claude Code instalado e sabe como instalar servidores MCP. Se ainda não chegou nesse ponto, o módulo <em>Claude Code: O Guia Completo</em> cobre esses passos em detalhes. Aqui, o ponto de partida é: Claude Code funcionando, terminal aberto, pronto para criar.</p>
   <div class="footer"><div class="left">Piloto Automático</div><div class="right">Introdução</div></div>
 </div>
 
@@ -219,8 +219,8 @@
   <div class="opening">Uma automação mal planejada não economiza tempo. Ela só transfere o problema para outro lugar.</div>
   <h2>O que é uma automação, em linguagem simples</h2>
   <p>Uma automação é uma tarefa que acontece sozinha. Em vez de você abrir o Google Calendar toda manhã para ver o que tem no dia, a automação faz isso por você e manda o resultado no Telegram. Em vez de você anotar um gasto manualmente na planilha, você envia uma mensagem e a automação registra.</p>
-  <p>O mecanismo por trás é sempre o mesmo: algo dispara a automação (um horário, uma mensagem, um evento), e a automação executa uma ou mais ações em resposta. Esse par, gatilho e ação, é a estrutura de toda automação que você vai criar neste ebook.</p>
-  <h2>Os três tipos de automação cobertos neste ebook</h2>
+  <p>O mecanismo por trás é sempre o mesmo: algo dispara a automação (um horário, uma mensagem, um evento), e a automação executa uma ou mais ações em resposta. Esse par, gatilho e ação, é a estrutura de toda automação que você vai criar neste módulo.</p>
+  <h2>Os três tipos de automação cobertos neste módulo</h2>
   <div class="info-box">
     <span class="lbl">Tipos de acionamento</span>
     <div class="item"><b>Via terminal:</b> você abre o terminal e digita uma instrução ao Claude Code. É o modo mais simples, útil para tarefas que você quer executar agora, sob demanda.</div>
@@ -270,7 +270,7 @@
   <div class="opening">Antes de criar qualquer automação, o ambiente precisa estar organizado. Um MCP mal configurado vai travar tudo na hora errada.</div>
   <h2>Como organizar os MCPs no arquivo .mcp.json</h2>
   <p>O arquivo <code>.mcp.json</code> fica na raiz do seu projeto e lista todos os servidores MCP que o Claude Code pode usar. Para um projeto de automações pessoais, você vai ter vários MCPs configurados ao mesmo tempo: Telegram, Google Calendar, Gmail, Google Sheets e Notion.</p>
-  <p>A estrutura do arquivo é sempre a mesma: cada MCP tem um nome, um comando para iniciar o servidor e as variáveis de ambiente que ele precisa para funcionar. Veja um exemplo de como o arquivo fica com todos os MCPs deste ebook configurados:</p>
+  <p>A estrutura do arquivo é sempre a mesma: cada MCP tem um nome, um comando para iniciar o servidor e as variáveis de ambiente que ele precisa para funcionar. Veja um exemplo de como o arquivo fica com todos os MCPs deste módulo configurados:</p>
   <div class="code-box">
     <span class="lbl">Exemplo de .mcp.json para automações pessoais</span>
     <pre>{
@@ -375,7 +375,7 @@
     <h1 class="chapter-title" style="margin-top:16px;">Telegram: seu painel de controle pessoal</h1>
     <div class="deco-line"></div>
   </div>
-  <div class="opening">O Telegram é o ponto de entrada e saída de quase todas as automações deste ebook. É por onde você aciona e por onde recebe os resultados.</div>
+  <div class="opening">O Telegram é o ponto de entrada e saída de quase todas as automações deste módulo. É por onde você aciona e por onde recebe os resultados.</div>
   <h2>Por que o Telegram é o centro das automações</h2>
   <p>O Telegram permite criar bots com uma API completamente gratuita, sem aprovação, sem custo por mensagem e sem limite de uso para bots pessoais. Um bot do Telegram é simplesmente um número de telefone virtual que recebe e envia mensagens. Você cria o bot, conecta ao Claude Code via MCP, e passa a ter um canal direto entre o seu celular e o agente.</p>
   <p>Na prática, isso significa que você pode acionar qualquer automação de qualquer lugar, só enviando uma mensagem. E todas as notificações das automações agendadas chegam no mesmo lugar: o chat do seu bot.</p>
@@ -434,7 +434,7 @@ os gastos desta semana e envie o total no Telegram.</pre>
 O script deve rodar continuamente.</pre>
   </div>
   <h2>Exemplo concreto: bot que responde com a agenda do dia</h2>
-  <p>Este é o fluxo completo do exemplo mais básico deste ebook: você envia "resumo do dia" para o seu bot, e ele responde com os eventos do Google Calendar de hoje.</p>
+  <p>Este é o fluxo completo do exemplo mais básico deste módulo: você envia "resumo do dia" para o seu bot, e ele responde com os eventos do Google Calendar de hoje.</p>
   <p>O que acontece por dentro: o script Python recebe a mensagem, identifica o comando "resumo do dia", chama o Claude Code com a instrução de ler o Calendar, o Claude Code usa o MCP do Google Calendar para buscar os eventos, formata o resultado e usa o MCP do Telegram para enviar a resposta de volta para você. Tudo isso acontece em segundos.</p>
   <div class="tip-box">
     <span class="lbl">Como testar se o bot está funcionando</span>
@@ -469,7 +469,7 @@ o refresh token necessário para o MCP.</pre>
     <div class="item"><b>Resumir agenda:</b> gerar um texto formatado com os compromissos do dia ou da semana.</div>
   </div>
   <h2>Exemplo concreto: resumo matinal automático no Telegram</h2>
-  <p>Esta é uma das automações mais úteis do ebook: todo dia às 7h da manhã, o Claude Code lê os eventos do dia no Google Calendar e manda um resumo formatado no Telegram. Você acorda com a agenda já no celular, sem precisar abrir nenhum aplicativo.</p>
+  <p>Esta é uma das automações mais úteis do módulo: todo dia às 7h da manhã, o Claude Code lê os eventos do dia no Google Calendar e manda um resumo formatado no Telegram. Você acorda com a agenda já no celular, sem precisar abrir nenhum aplicativo.</p>
   <p>Para criar essa automação, peça ao Claude Code:</p>
   <div class="code-box">
     <span class="lbl">Instrução ao Claude Code</span>
@@ -540,7 +540,7 @@ Me informe no Telegram quais eventos foram criados.</pre>
   <div class="opening">E-mail é onde a maioria das pessoas perde mais tempo. Ler, classificar, responder: o Claude Code pode assumir boa parte desse trabalho.</div>
   <h2>Como instalar e configurar o MCP do Gmail</h2>
   <p>O MCP do Gmail usa as mesmas credenciais do Google Cloud Console que o Google Calendar. Se você já configurou o Calendar, o processo é quase idêntico: basta ativar também a API do Gmail no mesmo projeto do Google Cloud e garantir que o escopo de permissão inclua leitura e envio de e-mails.</p>
-  <p>Um detalhe importante: o Gmail exige que você especifique os escopos de acesso durante a autorização. Para as automações deste ebook, você vai precisar de permissão para ler e-mails, modificar labels e rascunhar respostas. Peça ao Claude Code para guiar a configuração:</p>
+  <p>Um detalhe importante: o Gmail exige que você especifique os escopos de acesso durante a autorização. Para as automações deste módulo, você vai precisar de permissão para ler e-mails, modificar labels e rascunhar respostas. Peça ao Claude Code para guiar a configuração:</p>
   <div class="code-box">
     <span class="lbl">Instrução ao Claude Code</span>
     <pre>Configure o MCP do Gmail com permissões para:
@@ -612,7 +612,7 @@ Me informe quantos e-mails foram classificados
 em cada categoria.</pre>
   </div>
   <h2>Cuidados ao dar acesso ao Gmail</h2>
-  <p>O Gmail contém informações sensíveis. Antes de configurar o MCP, entenda o que ele pode e não pode fazer. O MCP do Gmail, com os escopos configurados neste ebook, pode ler e-mails, criar rascunhos e aplicar labels. Ele não envia e-mails automaticamente a menos que você instrua explicitamente o Claude Code a fazer isso.</p>
+  <p>O Gmail contém informações sensíveis. Antes de configurar o MCP, entenda o que ele pode e não pode fazer. O MCP do Gmail, com os escopos configurados neste módulo, pode ler e-mails, criar rascunhos e aplicar labels. Ele não envia e-mails automaticamente a menos que você instrua explicitamente o Claude Code a fazer isso.</p>
   <div class="warn-box">
     <span class="lbl">Atenção</span>
     <p>Nunca instrua o Claude Code a enviar e-mails automaticamente sem revisão, especialmente em automações agendadas. Sempre use "crie um rascunho" em vez de "envie". Revise antes de enviar.</p>
@@ -788,7 +788,7 @@ em cada categoria.</pre>
   <p>Quando você dá uma instrução ao Claude Code que envolve mais de uma ferramenta, ele decide sozinho a ordem de execução. Primeiro lê os dados necessários, depois processa, depois escreve ou envia. Você não precisa coordenar essa sequência: basta descrever o resultado que quer.</p>
   <p>O que muda em automações com múltiplos MCPs é a instrução: ela precisa ser mais detalhada, especificando de onde vêm os dados, o que fazer com eles e para onde vão. Quanto mais claro o fluxo na instrução, menos chance de o agente interpretar algo de forma inesperada.</p>
   <h2>Exemplo completo: rotina matinal automática</h2>
-  <p>Esta é a automação mais completa do ebook. Ela roda todo dia às 7h, coleta informações de três fontes diferentes e entrega tudo em uma única mensagem no Telegram.</p>
+  <p>Esta é a automação mais completa do módulo. Ela roda todo dia às 7h, coleta informações de três fontes diferentes e entrega tudo em uma única mensagem no Telegram.</p>
   <div class="code-box">
     <span class="lbl">Instrução ao Claude Code</span>
     <pre>Crie uma automação agendada que rode todo dia às 7h:
@@ -921,7 +921,7 @@ Crie:
   <p>As credenciais (tokens, chaves de API) nunca devem ficar no código. No Railway, elas são configuradas como variáveis de ambiente, acessíveis pelo script mas invisíveis para quem vê o repositório.</p>
   <p>No painel do Railway, acesse o projeto, clique em "Variables" e adicione cada variável do seu .env.example com o valor real. O Railway injeta essas variáveis automaticamente quando o script roda.</p>
   <div class="info-box">
-    <span class="lbl">Variáveis de ambiente típicas para as automações deste ebook</span>
+    <span class="lbl">Variáveis de ambiente típicas para as automações deste módulo</span>
     <div class="item"><b>TELEGRAM_BOT_TOKEN:</b> token do seu bot do Telegram</div>
     <div class="item"><b>TELEGRAM_CHAT_ID:</b> ID do seu chat pessoal</div>
     <div class="item"><b>GOOGLE_CLIENT_ID:</b> Client ID do Google Cloud Console</div>
@@ -1150,7 +1150,7 @@ Use apenas o MCP do Telegram e envie a mensagem
     <h1 class="chapter-title" style="margin-top:10px;">O que vem a seguir</h1>
     <div class="deco-line"></div>
   </div>
-  <p>Você chegou ao final deste ebook com um conjunto concreto de habilidades. Sabe como configurar MCPs para cinco ferramentas diferentes, como descrever automações ao Claude Code de forma que ele entenda, como combinar múltiplas ferramentas em uma única rotina e como hospedar automações na nuvem para que rodem sem depender do seu computador.</p>
+  <p>Você chegou ao final deste módulo com um conjunto concreto de habilidades. Sabe como configurar MCPs para cinco ferramentas diferentes, como descrever automações ao Claude Code de forma que ele entenda, como combinar múltiplas ferramentas em uma única rotina e como hospedar automações na nuvem para que rodem sem depender do seu computador.</p>
   <p>Mais do que as automações específicas que você aprendeu, o que importa é o padrão de raciocínio: identificar uma tarefa repetitiva, definir o gatilho e a ação, descrever com precisão ao Claude Code e testar antes de deixar rodando. Esse padrão funciona para qualquer automação que você queira criar a partir de agora.</p>
 
   <h2>Como pensar nas próximas automações</h2>
@@ -1158,7 +1158,7 @@ Use apenas o MCP do Telegram e envie a mensagem
   <p>Não tente criar a automação perfeita de primeira. Comece com a versão mais simples que resolve o problema. Depois de ela estar funcionando, adicione complexidade gradualmente: mais fontes de dados, mais ações, mais condições. Automações evoluem com o uso.</p>
 
   <h2>O ecossistema de MCPs está crescendo</h2>
-  <p>Quando este ebook foi escrito, os MCPs cobertos aqui representavam uma fração do que está disponível. Novos servidores MCP surgem toda semana: para Slack, Spotify, GitHub, Trello, Linear, Airtable, WhatsApp Business, sistemas de CRM e dezenas de outras ferramentas.</p>
+  <p>Quando este módulo foi escrito, os MCPs cobertos aqui representavam uma fração do que está disponível. Novos servidores MCP surgem toda semana: para Slack, Spotify, GitHub, Trello, Linear, Airtable, WhatsApp Business, sistemas de CRM e dezenas de outras ferramentas.</p>
   <p>O repositório oficial de MCPs em modelcontextprotocol.io lista os servidores disponíveis e mantidos pela comunidade. Vale visitar periodicamente para descobrir novas integrações que podem se encaixar na sua rotina.</p>
 
   <h2>O próximo passo natural</h2>
@@ -1171,6 +1171,15 @@ Use apenas o MCP do Telegram e envie a mensagem
     <div class="author">Princípio de automações pessoais</div>
   </div>
   <div class="footer"><div class="left">Piloto Automático</div><div class="right">Conclusão</div></div>
+</div>
+
+<div class="page" style="text-align:center; padding: 60px 40px;">
+  <h2 style="font-size:2rem; margin-bottom:16px;">Pronto para colocar sua rotina no piloto automático?</h2>
+  <p style="font-size:1.1rem; max-width:600px; margin:0 auto 36px;">Acesse o curso completo e comece a criar suas automações pessoais com Claude Code e MCP hoje mesmo.</p>
+  <a href="https://pay.cakto.com.br/ffuk56c_881478" target="_blank" rel="noopener noreferrer"
+     style="display:inline-block; background:#10b981; color:#fff; font-size:1.2rem; font-weight:700; padding:18px 48px; border-radius:8px; text-decoration:none; letter-spacing:0.02em; box-shadow:0 4px 16px rgba(16,185,129,0.35); transition:background 0.2s;">
+    Começar Agora
+  </a>
 </div>
 
 </body>

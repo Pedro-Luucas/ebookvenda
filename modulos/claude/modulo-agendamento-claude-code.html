@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<!--
+  Claude Code na Prática: Crie Seu Sistema de Agendamento do Zero
+  Tutorial passo a passo para criar um sistema de agendamento local usando Claude Code.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Claude Code na Prática: Crie Seu Sistema de Agendamento do Zero</title>
+<style>
+  :root{
+    --orange:#D97757;
+    --orange-light:#E8956D;
+    --orange-dark:#B85C3A;
+    --orange-bg:#FDF4F0;
+    --clay:#C96442;
+    --sand:#F5E6D8;
+    --black:#0D0D0D;
+    --black-rich:#1A0F0A;
+    --gray-text:#2D2420;
+    --gray-light:#F7F3F0;
+    --gray-mid:#E0D4CC;
+    --white:#FFFFFF;
+    --accent:#8B4513;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#e5e5e5;font-family:Arial,sans-serif;color:var(--gray-text);}
+  .page{
+    width:794px;min-height:1123px;margin:0 auto 32px;background:white;
+    padding:70px 80px;position:relative;box-shadow:0 4px 24px rgba(0,0,0,0.08);overflow:hidden;
+  }
+  h1.chapter-title{font-family:Georgia,serif;font-size:36px;font-weight:900;color:#0D0D0D;line-height:1.2;}
+  h2{font-family:Georgia,serif;font-size:22px;font-weight:bold;color:#B85C3A;margin:32px 0 14px;}
+  h3{font-family:Arial,sans-serif;font-size:14px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#0D0D0D;margin:24px 0 10px;}
+  p{font-family:Arial,sans-serif;font-size:16px;line-height:1.9;color:#2D2420;margin-bottom:16px;}
+  em{font-style:italic;}
+  strong{color:#0D0D0D;}
+  code{font-family:monospace;font-size:14px;background:#F7F3F0;padding:2px 6px;border-radius:3px;color:#B85C3A;}
+  .label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#D97757;font-weight:bold;}
+  .chapter-header{padding-top:60px;border-top:3px solid #D97757;margin-bottom:24px;}
+  .chapter-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#D97757,#B85C3A);color:white;border-radius:50%;font-family:Georgia,serif;font-weight:bold;font-size:18px;margin-right:14px;vertical-align:middle;}
+  .chapter-label{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#D97757;font-weight:bold;vertical-align:middle;}
+  .deco-line{width:60px;height:3px;background:linear-gradient(90deg,#D97757,#8B4513);margin:16px 0 28px;}
+  .opening{font-family:Georgia,serif;font-style:italic;font-size:18px;color:#2D2420;border-left:3px solid #E8956D;padding-left:16px;margin-bottom:28px;line-height:1.7;}
+  .quote-box{background:#FDF4F0;border-left:4px solid #D97757;padding:24px 28px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .quote-box p{font-family:Georgia,serif;font-style:italic;font-size:18px;color:#B85C3A;margin-bottom:10px;}
+  .quote-box .author{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#D97757;font-weight:bold;}
+  .code-box{background:#1A0F0A;border-left:4px solid #D97757;border-radius:0 8px 8px 0;padding:24px 28px;margin:28px 0;}
+  .code-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#E8956D;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .code-box pre{font-family:monospace;font-size:14px;color:#F5E6D8;line-height:1.8;white-space:pre-wrap;}
+  .code-box .comment{color:#8B6B5A;font-style:italic;}
+  .code-box .cmd{color:#E8956D;font-weight:bold;}
+  .code-box .str{color:#F5E6D8;}
+  .info-box{background:#F7F3F0;border:1px solid #E0D4CC;border-top:3px solid #D97757;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .info-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#D97757;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:14px;}
+  .info-box .item{margin-bottom:12px;font-size:14px;color:#2D2420;line-height:1.6;}
+  .info-box .item b{color:#B85C3A;}
+  .tip-box{border:1px solid #E8956D;border-top:3px solid #D97757;border-radius:8px;padding:24px 28px;margin:28px 0;background:white;}
+  .tip-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#D97757;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .tip-box p{font-size:15px;color:#2D2420;}
+  .checklist{background:#F7F3F0;border-radius:8px;padding:24px 28px;margin:28px 0;}
+  .checklist .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#D97757;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:16px;}
+  .checklist .item{display:flex;align-items:flex-start;margin-bottom:12px;font-size:14px;color:#2D2420;line-height:1.6;}
+  .checklist .check{flex-shrink:0;width:18px;height:18px;border:2px solid #D97757;border-radius:3px;margin-right:14px;margin-top:2px;background:white;}
+  .warn-box{background:#FDF4F0;border-left:4px solid #C96442;padding:20px 24px;border-radius:0 8px 8px 0;margin:28px 0;}
+  .warn-box .lbl{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;color:#C96442;letter-spacing:3px;font-weight:bold;display:block;margin-bottom:10px;}
+  .warn-box p{font-size:14px;color:#2D2420;margin-bottom:8px;}
+  .badge{display:inline-block;background:linear-gradient(135deg,#D97757,#B85C3A);color:white;border-radius:6px;padding:4px 14px;font-size:13px;font-weight:bold;font-family:Arial,sans-serif;}
+  .footer{position:absolute;bottom:28px;left:80px;right:80px;border-top:0.5px solid #E0D4CC;padding-top:10px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+  .footer .left{color:#D97757;font-weight:bold;}
+  .footer .right{color:#8B4513;font-weight:bold;}
+  .cover{background:linear-gradient(135deg,#0D0D0D 0%,#1A0F0A 50%,#2D1810 100%);color:white;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;position:relative;overflow:hidden;}
+  .cover-bg{position:absolute;inset:0;opacity:0.07;}
+  .cover-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:24px;padding-top:50px;}
+  .cover-badge-top{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:4px;color:#E8956D;font-weight:bold;}
+  .cover-title{font-family:Georgia,serif;font-size:58px;font-weight:bold;color:white;line-height:0.95;letter-spacing:-1px;}
+  .cover-title .orange{color:#D97757;display:block;}
+  .cover-subtitle{font-family:Georgia,serif;font-style:italic;font-size:20px;color:#E8956D;margin-top:6px;}
+  .cover-line{width:120px;height:3px;background:linear-gradient(90deg,#D97757,#8B4513);margin:16px auto;}
+  .cover-desc{font-family:Georgia,serif;font-style:italic;font-size:16px;color:#C4A090;max-width:480px;line-height:1.7;}
+  .cover-bottom{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:40px;}
+  .cover-year{font-family:Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:5px;color:#D97757;font-weight:bold;}
+  .toc-list{margin-top:30px;}
+  .toc-item{display:flex;align-items:center;padding:14px 0;border-bottom:1px dashed #E0D4CC;}
+  .toc-num{flex-shrink:0;width:32px;height:32px;background:linear-gradient(135deg,#D97757,#B85C3A);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:bold;font-size:14px;margin-right:18px;}
+  .toc-name{flex-grow:1;font-family:Georgia,serif;font-size:16px;color:#0D0D0D;}
+  .toc-dot{color:#D97757;font-size:13px;margin:0 6px;}
+  @media print{body{background:white;}.page{margin:0;box-shadow:none;page-break-after:always;}}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: CAPA -->
+<div class="page cover">
+  <div class="cover-bg"></div>
+  <div class="cover-content">
+    <div class="cover-badge-top">Tutorial Prático</div>
+    <h1 class="cover-title">Claude Code<span class="orange">na Prática</span></h1>
+    <div class="cover-subtitle">Crie Seu Sistema de Agendamento do Zero</div>
+    <div class="cover-line"></div>
+    <p class="cover-desc">Um guia passo a passo para construir um sistema completo de agendamento usando Claude Code, sem precisar saber programar.</p>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-year">2025</div>
+  </div>
+</div>
+
+<!-- PAGE 2: SUMÁRIO -->
+<div class="page">
+  <div class="label">Sumário</div>
+  <h1 class="chapter-title" style="margin-top:10px;">Conteúdo</h1>
+  <div class="deco-line"></div>
+  <div class="toc-list">
+    <div class="toc-item"><div class="toc-num">1</div><div class="toc-name">Preparando o ambiente</div></div>
+    <div class="toc-item"><div class="toc-num">2</div><div class="toc-name">Definindo o sistema antes de escrever uma linha</div></div>
+    <div class="toc-item"><div class="toc-num">3</div><div class="toc-name">Skills que você vai precisar</div></div>
+    <div class="toc-item"><div class="toc-num">4</div><div class="toc-name">Configurando o banco de dados SQLite</div></div>
+    <div class="toc-item"><div class="toc-num">5</div><div class="toc-name">Criando o backend</div></div>
+    <div class="toc-item"><div class="toc-num">6</div><div class="toc-name">Criando o frontend</div></div>
+    <div class="toc-item"><div class="toc-num">7</div><div class="toc-name">Testando o sistema completo</div></div>
+    <div class="toc-item"><div class="toc-num">8</div><div class="toc-name">Rodando o sistema no dia a dia</div></div>
+    <div class="toc-item"><div class="toc-num">9</div><div class="toc-name">Quando algo der errado</div></div>
+  </div>
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Sumário</div></div>
+</div>
+
+<!-- PAGE 3: INTRODUÇÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="label">Introdução</div>
+    <h1 class="chapter-title" style="margin-top:10px;">O que você vai construir</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Este tutorial vai guiar você na criação de um sistema de agendamento completo, rodando no seu próprio computador, usando o Claude Code como ferramenta de desenvolvimento.</p>
+
+  <p>O sistema que você vai construir ao longo deste tutorial faz o seguinte: cadastra clientes com nome e telefone, cadastra serviços com nome e duração, cria agendamentos associando cliente, serviço, data e horário, mostra a agenda do dia e da semana em ordem cronológica, e permite editar ou cancelar agendamentos existentes. Todos os dados ficam salvos em um arquivo local no seu computador.</p>
+
+  <h2>Por que local e por que SQLite</h2>
+  <p>O sistema roda inteiramente no seu computador. Não precisa de internet para funcionar, não depende de servidores externos e não tem custo mensal de hospedagem. Isso significa que você tem controle total sobre seus dados e que o sistema funciona mesmo sem conexão.</p>
+  <p>O banco de dados usado é o SQLite, que armazena tudo em um único arquivo. Esse arquivo pode ser copiado como backup, movido para outro computador ou guardado em um pendrive. Sem configuração de servidor de banco de dados, sem senhas de acesso, sem complexidade desnecessária.</p>
+
+  <h2>O que está fora do escopo</h2>
+  <p>Este tutorial não cobre: envio de notificações para clientes, acesso pela internet, controle de login e senhas, relatórios financeiros ou integração com outros sistemas. Essas funcionalidades adicionam complexidade significativa e ficam para um momento posterior, quando o sistema básico já estiver funcionando.</p>
+
+  <h2>Pré-requisitos</h2>
+  <p>Para seguir este tutorial, você precisa ter instalado no seu computador: Node.js (versão 18 ou superior), o Claude Code (instalado via npm), e um navegador web qualquer. Se você ainda não tem o Claude Code instalado, o Capítulo 1 cobre esse processo.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: siga na ordem</span>
+    <p>Cada capítulo depende do anterior. Não pule etapas. Se algo não funcionar em um capítulo, resolva antes de avançar para o próximo.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Introdução</div></div>
+</div>
+
+<!-- PAGE 4: CAPÍTULO 1 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">1</span><span class="chapter-label">Capítulo Um</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Preparando o ambiente</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Antes de pedir qualquer coisa ao Claude Code, você precisa garantir que o ambiente está configurado corretamente. Esse capítulo cobre a verificação da instalação, a criação da pasta do projeto e a configuração inicial.</p>
+
+  <h2>Verificando se o Claude Code está instalado</h2>
+  <p>Abra o terminal do seu computador. No Windows, procure por "Terminal" ou "Prompt de Comando" no menu iniciar. No macOS, abra o aplicativo "Terminal" na pasta Utilitários. Digite o seguinte comando e pressione Enter:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">claude --version</span></pre>
+  </div>
+
+  <p>Se aparecer um número de versão (algo como <code>1.0.x</code>), o Claude Code está instalado. Se aparecer uma mensagem de erro dizendo que o comando não foi encontrado, você precisa instalá-lo primeiro:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">npm install -g @anthropic-ai/claude-code</span></pre>
+  </div>
+
+  <p>Se o comando <code>npm</code> também não for reconhecido, significa que o Node.js não está instalado. Acesse <code>nodejs.org</code>, baixe a versão LTS e instale. Depois, feche e reabra o terminal antes de tentar novamente.</p>
+
+  <h2>Criando a pasta do projeto</h2>
+  <p>Escolha um local no seu computador para guardar o projeto. Pode ser a área de trabalho, a pasta Documentos ou qualquer outro lugar que faça sentido para você. Crie uma pasta chamada <code>agendamento</code>:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">mkdir agendamento</span>
+<span class="cmd">cd agendamento</span></pre>
+  </div>
+
+  <p>A partir de agora, todos os comandos devem ser executados dentro dessa pasta. Sempre que abrir o terminal para trabalhar no projeto, navegue até ela primeiro.</p>
+
+  <h2>Iniciando o Claude Code dentro do projeto</h2>
+  <p>Com o terminal aberto na pasta <code>agendamento</code>, inicie o Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">claude</span></pre>
+  </div>
+
+  <p>O Claude Code vai abrir e estará pronto para receber instruções. Ele já sabe que está dentro da pasta <code>agendamento</code> e vai criar todos os arquivos do projeto ali.</p>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 1</div></div>
+</div>
+
+<!-- PAGE 5: CAPÍTULO 1 continuação -->
+<div class="page">
+  <h2>Criando o arquivo CLAUDE.md</h2>
+  <p>O primeiro passo dentro do Claude Code é criar o arquivo <code>CLAUDE.md</code>. Esse arquivo funciona como um manual de instruções para o próprio Claude Code. Nele, você descreve o que o projeto faz, quais tecnologias usa e quais regras o agente deve seguir.</p>
+  <p>Digite a seguinte instrução no Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie um arquivo CLAUDE.md na raiz do projeto com as seguintes informações:
+- Nome do projeto: Sistema de Agendamento
+- Tecnologias: Node.js, Express, SQLite, HTML/CSS/JavaScript puro
+- O sistema roda localmente, sem necessidade de internet
+- O banco de dados é um arquivo SQLite local
+- A interface é acessada pelo navegador em localhost:3000</span></pre>
+  </div>
+
+  <h2>O que é o CLAUDE.md e por que ele importa</h2>
+  <p>O <code>CLAUDE.md</code> é o arquivo que o Claude Code lê automaticamente toda vez que você inicia uma sessão dentro de um projeto. Ele dá contexto ao agente sobre o que está sendo construído, evitando que você precise repetir informações básicas a cada nova conversa.</p>
+  <p>Sem esse arquivo, o Claude Code não tem como saber que tipo de projeto você está construindo. Com ele, o agente já começa cada sessão sabendo que se trata de um sistema de agendamento local, que usa SQLite, que roda em Node.js e que a interface é acessada pelo navegador.</p>
+  <p>Ao longo do tutorial, você vai adicionar mais informações a esse arquivo conforme o projeto evolui. Por enquanto, o conteúdo básico é suficiente.</p>
+
+  <h2>Inicializando o Git</h2>
+  <p>Antes de começar a escrever código, inicialize o controle de versão. O Git permite que você volte a versões anteriores do projeto caso algo quebre. Peça ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Inicialize um repositório Git neste projeto e faça o primeiro commit
+com a mensagem "setup inicial do projeto".</span></pre>
+  </div>
+
+  <p>A partir daqui, sempre que uma funcionalidade estiver funcionando, peça ao Claude Code para fazer um commit. Isso cria pontos de restauração que você pode usar caso precise voltar atrás.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: não pule o Git</span>
+    <p>O Git é sua rede de segurança. Sem ele, se algo quebrar de forma grave, você pode perder todo o trabalho feito até aquele ponto. Com ele, você sempre pode voltar ao último estado funcional.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 1</div></div>
+</div>
+
+<!-- PAGE 6: CAPÍTULO 2 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">2</span><span class="chapter-label">Capítulo Dois</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Definindo o sistema antes de escrever uma linha</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O erro mais comum ao usar Claude Code é começar a pedir funcionalidades sem ter definido o que o sistema precisa fazer. Isso gera retrabalho, inconsistências e frustrações. Definir antes de construir economiza tempo.</p>
+
+  <h2>Por que planejar antes de pedir código</h2>
+  <p>O Claude Code executa o que você pede. Se você pedir coisas vagas, o resultado será vago. Se você pedir coisas contraditórias, o resultado será inconsistente. A solução é simples: antes de pedir qualquer código, defina com clareza o que o sistema precisa fazer.</p>
+  <p>Planejar não significa escrever um documento de 50 páginas. Significa listar as funcionalidades mínimas que o sistema precisa ter para ser útil. Nada mais, nada menos.</p>
+
+  <h2>Lista mínima de funcionalidades</h2>
+  <p>Para um sistema de agendamento funcional, você precisa de:</p>
+
+  <div class="info-box">
+    <span class="lbl">Funcionalidades essenciais</span>
+    <div class="item"><b>Cadastro de clientes:</b> nome e telefone. Poder listar, editar e excluir clientes.</div>
+    <div class="item"><b>Cadastro de serviços:</b> nome do serviço e duração em minutos.</div>
+    <div class="item"><b>Criação de agendamentos:</b> associar um cliente a um serviço, com data e horário definidos.</div>
+    <div class="item"><b>Visualização da agenda do dia:</b> ver todos os agendamentos de um dia específico, em ordem cronológica.</div>
+    <div class="item"><b>Visualização da agenda da semana:</b> ver os agendamentos da semana inteira de forma resumida.</div>
+    <div class="item"><b>Edição e cancelamento:</b> poder alterar data, horário ou serviço de um agendamento, ou cancelá-lo.</div>
+  </div>
+
+  <p>Essa lista é o escopo do projeto. Tudo que está nela será construído. Tudo que não está nela fica de fora, pelo menos por enquanto.</p>
+
+  <h2>O conceito de escopo</h2>
+  <p>Escopo é o limite do que o sistema faz. Definir escopo significa dizer "o sistema faz isso e não faz aquilo". Sem escopo definido, você corre o risco de ficar adicionando funcionalidades indefinidamente sem nunca ter um sistema funcional.</p>
+  <p>Para este projeto, o escopo é claro: um sistema local de agendamento para uso pessoal do dono do negócio. Não é um sistema online, não tem login de clientes, não envia mensagens automáticas. Essas decisões não são limitações; são escolhas que mantêm o projeto viável.</p>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 2</div></div>
+</div>
+
+<!-- PAGE 7: CAPÍTULO 2 continuação -->
+<div class="page">
+  <h2>Escrevendo a definição no CLAUDE.md</h2>
+  <p>Agora que você tem a lista de funcionalidades, adicione essa definição ao arquivo <code>CLAUDE.md</code>. Isso garante que o Claude Code sempre tenha acesso ao escopo do projeto:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Adicione ao CLAUDE.md uma seção chamada "Funcionalidades" com a seguinte lista:
+- Cadastro de clientes (nome, telefone)
+- Cadastro de serviços (nome, duração em minutos)
+- Agendamentos (cliente + serviço + data + horário)
+- Visualização da agenda do dia (ordem cronológica)
+- Visualização da agenda da semana
+- Edição e cancelamento de agendamentos
+- Banco de dados: SQLite (arquivo local)
+- Interface: HTML/CSS/JS acessada em localhost:3000
+- Backend: Node.js com Express</span></pre>
+  </div>
+
+  <h2>A primeira instrução real ao Claude Code</h2>
+  <p>Com o escopo definido e documentado, você pode dar a primeira instrução de desenvolvimento ao Claude Code. Mas ainda não é hora de pedir código. A primeira instrução deve ser para o agente criar a estrutura de pastas do projeto:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie a estrutura de pastas para o projeto de agendamento:
+- src/ para o código do servidor
+- public/ para os arquivos da interface (HTML, CSS, JS)
+- database/ para o arquivo do banco de dados
+Não crie nenhum código ainda, apenas as pastas e arquivos vazios
+com comentários indicando o que cada um vai conter.</span></pre>
+  </div>
+
+  <p>Essa abordagem, criar a estrutura antes do conteúdo, ajuda o Claude Code a organizar o código de forma consistente nas etapas seguintes. Quando você pedir para criar o servidor, ele já sabe que o arquivo vai em <code>src/</code>. Quando pedir a interface, ele sabe que vai em <code>public/</code>.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: instruções específicas geram resultados melhores</span>
+    <p>Compare "crie um sistema de agendamento" com a instrução acima. A primeira é vaga e pode gerar qualquer coisa. A segunda é precisa e gera exatamente o que você precisa. Quanto mais específica a instrução, melhor o resultado.</p>
+  </div>
+
+  <div class="quote-box">
+    <p>"Defina o que você quer antes de pedir. O Claude Code executa instruções, não adivinha intenções."</p>
+    <div class="author">Princípio fundamental</div>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 2</div></div>
+</div>
+
+<!-- PAGE 8: CAPÍTULO 3 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">3</span><span class="chapter-label">Capítulo Três</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Skills que você vai precisar</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Skills são extensões que adicionam conhecimento especializado ao Claude Code. Sem elas, o agente funciona com seu conhecimento geral. Com elas, ele segue padrões específicos e produz resultados mais consistentes.</p>
+
+  <h2>O que são skills</h2>
+  <p>Pense em skills como manuais de referência que o Claude Code consulta quando precisa executar um tipo específico de tarefa. Uma skill de frontend, por exemplo, contém padrões de design, boas práticas de interface e estruturas de código que o agente usa como base ao criar telas.</p>
+  <p>Skills não mudam o que o Claude Code pode fazer. Elas mudam a qualidade e a consistência do que ele faz. Um agente sem skills pode criar uma interface funcional, mas com a skill de frontend instalada, ele cria interfaces mais organizadas, com melhor estrutura visual e código mais limpo.</p>
+
+  <h2>Skills recomendadas para este projeto</h2>
+  <p>Para o sistema de agendamento, quatro skills são particularmente úteis:</p>
+
+  <div class="info-box">
+    <span class="lbl">Skills recomendadas</span>
+    <div class="item"><b>frontend-design:</b> melhora a qualidade visual das telas criadas. Gera interfaces com design mais profissional e código CSS mais organizado.</div>
+    <div class="item"><b>react-nextjs-development:</b> embora o projeto use HTML puro, essa skill contém padrões de organização de componentes que o agente aplica mesmo em projetos sem React.</div>
+    <div class="item"><b>testing-debugging:</b> ajuda o agente a diagnosticar e corrigir erros de forma sistemática. Essencial quando algo não funciona como esperado.</div>
+    <div class="item"><b>simplify:</b> revisa o código gerado e sugere simplificações. Útil para manter o projeto limpo e fácil de entender.</div>
+  </div>
+
+  <h2>Como instalar cada skill</h2>
+  <p>A instalação de skills é feita dentro do próprio Claude Code. Para cada skill, use o comando <code>/install-skill</code> seguido do nome:</p>
+
+  <div class="code-box">
+    <span class="lbl">Dentro do Claude Code</span>
+    <pre><span class="cmd">/install-skill frontend-design</span>
+<span class="cmd">/install-skill react-nextjs-development</span>
+<span class="cmd">/install-skill testing-debugging</span>
+<span class="cmd">/install-skill simplify</span></pre>
+  </div>
+
+  <p>Cada skill é instalada uma única vez. Depois de instalada, ela fica disponível em todas as sessões futuras do Claude Code naquele projeto. Você não precisa reinstalar a cada vez que abrir o agente.</p>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 3</div></div>
+</div>
+
+<!-- PAGE 9: CAPÍTULO 3 continuação -->
+<div class="page">
+  <h2>Quando usar cada skill</h2>
+  <p>Você não precisa ativar skills manualmente na maioria dos casos. O Claude Code identifica automaticamente quando uma skill é relevante para a tarefa que você pediu. Porém, em situações específicas, você pode acionar uma skill diretamente:</p>
+
+  <div class="info-box">
+    <span class="lbl">Quando acionar cada skill</span>
+    <div class="item"><b>frontend-design:</b> acione quando pedir para criar ou modificar telas. Use <code>/skill frontend-design</code> antes de descrever o que você quer na interface.</div>
+    <div class="item"><b>testing-debugging:</b> acione quando algo não funciona. Use <code>/skill testing-debugging</code> antes de descrever o erro que você encontrou.</div>
+    <div class="item"><b>simplify:</b> acione depois que uma funcionalidade estiver pronta. Use <code>/skill simplify</code> para pedir uma revisão do código gerado.</div>
+  </div>
+
+  <h2>O que acontece sem skills</h2>
+  <p>O Claude Code funciona sem nenhuma skill instalada. A diferença é na qualidade e consistência dos resultados. Sem a skill de frontend, por exemplo, o agente ainda cria interfaces funcionais, mas pode usar estilos inconsistentes entre telas diferentes ou gerar código CSS desorganizado.</p>
+  <p>Sem a skill de testing-debugging, o agente ainda tenta corrigir erros, mas pode não seguir um processo sistemático de diagnóstico. Ele pode tentar soluções aleatórias em vez de investigar a causa raiz do problema.</p>
+  <p>As skills não são obrigatórias, mas são recomendadas. Elas reduzem a quantidade de ajustes que você precisa pedir depois e aumentam a chance de o resultado ficar correto na primeira tentativa.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: instale as skills antes de começar a construir</span>
+    <p>O melhor momento para instalar skills é agora, antes de pedir qualquer código. Assim, todo o código gerado a partir do próximo capítulo já se beneficia das skills instaladas.</p>
+  </div>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: skills não substituem instruções claras</span>
+    <p>Skills melhoram a qualidade do resultado, mas não compensam instruções vagas. Mesmo com todas as skills instaladas, você ainda precisa descrever com precisão o que quer. A combinação de skills boas com instruções claras é o que gera os melhores resultados.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 3</div></div>
+</div>
+
+<!-- PAGE 10: CAPÍTULO 4 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">4</span><span class="chapter-label">Capítulo Quatro</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Configurando o banco de dados SQLite</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O banco de dados é onde o sistema guarda todas as informações: clientes, serviços e agendamentos. Sem ele, os dados desapareceriam toda vez que você fechasse o sistema.</p>
+
+  <h2>O que é SQLite, em linguagem simples</h2>
+  <p>Um banco de dados é como uma planilha organizada que o computador consegue consultar rapidamente. O SQLite é um tipo específico de banco de dados que guarda tudo em um único arquivo no seu computador. Não precisa de instalação separada, não precisa de configuração de servidor, não precisa de senha.</p>
+  <p>Quando você cadastra um cliente no sistema, o SQLite grava essa informação no arquivo. Quando você abre a lista de clientes, o SQLite lê o arquivo e retorna os dados. Tudo acontece localmente, sem internet.</p>
+
+  <h2>Por que SQLite é a escolha certa para este projeto</h2>
+  <p>Existem outros bancos de dados mais conhecidos, como MySQL ou PostgreSQL. Eles são poderosos, mas exigem instalação e configuração de um servidor separado. Para um sistema local usado por uma pessoa, isso é complexidade desnecessária.</p>
+  <p>O SQLite é suficiente para armazenar milhares de agendamentos sem nenhum problema de desempenho. Ele só se torna limitado quando muitas pessoas precisam acessar o banco ao mesmo tempo, o que não é o caso de um sistema local.</p>
+
+  <h2>Como pedir ao Claude Code para configurar o banco</h2>
+  <p>Com o Claude Code aberto na pasta do projeto, dê a seguinte instrução:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Configure o banco de dados SQLite para o sistema de agendamento.
+Crie as seguintes tabelas:
+
+1. clientes: id, nome, telefone, observações, data_criacao
+2. servicos: id, nome, duracao_minutos, data_criacao
+3. agendamentos: id, cliente_id (referência clientes), servico_id
+   (referência serviços), data, horario, status (agendado/cancelado),
+   observações, data_criacao
+
+Use o pacote better-sqlite3. O arquivo do banco deve ficar em
+database/agendamento.db. Crie um arquivo src/database.js que
+inicializa o banco e cria as tabelas se elas não existirem.</span></pre>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 4</div></div>
+</div>
+
+<!-- PAGE 11: CAPÍTULO 4 continuação -->
+<div class="page">
+  <h2>O que o Claude Code vai criar</h2>
+  <p>Ao executar essa instrução, o Claude Code vai criar dois elementos principais: o arquivo <code>src/database.js</code> com o código que inicializa o banco, e as tabelas dentro do arquivo <code>database/agendamento.db</code>.</p>
+  <p>O arquivo <code>src/database.js</code> contém a lógica que cria as tabelas caso elas não existam. Isso significa que, na primeira vez que o sistema rodar, as tabelas serão criadas automaticamente. Nas vezes seguintes, o arquivo já existe e as tabelas já estão lá.</p>
+
+  <div class="info-box">
+    <span class="lbl">Estrutura das tabelas</span>
+    <div class="item"><b>clientes:</b> armazena nome, telefone e observações de cada cliente. O campo id é gerado automaticamente.</div>
+    <div class="item"><b>servicos:</b> armazena o nome do serviço e sua duração em minutos. Exemplos: "Corte de cabelo, 30 min" ou "Consulta, 60 min".</div>
+    <div class="item"><b>agendamentos:</b> conecta um cliente a um serviço em uma data e horário específicos. O campo status indica se o agendamento está ativo ou foi cancelado.</div>
+  </div>
+
+  <h2>Como verificar se o banco foi criado corretamente</h2>
+  <p>Após o Claude Code executar a instrução, verifique se o arquivo do banco foi criado. Peça ao agente:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Verifique se o banco de dados foi criado corretamente.
+Liste as tabelas existentes e mostre a estrutura de cada uma.</span></pre>
+  </div>
+
+  <p>O agente vai executar um comando que mostra as tabelas e seus campos. Confira se as três tabelas aparecem (clientes, servicos, agendamentos) e se os campos correspondem ao que foi pedido.</p>
+
+  <h2>Onde fica o arquivo e como fazer backup</h2>
+  <p>O arquivo <code>agendamento.db</code> fica na pasta <code>database/</code> dentro do projeto. Esse é o único arquivo que contém seus dados. Para fazer backup, basta copiar esse arquivo para outro local: um pendrive, uma pasta na nuvem ou outro diretório do computador.</p>
+  <p>O backup deve ser feito com o servidor parado. Feche o sistema antes de copiar o arquivo para garantir que nenhuma operação de escrita esteja em andamento.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: faça um commit após configurar o banco</span>
+    <p>Com o banco configurado e funcionando, peça ao Claude Code para fazer um commit: "o banco de dados está configurado e as tabelas foram criadas, faça um commit". Isso cria um ponto de restauração caso algo quebre nas próximas etapas.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 4</div></div>
+</div>
+
+<!-- PAGE 12: CAPÍTULO 5 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">5</span><span class="chapter-label">Capítulo Cinco</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Criando o backend</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O backend é a parte do sistema que você não vê. Ele recebe pedidos da interface (como "salve este cliente" ou "mostre os agendamentos de hoje"), processa esses pedidos e responde com os dados corretos.</p>
+
+  <h2>O que é backend, em linguagem simples</h2>
+  <p>Imagine um restaurante. O frontend é o salão: o que o cliente vê, os menus, as mesas. O backend é a cozinha: onde os pedidos são preparados. O cliente não vê a cozinha, mas sem ela não há comida.</p>
+  <p>No sistema de agendamento, o backend é o programa que roda no seu computador, recebe os dados que você digita na tela, salva no banco de dados e devolve as informações quando você pede para ver a agenda. Ele é construído com Node.js e Express, duas ferramentas amplamente usadas para esse tipo de trabalho.</p>
+
+  <h2>Como pedir ao Claude Code para criar o servidor</h2>
+  <p>A instrução para criar o backend deve ser detalhada. Quanto mais específica, melhor o resultado:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie o servidor backend em src/server.js usando Express.
+O servidor deve rodar na porta 3000 e ter as seguintes rotas:
+
+Clientes:
+- GET /api/clientes (listar todos)
+- POST /api/clientes (criar novo)
+- PUT /api/clientes/:id (editar)
+- DELETE /api/clientes/:id (excluir)
+
+Serviços:
+- GET /api/servicos (listar todos)
+- POST /api/servicos (criar novo)
+
+Agendamentos:
+- GET /api/agendamentos?data=YYYY-MM-DD (listar por dia)
+- GET /api/agendamentos/semana?inicio=YYYY-MM-DD (listar semana)
+- POST /api/agendamentos (criar novo)
+- PUT /api/agendamentos/:id (editar)
+- PATCH /api/agendamentos/:id/cancelar (cancelar)
+
+O servidor deve servir arquivos estáticos da pasta public/.
+Use o banco de dados configurado no capítulo anterior.</span></pre>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 5</div></div>
+</div>
+
+<!-- PAGE 13: CAPÍTULO 5 continuação -->
+<div class="page">
+  <h2>Entendendo as rotas</h2>
+  <p>Cada rota é um endereço que a interface usa para se comunicar com o backend. O verbo antes da rota indica o tipo de operação:</p>
+
+  <div class="info-box">
+    <span class="lbl">Verbos HTTP</span>
+    <div class="item"><b>GET:</b> buscar dados. "Me mostre a lista de clientes" ou "me mostre os agendamentos de hoje".</div>
+    <div class="item"><b>POST:</b> criar algo novo. "Cadastre este cliente" ou "crie este agendamento".</div>
+    <div class="item"><b>PUT:</b> atualizar algo existente. "Altere o telefone deste cliente" ou "mude o horário deste agendamento".</div>
+    <div class="item"><b>DELETE:</b> excluir algo. "Remova este cliente do sistema".</div>
+    <div class="item"><b>PATCH:</b> alterar parcialmente. "Mude apenas o status deste agendamento para cancelado".</div>
+  </div>
+
+  <p>Você não precisa memorizar isso. O importante é entender que cada ação na interface (clicar em "Salvar", abrir a agenda, cancelar um agendamento) corresponde a uma chamada para uma dessas rotas no backend.</p>
+
+  <h2>Testando o backend com a skill testing-debugging</h2>
+  <p>Antes de criar a interface, é importante verificar se o backend está funcionando. Acione a skill de testes e peça ao Claude Code para verificar:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="cmd">/skill testing-debugging</span>
+
+<span class="str">Teste todas as rotas do backend:
+1. Crie um cliente de teste
+2. Liste os clientes e verifique se o cliente aparece
+3. Crie um serviço de teste
+4. Crie um agendamento associando o cliente ao serviço
+5. Liste os agendamentos do dia e verifique se aparece
+6. Cancele o agendamento e verifique se o status mudou</span></pre>
+  </div>
+
+  <p>O Claude Code vai executar cada teste e reportar se funcionou ou não. Se algum teste falhar, ele vai tentar corrigir o problema automaticamente. Se não conseguir, vai descrever o erro para que você possa fornecer mais contexto.</p>
+
+  <h2>Lidando com erros nessa etapa</h2>
+  <p>Os erros mais comuns ao criar o backend são: porta 3000 já em uso (outro programa está usando essa porta), pacotes não instalados (o Claude Code esqueceu de rodar <code>npm install</code>), ou erros de sintaxe no código gerado.</p>
+  <p>Se o servidor não iniciar, copie a mensagem de erro completa e envie ao Claude Code. Na maioria dos casos, a mensagem de erro contém informação suficiente para o agente identificar e corrigir o problema.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: faça um commit após o backend funcionar</span>
+    <p>Quando todos os testes passarem, peça ao Claude Code para fazer um commit: "o backend está funcionando com todas as rotas testadas, faça um commit". Esse ponto de restauração é importante porque o próximo capítulo vai adicionar a interface, e se algo quebrar, você pode voltar ao backend funcional.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 5</div></div>
+</div>
+
+<!-- PAGE 14: CAPÍTULO 6 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">6</span><span class="chapter-label">Capítulo Seis</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Criando o frontend</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O frontend é a parte do sistema que você vê e interage. São as telas, os botões, os formulários. É onde você cadastra clientes, cria agendamentos e consulta a agenda.</p>
+
+  <h2>O que é frontend, em linguagem simples</h2>
+  <p>Se o backend é a cozinha do restaurante, o frontend é o salão. É o que o usuário vê: o cardápio, a mesa, o garçom anotando o pedido. No sistema de agendamento, o frontend são as páginas HTML que aparecem no navegador quando você acessa <code>localhost:3000</code>.</p>
+  <p>O frontend não guarda dados. Ele apenas mostra informações que busca no backend e envia dados que você digita para o backend salvar. A comunicação entre os dois acontece automaticamente, sem que você precise fazer nada além de clicar nos botões.</p>
+
+  <h2>Usando a skill frontend-design</h2>
+  <p>Antes de pedir a interface, acione a skill de frontend para garantir que o resultado tenha qualidade visual:</p>
+
+  <div class="code-box">
+    <span class="lbl">Dentro do Claude Code</span>
+    <pre><span class="cmd">/skill frontend-design</span></pre>
+  </div>
+
+  <p>Com a skill ativa, o Claude Code vai gerar interfaces com melhor organização visual, cores consistentes e layout responsivo. Sem ela, o resultado funciona, mas pode parecer desorganizado ou visualmente inconsistente.</p>
+
+  <h2>As telas que o sistema precisa ter</h2>
+  <p>O sistema de agendamento precisa de quatro telas principais:</p>
+
+  <div class="info-box">
+    <span class="lbl">Telas do sistema</span>
+    <div class="item"><b>Agenda do dia:</b> a tela principal. Mostra todos os agendamentos do dia selecionado em ordem cronológica, com nome do cliente, serviço e horário.</div>
+    <div class="item"><b>Novo agendamento:</b> formulário para criar um agendamento. Campos: cliente (selecionar da lista), serviço (selecionar da lista), data e horário.</div>
+    <div class="item"><b>Lista de clientes:</b> mostra todos os clientes cadastrados com opções de editar, excluir e cadastrar novo.</div>
+    <div class="item"><b>Edição/cancelamento:</b> ao clicar em um agendamento na agenda, poder editar seus dados ou cancelá-lo.</div>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 15: CAPÍTULO 6 continuação -->
+<div class="page">
+  <h2>Pedindo a interface ao Claude Code</h2>
+  <p>A instrução para criar o frontend deve descrever cada tela com detalhes suficientes para o agente entender o que você espera ver:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie a interface do sistema de agendamento em public/.
+Use HTML, CSS e JavaScript puro (sem frameworks).
+O design deve ser limpo, profissional e fácil de usar.
+
+Tela principal (index.html): agenda do dia
+- Seletor de data no topo
+- Lista de agendamentos do dia em cards, mostrando:
+  horário, nome do cliente, serviço, duração
+- Botão para criar novo agendamento
+- Navegação para ver agenda da semana e lista de clientes
+
+Tela de novo agendamento (novo-agendamento.html):
+- Formulário com campos: cliente (dropdown), serviço (dropdown),
+  data (campo de data), horário (campo de hora)
+- Botão Salvar e botão Cancelar
+- Os dropdowns devem carregar clientes e serviços do banco
+
+Tela de clientes (clientes.html):
+- Lista de clientes com nome e telefone
+- Botão para cadastrar novo cliente
+- Opções de editar e excluir em cada cliente
+- Formulário inline para adicionar/editar cliente</span></pre>
+  </div>
+
+  <h2>Revisando o visual sem conhecimento de código</h2>
+  <p>Depois que o Claude Code criar a interface, abra o navegador em <code>localhost:3000</code> e olhe cada tela. Você não precisa entender o código para avaliar se a interface está boa. Pergunte-se:</p>
+  <p>Os botões estão visíveis e com texto claro? Os campos do formulário têm rótulos que explicam o que preencher? A agenda mostra as informações de forma organizada? A navegação entre telas é intuitiva?</p>
+  <p>Se algo não estiver como você espera, descreva o problema ao Claude Code em termos visuais. Não tente descrever o código; descreva o que você vê e o que gostaria de ver diferente.</p>
+
+  <div class="quote-box">
+    <p>"O botão de salvar está muito pequeno e difícil de clicar. Quero que ele seja maior e com cor de destaque."</p>
+    <div class="author">Exemplo de feedback visual eficaz</div>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 16: CAPÍTULO 6 continuação -->
+<div class="page">
+  <h2>Pedindo ajustes visuais</h2>
+  <p>É normal que a primeira versão da interface não fique exatamente como você imaginou. O processo de ajuste é simples: olhe a tela, identifique o que não está bom e descreva a mudança que você quer. Alguns exemplos de instruções de ajuste:</p>
+
+  <div class="info-box">
+    <span class="lbl">Exemplos de ajustes visuais</span>
+    <div class="item"><b>Cores:</b> "quero que a cor principal do sistema seja azul em vez de cinza"</div>
+    <div class="item"><b>Tamanho:</b> "os cards de agendamento estão muito pequenos, quero que mostrem mais informação"</div>
+    <div class="item"><b>Layout:</b> "quero que a lista de clientes mostre os dados em uma tabela em vez de cards"</div>
+    <div class="item"><b>Navegação:</b> "quero um menu lateral fixo em vez de links no topo da página"</div>
+    <div class="item"><b>Formulários:</b> "o campo de data deveria vir preenchido com a data de hoje por padrão"</div>
+  </div>
+
+  <p>Cada ajuste é uma instrução separada. Não acumule muitos ajustes em uma única instrução. Peça um de cada vez, verifique o resultado e depois peça o próximo. Isso facilita identificar se algum ajuste causou um problema.</p>
+
+  <h2>Conectando o frontend ao backend</h2>
+  <p>Se você seguiu as instruções dos capítulos anteriores, o Claude Code já criou o frontend conectado ao backend. Os formulários já enviam dados para as rotas corretas e as listas já buscam dados do banco. Porém, se algo não estiver conectado, você pode pedir explicitamente:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Conecte o frontend ao backend:
+- A tela de agenda deve buscar agendamentos da rota GET /api/agendamentos
+- O formulário de novo agendamento deve enviar para POST /api/agendamentos
+- A lista de clientes deve buscar de GET /api/clientes
+- O formulário de novo cliente deve enviar para POST /api/clientes
+Verifique se todas as telas estão se comunicando com o backend corretamente.</span></pre>
+  </div>
+
+  <p>Após essa etapa, o sistema deve estar funcional de ponta a ponta: você cadastra um cliente na tela de clientes, cria um agendamento na tela de novo agendamento e vê o agendamento aparecer na agenda do dia.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: teste cada tela individualmente</span>
+    <p>Antes de considerar o frontend pronto, abra cada tela e teste todas as ações: cadastrar, editar, excluir, listar. Se alguma ação não funcionar, descreva o problema ao Claude Code antes de avançar para o próximo capítulo.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 6</div></div>
+</div>
+
+<!-- PAGE 17: CAPÍTULO 7 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">7</span><span class="chapter-label">Capítulo Sete</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Testando o sistema completo</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O backend está pronto, o frontend está pronto, a conexão entre eles está funcionando. Agora é hora de testar o sistema como um todo, simulando o uso real que você faria no dia a dia.</p>
+
+  <h2>Como rodar o sistema pela primeira vez</h2>
+  <p>Se o servidor ainda não estiver rodando, abra o terminal na pasta do projeto e inicie:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">node src/server.js</span></pre>
+  </div>
+
+  <p>O terminal deve mostrar uma mensagem indicando que o servidor está rodando na porta 3000. Algo como "Servidor rodando em http://localhost:3000". Se aparecer uma mensagem de erro em vez disso, copie a mensagem e leve ao Claude Code.</p>
+  <p>Com o servidor rodando, abra o navegador e acesse <code>http://localhost:3000</code>. A tela principal do sistema deve aparecer.</p>
+
+  <h2>O roteiro de teste completo</h2>
+  <p>Siga este roteiro na ordem. Cada passo depende do anterior:</p>
+
+  <div class="checklist">
+    <span class="lbl">Roteiro de teste</span>
+    <div class="item"><div class="check"></div>Acesse a tela de Clientes e cadastre um cliente com nome e telefone</div>
+    <div class="item"><div class="check"></div>Verifique se o cliente aparece na lista de clientes</div>
+    <div class="item"><div class="check"></div>Acesse a tela de Novo Agendamento</div>
+    <div class="item"><div class="check"></div>Selecione o cliente que você acabou de cadastrar</div>
+    <div class="item"><div class="check"></div>Selecione um serviço, escolha a data de hoje e um horário</div>
+    <div class="item"><div class="check"></div>Clique em Salvar e verifique se não aparece nenhum erro</div>
+    <div class="item"><div class="check"></div>Volte para a tela de Agenda e verifique se o agendamento aparece</div>
+    <div class="item"><div class="check"></div>Clique no agendamento e altere o horário</div>
+    <div class="item"><div class="check"></div>Verifique se o horário foi atualizado na agenda</div>
+    <div class="item"><div class="check"></div>Cancele o agendamento e verifique se o status mudou</div>
+  </div>
+
+  <h2>O que fazer se algum passo falhar</h2>
+  <p>Se qualquer passo do roteiro não funcionar como esperado, pare o teste naquele ponto. Não continue testando os passos seguintes com um erro não resolvido. Anote exatamente o que aconteceu: qual passo você estava executando, o que você clicou, o que esperava ver e o que apareceu de fato.</p>
+  <p>Verifique também o terminal onde o servidor está rodando. Muitos erros geram mensagens no terminal que não aparecem na tela do navegador. Se houver alguma mensagem de erro no terminal, copie-a integralmente.</p>
+  <p>Com essas informações em mãos, leve o problema ao Claude Code. A próxima página explica como usar a skill testing-debugging para diagnosticar problemas de forma sistemática.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: não avance com erros pendentes</span>
+    <p>Se o roteiro de teste revelou algum problema, resolva antes de seguir para os próximos capítulos. Um sistema com erros conhecidos só acumula mais erros conforme você adiciona funcionalidades.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 18: CAPÍTULO 7 continuação -->
+<div class="page">
+  <h2>Como usar a skill testing-debugging quando algo não funciona</h2>
+  <p>Se qualquer etapa do roteiro de teste falhar, acione a skill <code>testing-debugging</code> antes de descrever o problema ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Dentro do Claude Code</span>
+    <pre><span class="cmd">/skill testing-debugging</span></pre>
+  </div>
+
+  <p>Depois, descreva o que aconteceu com o máximo de detalhes possível. Um bom relato de erro tem três partes: o que você fez, o que esperava que acontecesse e o que aconteceu de fato. Por exemplo:</p>
+
+  <div class="quote-box">
+    <p>"Cliquei em Salvar no formulário de novo agendamento. Esperava que o agendamento aparecesse na agenda do dia. Em vez disso, a página ficou em branco e no terminal apareceu a mensagem: [cole aqui a mensagem de erro]."</p>
+    <div class="author">Exemplo de relato de erro eficaz</div>
+  </div>
+
+  <h2>Os erros mais comuns nessa etapa</h2>
+  <p>Alguns problemas aparecem com frequência durante os testes de sistemas criados com Claude Code. Conhecê-los ajuda a descrevê-los melhor:</p>
+
+  <div class="info-box">
+    <span class="lbl">Erros comuns e como descrevê-los</span>
+    <div class="item"><b>Dados não aparecem na tela:</b> "a tela de agenda está vazia mesmo com agendamentos cadastrados. No terminal não aparece nenhum erro."</div>
+    <div class="item"><b>Formulário não salva:</b> "ao clicar em Salvar, nada acontece. Ou aparece uma mensagem de erro na tela dizendo [descreva a mensagem]."</div>
+    <div class="item"><b>Página não carrega:</b> "ao acessar localhost:3000, o navegador mostra 'Esta página não pode ser acessada'. O terminal mostra [cole a mensagem]."</div>
+    <div class="item"><b>Dados somem após reiniciar:</b> "cadastrei um cliente, fechei o sistema, abri novamente e o cliente não está mais lá."</div>
+    <div class="item"><b>Botão não responde:</b> "clico no botão X e nada acontece. Não aparece nenhuma mensagem de erro."</div>
+  </div>
+
+  <h2>Como confirmar que o banco de dados está salvando corretamente</h2>
+  <p>O teste mais simples para confirmar que os dados estão sendo persistidos é o seguinte: cadastre um cliente, feche completamente o navegador, feche o servidor no terminal (pressione <code>Ctrl+C</code>), inicie o servidor novamente com <code>node src/server.js</code>, abra o navegador e vá para a tela de Clientes. Se o cliente que você cadastrou ainda estiver lá, o banco de dados está funcionando corretamente.</p>
+  <p>Se os dados sumirem após reiniciar o servidor, há um problema na configuração do banco de dados. Descreva isso ao Claude Code: "os dados somem toda vez que reinicio o servidor. O banco de dados não está persistindo os dados entre sessões."</p>
+
+  <h2>O que fazer se o sistema travar ou não abrir</h2>
+  <p>Se o sistema travar completamente, o primeiro passo é fechar tudo e recomeçar. Pressione <code>Ctrl+C</code> no terminal para encerrar o servidor. Feche o navegador. Abra o terminal novamente, navegue até a pasta do projeto e inicie o servidor de novo.</p>
+  <p>Se o problema persistir, copie qualquer mensagem de erro que aparecer no terminal e leve ao Claude Code. Se não aparecer nenhuma mensagem de erro, descreva o comportamento: "o servidor inicia mas o navegador não consegue acessar localhost:3000" ou "o servidor não inicia e não mostra nenhuma mensagem".</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: mantenha o terminal visível durante os testes</span>
+    <p>Durante os testes, deixe o terminal visível ao lado do navegador. Muitos erros aparecem no terminal antes de aparecerem na tela. Ver a mensagem de erro no momento em que ela acontece facilita muito o diagnóstico.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 7</div></div>
+</div>
+
+<!-- PAGE 19: CAPÍTULO 8 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">8</span><span class="chapter-label">Capítulo Oito</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Rodando o sistema no dia a dia</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">O sistema está pronto e testado. Agora você precisa saber como usá-lo de forma prática no cotidiano, sem depender do terminal toda vez que quiser abrir a agenda.</p>
+
+  <h2>Como iniciar o sistema toda vez que precisar usar</h2>
+  <p>Para usar o sistema, você precisa iniciar o servidor. O processo básico é sempre o mesmo: abrir o terminal, navegar até a pasta do projeto e executar o comando do servidor. Depois, abrir o navegador em <code>localhost:3000</code>.</p>
+  <p>Esse processo de dois passos pode parecer trabalhoso no início, mas você vai se acostumar rapidamente. A próxima seção mostra como simplificá-lo ainda mais com um atalho.</p>
+
+  <h2>Como criar um atalho simples para abrir o sistema</h2>
+  <p>Em vez de abrir o terminal e digitar os comandos toda vez, você pode criar um script que faz tudo isso com um duplo clique. Peça ao Claude Code para criar esse script:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">Crie um script para iniciar o sistema com um duplo clique.
+No Windows, crie um arquivo iniciar.bat na raiz do projeto que:
+- Navega para a pasta do projeto
+- Inicia o servidor com node src/server.js
+- Abre o navegador padrão em localhost:3000 após 2 segundos
+
+No macOS, crie um arquivo iniciar.sh na raiz do projeto com o mesmo comportamento,
+e configure as permissões de execução.</span></pre>
+  </div>
+
+  <p>Após o Claude Code criar o script, você pode colocar um atalho para ele na área de trabalho. No Windows, clique com o botão direito no arquivo <code>iniciar.bat</code>, selecione "Enviar para" e depois "Área de trabalho (criar atalho)". No macOS, arraste o arquivo <code>iniciar.sh</code> para o Dock ou para a área de trabalho.</p>
+  <p>A partir daí, para abrir o sistema, basta dar um duplo clique no atalho. O terminal vai abrir, o servidor vai iniciar e o navegador vai abrir automaticamente na tela do sistema.</p>
+
+  <h2>Onde fica o arquivo do banco de dados e como fazer backup</h2>
+  <p>O arquivo <code>agendamento.db</code> fica na raiz da pasta do projeto. Esse arquivo contém todos os seus dados. Para fazer backup, copie esse arquivo para outro local. Algumas opções práticas:</p>
+
+  <div class="info-box">
+    <span class="lbl">Opções de backup</span>
+    <div class="item"><b>Google Drive ou Dropbox:</b> copie o arquivo para uma pasta sincronizada com a nuvem. O backup acontece automaticamente sempre que você copiar o arquivo.</div>
+    <div class="item"><b>Pendrive:</b> copie o arquivo para um pendrive guardado em local seguro. Simples e não depende de internet.</div>
+    <div class="item"><b>HD externo:</b> ideal para backups semanais. Conecte o HD, copie o arquivo, desconecte.</div>
+    <div class="item"><b>Outra pasta no mesmo computador:</b> menos seguro (se o HD falhar, você perde tudo), mas melhor do que nenhum backup.</div>
+  </div>
+
+  <p>Faça backup pelo menos uma vez por semana. Se você usa o sistema intensamente, faça backup diário. O processo leva menos de um minuto.</p>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 20: CAPÍTULO 8 continuação -->
+<div class="page">
+  <h2>O que fazer se o computador trocar ou o sistema precisar ser reinstalado</h2>
+  <p>Se você precisar instalar o sistema em um computador novo, o processo é simples:</p>
+
+  <div class="checklist">
+    <span class="lbl">Passos para reinstalar em um computador novo</span>
+    <div class="item"><div class="check"></div>Instale o Node.js no novo computador (nodejs.org, versão LTS)</div>
+    <div class="item"><div class="check"></div>Instale o Claude Code (<code>npm install -g @anthropic-ai/claude-code</code>)</div>
+    <div class="item"><div class="check"></div>Copie a pasta inteira do projeto para o novo computador</div>
+    <div class="item"><div class="check"></div>Abra o terminal na pasta do projeto e execute <code>npm install</code> para reinstalar as dependências</div>
+    <div class="item"><div class="check"></div>Copie o arquivo de backup <code>agendamento.db</code> para a raiz da pasta do projeto</div>
+    <div class="item"><div class="check"></div>Inicie o servidor com <code>node src/server.js</code> e verifique se os dados aparecem</div>
+  </div>
+
+  <p>O passo mais importante é o quinto: copiar o arquivo de backup do banco de dados. Sem ele, você perde todos os dados cadastrados. Com ele, o sistema volta exatamente ao estado em que estava antes da troca de computador.</p>
+
+  <h2>Boas práticas para manter o sistema funcionando ao longo do tempo</h2>
+  <p>Um sistema local tem vantagens claras em termos de simplicidade, mas também exige alguns cuidados básicos para continuar funcionando bem ao longo do tempo:</p>
+  <p>Mantenha o Node.js atualizado. Versões muito antigas podem ter problemas de compatibilidade com pacotes mais novos. Verifique a versão instalada com <code>node --version</code> e atualize quando a versão LTS atual for significativamente mais nova.</p>
+  <p>Não delete arquivos da pasta do projeto sem saber o que são. Se precisar liberar espaço em disco, a pasta <code>node_modules</code> pode ser deletada com segurança: ela pode ser recriada a qualquer momento com o comando <code>npm install</code>. Os outros arquivos, especialmente o <code>agendamento.db</code>, não devem ser deletados.</p>
+  <p>Se o sistema começar a ficar lento após muitos meses de uso, pode ser que o banco de dados tenha acumulado muitos registros de agendamentos antigos. Peça ao Claude Code para criar uma função de arquivamento que move agendamentos com mais de seis meses para uma tabela separada, mantendo o banco principal leve.</p>
+
+  <div class="warn-box">
+    <span class="lbl">Atenção: não atualize pacotes sem motivo</span>
+    <p>Atualizar os pacotes do projeto (<code>npm update</code>) sem um motivo específico pode introduzir incompatibilidades. Só atualize quando houver um problema que a atualização resolve, ou quando o Claude Code recomendar explicitamente.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 8</div></div>
+</div>
+
+<!-- PAGE 21: CAPÍTULO 9 -->
+<div class="page">
+  <div class="chapter-header">
+    <span class="chapter-num">9</span><span class="chapter-label">Capítulo Nove</span>
+    <h1 class="chapter-title" style="margin-top:16px;">Quando algo der errado</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Erros fazem parte do desenvolvimento de software. Não são sinal de que algo está fundamentalmente errado: são parte normal do processo. O que importa é saber como lidar com eles.</p>
+
+  <h2>Os tipos de erro mais comuns em projetos feitos com Claude Code</h2>
+  <p>Projetos criados com Claude Code por pessoas sem experiência em programação tendem a ter três categorias de erro:</p>
+  <p>A primeira categoria são erros de ambiente: o Node.js não está instalado, a versão está desatualizada, um pacote não foi instalado corretamente. Esses erros geralmente aparecem logo no início, quando você tenta iniciar o servidor pela primeira vez. A mensagem de erro costuma mencionar o nome do pacote ou módulo que está faltando.</p>
+  <p>A segunda categoria são erros de lógica: o sistema faz algo diferente do que deveria. Um agendamento é salvo com a data errada, a lista de clientes não aparece, um botão não responde. Esses erros são mais sutis e às vezes só aparecem durante o uso real do sistema.</p>
+  <p>A terceira categoria são erros de integração: o frontend e o backend não estão se comunicando corretamente. A tela tenta buscar dados de uma rota que não existe, ou envia dados em um formato que o servidor não entende. Esses erros geralmente aparecem no console do navegador (acessível pressionando F12) ou no terminal onde o servidor está rodando.</p>
+
+  <h2>Como descrever um erro ao Claude Code de forma que ele consiga corrigir</h2>
+  <p>A qualidade da correção depende diretamente da qualidade da descrição do problema. Um erro bem descrito tem quatro elementos:</p>
+
+  <div class="info-box">
+    <span class="lbl">Os quatro elementos de um bom relato de erro</span>
+    <div class="item"><b>1. O que você fez:</b> descreva a sequência de ações que levou ao erro. "Abri o sistema, fui para a tela de novo agendamento, preenchi todos os campos e cliquei em Salvar."</div>
+    <div class="item"><b>2. O que esperava:</b> descreva o resultado esperado. "Esperava que o agendamento aparecesse na agenda do dia."</div>
+    <div class="item"><b>3. O que aconteceu:</b> descreva o resultado real. "Em vez disso, a tela ficou em branco e não aconteceu nada."</div>
+    <div class="item"><b>4. A mensagem de erro:</b> copie e cole qualquer mensagem de erro que aparecer, seja no terminal, seja na tela do navegador. Não resuma: copie o texto completo.</div>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 22: CAPÍTULO 9 continuação -->
+<div class="page">
+  <h2>Quando o Claude Code não consegue corrigir sozinho</h2>
+  <p>Em alguns casos, o Claude Code vai tentar corrigir um erro e a correção vai criar outro erro. Isso pode acontecer quando o problema é mais profundo do que parece na superfície, ou quando a instrução original foi ambígua e o agente tomou uma decisão que não era a ideal.</p>
+  <p>Se você perceber que o agente está tentando a mesma abordagem repetidamente sem sucesso, ou que cada correção cria um novo problema, pare. Não continue pedindo correções incrementais. Em vez disso, descreva o problema do início: o que o sistema deveria fazer, o que está fazendo de errado e o que já foi tentado para corrigir. Às vezes, recomeçar a descrição do problema do zero leva o agente a uma abordagem completamente diferente que resolve o problema de forma mais limpa.</p>
+  <p>Se o problema persistir após duas ou três tentativas com abordagens diferentes, considere desfazer as últimas mudanças e voltar ao estado anterior usando o Git, conforme explicado na próxima seção.</p>
+
+  <h2>A importância de não acumular erros</h2>
+  <p>Um erro não corrigido tende a gerar outros erros. Se você perceber que algo não está funcionando corretamente, corrija antes de continuar adicionando funcionalidades. Um sistema com cinco problemas acumulados é muito mais difícil de corrigir do que um sistema com um problema de cada vez.</p>
+  <p>A regra prática é: nunca avance para o próximo capítulo ou para a próxima funcionalidade com um erro conhecido não resolvido. Se algo não funciona, resolva agora. Se não conseguir resolver, peça ajuda ao Claude Code com uma descrição detalhada antes de continuar.</p>
+
+  <h2>Como usar o Git para voltar a uma versão anterior</h2>
+  <p>O Git é o sistema de controle de versão que você configurou no Capítulo 1. Ele registra o histórico de mudanças do projeto. Se algo quebrar de forma que você não consiga corrigir, você pode voltar ao estado anterior do projeto usando o Git.</p>
+  <p>Primeiro, veja o histórico de commits para identificar para qual versão você quer voltar:</p>
+
+  <div class="code-box">
+    <span class="lbl">Terminal</span>
+    <pre><span class="cmd">git log --oneline</span></pre>
+  </div>
+
+  <p>Esse comando mostra uma lista de commits com um código curto e uma descrição. Cada commit é um ponto no histórico do projeto. Identifique o commit que representa o estado em que o sistema estava funcionando corretamente.</p>
+  <p>Para voltar a esse estado sem perder o histórico, peça ao Claude Code:</p>
+
+  <div class="code-box">
+    <span class="lbl">Instrução para o Claude Code</span>
+    <pre><span class="str">O sistema está com problemas que não consigo corrigir. Quero voltar ao estado
+do commit [cole aqui o código do commit, ex: ab3f7c2]. Mostre o que vai mudar
+antes de fazer qualquer alteração.</span></pre>
+  </div>
+
+  <p>O agente vai mostrar o que vai ser revertido antes de fazer qualquer mudança. Confirme apenas quando tiver certeza de que é isso que você quer. Lembre-se: ao voltar para um commit anterior, as mudanças feitas depois daquele ponto serão perdidas. Por isso, faça commits frequentes durante o desenvolvimento, especialmente após cada funcionalidade que estiver funcionando corretamente.</p>
+
+  <div class="tip-box">
+    <span class="lbl">Dica: faça commits frequentes</span>
+    <p>Sempre que uma funcionalidade estiver funcionando, peça ao Claude Code para fazer um commit: "o sistema de cadastro de clientes está funcionando corretamente, faça um commit com essa mensagem". Isso cria pontos de restauração ao longo do desenvolvimento.</p>
+  </div>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Capítulo 9</div></div>
+</div>
+
+<!-- PAGE 23: CONCLUSÃO -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="label">Conclusão</div>
+    <h1 class="chapter-title" style="margin-top:10px;">O que você construiu</h1>
+    <div class="deco-line"></div>
+  </div>
+  <p class="opening">Você chegou ao final do tutorial com um sistema de agendamento funcionando no seu computador. Não um protótipo, não uma demonstração: um sistema real, que salva dados, que você pode abrir amanhã de manhã e usar para organizar sua agenda.</p>
+
+  <p>O sistema que você construiu faz o seguinte: cadastra clientes com nome, telefone e observações; cadastra serviços com nome e duração; cria agendamentos associando cliente, serviço, data e horário; mostra a agenda do dia em ordem cronológica; mostra a agenda da semana; permite editar e cancelar agendamentos; e guarda tudo em um arquivo local no seu computador que você pode copiar como backup a qualquer momento.</p>
+
+  <h2>O que o sistema não faz</h2>
+  <p>O sistema não envia notificações para os clientes. Não tem controle de acesso ou login. Não gera relatórios financeiros. Não funciona em outros computadores sem ser instalado neles. Não está disponível na internet. Essas limitações são intencionais: elas mantêm o sistema simples, confiável e fácil de manter.</p>
+  <p>Para o uso que foi proposto, um sistema local de agendamentos para o dono do negócio, essas funcionalidades são suficientes. Um sistema que faz poucas coisas e as faz bem é mais útil do que um sistema que tenta fazer tudo e funciona mal.</p>
+
+  <h2>Como continuar aprendendo Claude Code</h2>
+  <p>Este tutorial cobriu um fluxo específico: criar um sistema do zero, com uma stack definida, para um caso de uso concreto. O Claude Code é capaz de muito mais do que isso. Para continuar aprendendo, os próximos passos naturais são:</p>
+
+  <div class="info-box">
+    <span class="lbl">Próximos passos com Claude Code</span>
+    <div class="item"><b>Explore outras skills:</b> o Claude Code tem skills para diferentes tipos de projeto. Cada skill abre novas possibilidades de desenvolvimento.</div>
+    <div class="item"><b>Aprenda sobre MCP:</b> o Model Context Protocol permite conectar o Claude Code a ferramentas externas, como bancos de dados remotos, APIs de terceiros e serviços de notificação.</div>
+    <div class="item"><b>Leia o CLAUDE.md de outros projetos:</b> ver como outros desenvolvedores estruturam seus arquivos CLAUDE.md ajuda a escrever instruções mais eficazes.</div>
+    <div class="item"><b>Pratique descrever problemas:</b> a habilidade mais importante para trabalhar com Claude Code é descrever o que você quer com precisão. Quanto mais você praticar, melhores serão os resultados.</div>
+  </div>
+
+  <h2>O que seria necessário para evoluir o sistema no futuro</h2>
+  <p>Se um dia você quiser expandir o sistema, as evoluções mais naturais seriam: adicionar envio de lembretes por WhatsApp usando a API do WhatsApp Business; criar um relatório simples de agendamentos por período; adicionar suporte a múltiplos profissionais, cada um com sua própria agenda; ou publicar o sistema em um servidor para que os clientes possam fazer agendamentos online.</p>
+  <p>Cada uma dessas evoluções é um projeto separado, com sua própria complexidade. O sistema que você construiu aqui é a base: ele funciona, os dados estão organizados e a estrutura está clara. Qualquer evolução futura parte desse ponto.</p>
+  <p>Por enquanto, o sistema está pronto para uso. Abra o terminal, inicie o servidor e comece a cadastrar seus clientes.</p>
+
+  <div class="footer"><div class="left">Sistema de Agendamento</div><div class="right">Conclusão</div></div>
+</div>
+
+</body>
+</html>

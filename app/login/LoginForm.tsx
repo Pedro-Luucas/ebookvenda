@@ -28,7 +28,7 @@ export default function LoginForm() {
         return;
       }
 
-      router.push("/meus-ebooks");
+      router.push("/meus-modulos");
       router.refresh();
     } catch {
       setError("Erro de conexão. Tente novamente.");
@@ -40,13 +40,20 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && (
-        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+        <div
+          className="p-3 rounded-xl text-sm border"
+          style={{
+            background: "rgba(239, 68, 68, 0.08)",
+            borderColor: "rgba(239, 68, 68, 0.25)",
+            color: "#f87171",
+          }}
+        >
           {error}
         </div>
       )}
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-1">
+        <label htmlFor="email" className="block text-sm font-medium mb-1.5" style={{ color: "var(--text-sec)" }}>
           E-mail
         </label>
         <input
@@ -55,13 +62,17 @@ export default function LoginForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+          className="w-full px-4 py-3 rounded-xl text-white placeholder-[var(--muted)] focus:outline-none focus:ring-2 transition-all"
+          style={{
+            background: "var(--surface-2)",
+            border: "1px solid var(--border-strong)",
+          }}
           placeholder="seu@email.com"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-zinc-300 mb-1">
+        <label htmlFor="password" className="block text-sm font-medium mb-1.5" style={{ color: "var(--text-sec)" }}>
           Senha
         </label>
         <input
@@ -70,7 +81,11 @@ export default function LoginForm() {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+          className="w-full px-4 py-3 rounded-xl text-white placeholder-[var(--muted)] focus:outline-none focus:ring-2 transition-all"
+          style={{
+            background: "var(--surface-2)",
+            border: "1px solid var(--border-strong)",
+          }}
           placeholder="Sua senha"
         />
       </div>
@@ -78,17 +93,11 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 px-4 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3.5 px-4 rounded-xl font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 cta-glow"
+        style={{ background: "var(--accent)" }}
       >
         {loading ? "Entrando..." : "Entrar"}
       </button>
-
-      <p className="text-center text-zinc-500 text-sm">
-        Ainda não tem conta?{" "}
-        <a href="/registro" className="text-emerald-400 hover:text-emerald-300">
-          Criar conta
-        </a>
-      </p>
     </form>
   );
 }
