@@ -10,7 +10,7 @@ function getCheckoutUrl() {
   if (typeof window === "undefined") return CHECKOUT_URL;
   const affId = localStorage.getItem(AFF_STORAGE_KEY);
   if (!affId) return CHECKOUT_URL;
-  return `${CHECKOUT_URL}?aff=${encodeURIComponent(affId)}`;
+  return `${CHECKOUT_URL}?affiliate=${encodeURIComponent(affId)}`;
 }
 
 function CtaButton({
