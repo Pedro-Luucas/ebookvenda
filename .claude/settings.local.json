@@ -31,7 +31,9 @@
       "Bash(Select-Object -First 50)",
       "Bash(curl -s -L \"https://docs.cakto.com.br/api-reference/orders/list\")",
       "Bash(Write-Output ready *)",
-      "Bash(npm ls *)"
+      "Bash(npm ls *)",
+      "Bash(mkdir -p \"C:\\\\Users\\\\pedro\\\\Desktop\\\\progs\\\\ebookvenda\\\\app\\\\api\\\\modulo\\\\[slug]\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\pedro\\\\Desktop\\\\progs\\\\ebookvenda\\\\app\\\\modulos\\\\[slug]\")"
     ]
   },
   "enableAllProjectMcpServers": true,
